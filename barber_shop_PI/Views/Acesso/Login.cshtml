@@ -1,0 +1,39 @@
+﻿@model barber_shop_PI.Models.Usuario
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2 class="title">@ViewData["Title"]</h2>
+
+<form asp-action="Login">
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4 text-left">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" name="email" type="email" class="form-control" placeholder="nome@gmail.com" />
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4 text-left">
+            <label asp-for="Senha" class="form-label"></label>
+            <input asp-for="Senha" type="password" class="form-control" placeholder="senha123..." />
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="button">
+            <button class="btn btn-primary" type="submit">Login</button>
+        </div>
+    </div>
+
+    @if (ViewData["ValidateMessage"] != null)
+    {
+        <br />
+        <br />
+        <label class="alert-danger">@ViewData["ValidateMessage"]</label>
+    }
+</form>
