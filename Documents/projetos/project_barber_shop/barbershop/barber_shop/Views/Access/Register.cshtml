@@ -1,4 +1,6 @@
-﻿@model barber_shop.Models.ViewModel.UserFormViewModelClient
+﻿@model barber_shop.Models.ViewModel.UserFormViewModel
+@using Microsoft.AspNetCore.Identity;
+@using barber_shop.Models.Enums;
 
 @{
     ViewData["Title"] = "Criar Conta";
@@ -16,72 +18,85 @@
         <header>Formulário de Registro</header>
         <form class="form-register" asp-action="Register">
             <div class="input-box">
-                <label asp-for="Client.Name"></label>
-                <input asp-for="Client.Name" placeholder="Entre com seu nome">
-                <span asp-validation-for="Client.Name" class="text-danger"></span>
+                <label asp-for="User.Name"></label>
+                <input asp-for="User.Name" placeholder="Entre com seu nome">
+                <span asp-validation-for="User.Name" class="text-danger"></span>
             </div>
 
             <div class="input-box">
-                <label asp-for="Client.Cpf"></label>
-                <input asp-for="Client.Cpf" placeholder="Entre com seu CPF" type="text">
-                <span asp-validation-for="Client.Cpf" class="text-danger"></span>
+                <label asp-for="User.Cpf"></label>
+                <input asp-for="User.Cpf" placeholder="Entre com seu CPF" type="text">
+                <span asp-validation-for="User.Cpf" class="text-danger"></span>
             </div>
 
             <div class="input-box">
-                <label asp-for="Client.Gender" class="control-label"></label>
+                <label asp-for="User.Gender" class="control-label"></label>
                 <!--asp-items constroi uma caixa de seleção com base na lista informada-->
                 <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
-                <select asp-for="Client.GenderId" asp-items="@(new SelectList(Model.Genders, "Id", "Description"))"></select>
+                <select asp-for="User.GenderId" asp-items="@(new SelectList(Model.Genders, "Id", "Description"))"></select>
             </div>
 
             <div class="input-box">
-                <label asp-for="Client.Address.PublicPlace"></label>
-                <input asp-for="Client.Address.PublicPlace" placeholder="Entre com seu logradouro">
-                <span asp-validation-for="Client.Address.PublicPlace" class="text-danger"></span>
+                <label asp-for="User.Address.PublicPlace"></label>
+                <input asp-for="User.Address.PublicPlace" placeholder="Entre com seu logradouro">
+                <span asp-validation-for="User.Address.PublicPlace" class="text-danger"></span>
             </div>
 
             <div class="input-box">
-                <label asp-for="Client.Address.Neighborhood"></label>
-                <input asp-for="Client.Address.Neighborhood" placeholder="Entre com seu bairro">
-                <span asp-validation-for="Client.Address.Neighborhood" class="text-danger"></span>
+                <label asp-for="User.Address.Neighborhood"></label>
+                <input asp-for="User.Address.Neighborhood" placeholder="Entre com seu bairro">
+                <span asp-validation-for="User.Address.Neighborhood" class="text-danger"></span>
             </div>
 
             <div class="input-box">
-                <label asp-for="Client.Address.Locality"></label>
-                <input asp-for="Client.Address.Locality" placeholder="Entre com sua localidade">
-                <span asp-validation-for="Client.Address.Locality" class="text-danger"></span>
+                <label asp-for="User.Address.Locality"></label>
+                <input asp-for="User.Address.Locality" placeholder="Entre com sua localidade">
+                <span asp-validation-for="User.Address.Locality" class="text-danger"></span>
             </div>
 
             <div class="input-box">
-                <label asp-for="Client.Address.ZipCode"></label>
-                <input asp-for="Client.Address.ZipCode" placeholder="Entre com seu CEP">
-                <span asp-validation-for="Client.Address.ZipCode" class="text-danger"></span>
+                <label asp-for="User.Address.ZipCode"></label>
+                <input asp-for="User.Address.ZipCode" placeholder="Entre com seu CEP">
+                <span asp-validation-for="User.Address.ZipCode" class="text-danger"></span>
             </div>
 
             <div class="column-register">
                 <div class="input-box">
-                    <label asp-for="Client.Telephone"></label>
-                    <input asp-for="Client.Telephone" placeholder="Enter com seu telefone" type="telephone">
-                    <span asp-validation-for="Client.Telephone" class="text-danger"></span>
+                    <label asp-for="User.Telephone"></label>
+                    <input asp-for="User.Telephone" placeholder="Enter com seu telefone" type="telephone">
+                    <span asp-validation-for="User.Telephone" class="text-danger"></span>
                 </div>
                 <div class="input-box">
-                    <label asp-for="Client.BirthDate"></label>
-                    <input asp-for="Client.BirthDate">
-                    <span asp-validation-for="Client.BirthDate" class="text-danger"></span>
+                    <label asp-for="User.BirthDate"></label>
+                    <input asp-for="User.BirthDate">
+                    <span asp-validation-for="User.BirthDate" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="input-box">
-                <label asp-for="Client.Profile.Email"></label>
-                <input asp-for="Client.Profile.Email">
-                <span asp-validation-for="Client.Profile.Email" class="text-danger"></span>
+                <label asp-for="User.Profile.Email"></label>
+                <input asp-for="User.Profile.Email">
+                <span asp-validation-for="User.Profile.Email" class="text-danger"></span>
             </div>
 
             <div class="input-box">
-                <label asp-for="Client.Profile.Password"></label>
-                <input asp-for="Client.Profile.Password">
-                <span asp-validation-for="Client.Profile.Password" class="text-danger"></span>
+                <label asp-for="User.Profile.Password"></label>
+                <input asp-for="User.Profile.Password">
+                <span asp-validation-for="User.Profile.Password" class="text-danger"></span>
             </div>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.Claims.First().Value == EnumAccountCategory.ADM.ToString())
+                {
+                    <div class="input-box">
+                        <label asp-for="User.Profile" class="control-label"></label>
+                        <!--asp-items constroi uma caixa de seleção com base na lista informada-->
+                        <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
+                        <select asp-for="User.Profile.CategoryId" asp-items="@(new SelectList(Model.AccountCategories, "Id", "Description"))"></select>
+                    </div>
+                }
+            }
             <button>Submit</button>
         </form>
     </section>

@@ -71,13 +71,21 @@ namespace barber_shop.Controllers
         public async Task<IActionResult> Register()
         {
             var genders = await _barberShopRepository.GetGenders();
-            var viewModel = new UserFormViewModelClient { Genders = genders };
+            var viewModel = new UserFormViewModel { Genders = genders };
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.Claims.First().Value == EnumAccountCategory.ADM.ToString())
+                {
+                    var accountCategories = await _barberShopRepository.GetAccountCategories();
+                    viewModel.AccountCategories = accountCategories;
+                }
+            }
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult<Profile>> Register(UserFormViewModelClient obj)
+        public async Task<ActionResult<Profile>> Register(UserFormViewModel obj)
         {
             try
             {
@@ -90,7 +98,15 @@ namespace barber_shop.Controllers
                 TempData["ErrorRegister"] = ex.Message;
                 //é necessário enviar para a view novamente a lista dos genêros
                 var genders = await _barberShopRepository.GetGenders();
-                var viewModel = new UserFormViewModelClient { Genders = genders };
+                var viewModel = new UserFormViewModel { Genders = genders };
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (User.Claims.First().Value == EnumAccountCategory.ADM.ToString())
+                    {
+                        var accountCategories = await _barberShopRepository.GetAccountCategories();
+                        viewModel.AccountCategories = accountCategories;
+                    }
+                }
                 return View(viewModel);
             }
         }

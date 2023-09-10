@@ -27,33 +27,12 @@ namespace barber_shop.Controllers
             return View();
         }
 
-        public async Task<IActionResult> RegisterUser()
+        public async Task<IActionResult> Register()
         {
-            var genders = await _barberShopRepository.GetGenders();
-            var accountCategorys = await _barberShopRepository.GetAccountCategory();
-            var viewModel = new UserFormViewModelAdm { Genders = genders, AccountCategorys = accountCategorys };
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterUser(UserFormViewModelClient obj)
-        {
-            try
-            {
-                await _insertClient.Execute(obj);
-                return RedirectToAction(nameof(Index));
-            }
-            //tratando erro caso algum dado esteja inválido
-            catch (Exception ex)
-            {
-                TempData["ErrorRegister"] = ex.Message;
-                //é necessário enviar para a view novamente a lista dos genêros
-                var genders = await _barberShopRepository.GetGenders();
-                var accountCategorys = await _barberShopRepository.GetAccountCategory();
-                var viewModel = new UserFormViewModelAdm { Genders = genders, AccountCategorys = accountCategorys };
-                return View(viewModel);
-            }
+            //padronizando registro de um novo usuário
+            //quando o adm for registrar um usuário será redirecionado para a mesma página de cadastro que client
+            //mas com permissões diferentes (podendo escolher o perfil do usuário a ser cadastrado)
+            return RedirectToAction("Register", "Access");
         }
     }
 }
