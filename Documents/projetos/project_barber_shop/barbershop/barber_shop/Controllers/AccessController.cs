@@ -15,30 +15,21 @@ namespace barber_shop.Controllers
     {
         private readonly IInsertClient _insertClient;
         private readonly IBarberShopRepository _barberShopRepository;
-        private bool __notLoggedIn;
-        /* atributo que auxilia na view para mostrar botão de (Entrar ou Sair)
-            Está sempre retornando true, que significa que o usuário não fez login, na view estará mostrando o botão (Entrar).
-            Quando retornar false (no método POST Login) significa que o login foi feito pelo usuário.
-            Sendo assim, na view deixa de mostrar para o usuário o botão (Entrar), passará a mostrar o botão (Sair).
-        */
 
         public AccessController(
          IBarberShopRepository barberShopRepository,
          IInsertClient insertClient
          ){
-            __notLoggedIn = true;
             _barberShopRepository = barberShopRepository;
             _insertClient = insertClient;
         }
 
         public async Task<IActionResult> Login()
         {
-            TempData["logged"] = __notLoggedIn;
             if (CheckLoggedIn())
             {
                 return RedirectToAction("Index", "Home");
             }
-
             return View();
         }
 
@@ -69,15 +60,16 @@ namespace barber_shop.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentify), properties);
-            // enviar objeto para view
-            __notLoggedIn = false;
-            TempData["logged"] = __notLoggedIn;
+
+            if (claims.First().Value == EnumAccountCategory.ADM.ToString())
+            {
+                return RedirectToAction(nameof(Index), "Administrator");
+            }
             return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> Register()
         {
-            TempData["logged"] = __notLoggedIn;
             var genders = await _barberShopRepository.GetGenders();
             var viewModel = new UserFormView { Genders = genders };
             return View(viewModel);
@@ -87,7 +79,6 @@ namespace barber_shop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult<Profile>> Register(UserFormView obj)
         {
-            TempData["logged"] = __notLoggedIn;
             try
             {
                 await _insertClient.Execute(obj);
@@ -104,9 +95,9 @@ namespace barber_shop.Controllers
             }
         }
 
-        public bool CheckLoggedIn()
+        //verifica se usuário já está logado
+        private bool CheckLoggedIn()
         {
-            //verifica se usuário já está logado
             ClaimsPrincipal claimUser = HttpContext.User;
             if (claimUser.Identity.IsAuthenticated)
             {
