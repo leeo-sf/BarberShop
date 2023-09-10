@@ -1,7 +1,7 @@
-﻿@model barber_shop.Models.ViewModel.UserFormViewModelClient
+﻿@model barber_shop.Models.ViewModel.UserFormViewModelAdm
 
 @{
-    ViewData["Title"] = "Criar Conta";
+    ViewData["Title"] = "Cadastro de Usuário";
 }
 
 @if (TempData["ErrorRegister"] is not null)
@@ -14,7 +14,7 @@
 <div class="container-cadastro">
     <section class="container-registro mt-3">
         <header>Formulário de Registro</header>
-        <form class="form-register" asp-action="Register">
+        <form class="form-register" asp-action="RegisterUser">
             <div class="input-box">
                 <label asp-for="Client.Name"></label>
                 <input asp-for="Client.Name" placeholder="Entre com seu nome">
@@ -81,6 +81,13 @@
                 <label asp-for="Client.Profile.Password"></label>
                 <input asp-for="Client.Profile.Password">
                 <span asp-validation-for="Client.Profile.Password" class="text-danger"></span>
+            </div>
+
+            <div class="input-box">
+                <label asp-for="Client.Profile" class="control-label"></label>
+                <!--asp-items constroi uma caixa de seleção com base na lista informada-->
+                <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
+                <select asp-for="Client.Profile.CategoryId" asp-items="@(new SelectList(Model.AccountCategorys, "Id", "Description"))"></select>
             </div>
             <button>Submit</button>
         </form>

@@ -15,6 +15,7 @@ namespace barber_shop.Services
         Task<Profile> GetProfileEmail(string email);
         Task<Gender[]> GetGenders();
         Task<bool> ValidateEmailPassword(Profile obj);
+        Task<AccountCategory[]> GetAccountCategory();
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -91,6 +92,14 @@ namespace barber_shop.Services
             //VÊ se o nome da tabela está certo
             return await _context.Gender.FromSqlInterpolated(
             $@"SELECT * FROM db_barber_shop.Gender"
+            )
+                .ToArrayAsync();
+        }
+
+        public async Task<AccountCategory[]> GetAccountCategory()
+        {
+            return await _context.AccountCategory.FromSqlInterpolated(
+                $@"SELECT * FROM db_barber_shop.AccountCategory"
             )
                 .ToArrayAsync();
         }

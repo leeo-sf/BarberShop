@@ -7,7 +7,7 @@ namespace barber_shop.Commands
 {
     public interface IInsertClient
     {
-        Task Execute(UserFormView obj);
+        Task Execute(UserFormViewModelClient obj);
     }
 
     public class InsertClient : IInsertClient
@@ -21,7 +21,7 @@ namespace barber_shop.Commands
             _barberShopRepository = barberShopRepository;
         }
 
-        public async Task Execute(UserFormView obj)
+        public async Task Execute(UserFormViewModelClient obj)
         {
             var client = obj.Client;
 
@@ -36,7 +36,10 @@ namespace barber_shop.Commands
                 throw new Exception("CPF inválido.");
             }
 
-            obj.Client.Profile.CategoryId = (int)EnumAccountCategory.CLIENT;
+            if (obj.Client.Profile.CategoryId == 0)
+            {
+                obj.Client.Profile.CategoryId = (int)EnumAccountCategory.CLIENT;
+            }
             await _barberShopRepository.Insert(client);
         }
     }

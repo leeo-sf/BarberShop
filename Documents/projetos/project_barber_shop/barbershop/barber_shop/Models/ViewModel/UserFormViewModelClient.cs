@@ -1,8 +1,8 @@
 ﻿namespace barber_shop.Models.ViewModel
 {
-    public class UserFormView
+    public class UserFormViewModelClient
     {
-        public Client Client { get; set; }
+        public User Client { get; set; }
         public Gender[] Genders { get; set; }
     }
 }
