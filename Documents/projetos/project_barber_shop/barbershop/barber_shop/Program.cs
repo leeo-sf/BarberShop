@@ -2,7 +2,9 @@ using barber_shop.Commands;
 using barber_shop.Data;
 using barber_shop.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,9 @@ builder.Services.AddDbContext<Context>(options =>
 //classes de conexão com o banco
 builder.Services.AddScoped<IBarberShopRepository, BarberShopRepository>();
 builder.Services.AddScoped<IInsertClient, InsertClient>();
+builder.Services.AddScoped<IInsertService, InsertService>();
+builder.Services.AddScoped<IUpdateService, UpdateService>();
+builder.Services.AddScoped<IDeleteService, DeleteService>();
 builder.Services.AddScoped<BarberShopRepository>();
 
 
@@ -30,6 +35,16 @@ builder.Services.AddAuthentication(
     });
 
 var app = builder.Build();
+
+var enUS = new CultureInfo("en-US");
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(enUS),
+    SupportedCultures = new List<CultureInfo> { enUS },
+    SupportedUICultures = new List<CultureInfo> { enUS }
+};
+
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

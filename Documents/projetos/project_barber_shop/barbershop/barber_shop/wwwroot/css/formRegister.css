@@ -1,0 +1,76 @@
+﻿.container-cadastro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-registro {
+    position: relative;
+    max-width: 500px;
+    width: 100%;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+    .container-registro header {
+        font-size: 1.2rem;
+        color: #000;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .container-registro .form-register {
+        margin-top: 15px;
+    }
+
+.form-register .input-box {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.input-box label {
+    color: #000;
+}
+
+.form-register :where(.input-box input) {
+    position: relative;
+    height: 35px;
+    width: 100%;
+    outline: none;
+    font-size: 1rem;
+    color: #808080;
+    margin-top: 5px;
+    border: 1px solid #4F46E5;
+    border-radius: 6px;
+    padding: 0 15px;
+    background: #fff;
+}
+
+.input-box input:focus {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.form-register .column-register {
+    display: flex;
+    column-gap: 15px;
+}
+
+.form-register button {
+    height: 40px;
+    width: 100%;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #4F46E5;
+}
+
+    .form-register button:hover {
+        background: #EE3E34;
+    }

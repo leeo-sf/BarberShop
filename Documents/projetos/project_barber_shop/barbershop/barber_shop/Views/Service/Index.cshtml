@@ -1,0 +1,40 @@
+﻿<link rel="stylesheet" type="text/css" href="~/css/service/index.css" />
+@using barber_shop.Models.Enums;
+@model barber_shop.Models.Service[]
+
+@{
+    ViewData["Title"] = "Home Serviço";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Serviços</h1>
+</div>
+
+
+@foreach (var item in Model)
+{
+    <div class="container-service mt-3">
+        <div class="img-service">
+            <img src="#" alt="img-service" title="img-service">
+            <legend>@Html.DisplayFor(modelItem => item.Name)</legend>
+        </div> <hr>
+
+        <div class="text-service">
+            <h1>@Html.DisplayFor(modelItem => item.Name)</h1>
+
+            <p>
+                R$ @Html.DisplayFor(modelItem => item.Value)
+            </p>
+
+            <a class="link" href="#" target="blank"><p>Agendamento</p></a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.Claims.First().Value == EnumAccountCategory.ADM.ToString())
+                {
+                    <a class="link" asp-action="Edit" asp-route-id="@item.Id" target="blank"><p>Editar</p></a>
+                    <a class="link" asp-action="Delete" asp-route-id="@item.Id" target="blank"><p>Deletar</p></a>
+                }
+            }
+        </div>
+    </div>
+}

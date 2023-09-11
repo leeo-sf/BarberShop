@@ -19,7 +19,7 @@ namespace barber_shop.Models
         [Display(Name = "Senha")]
         public string Password { get; set; }
         [Display(Name = "Imagem")]
-        public byte[] Image { get; set; }
+        public byte[]? Image { get; set; }
 
         [Column("accountcategory_id")]
         public int CategoryId { get; set; }

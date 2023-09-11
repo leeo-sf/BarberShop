@@ -1,25 +1,25 @@
 ﻿using barber_shop.Commands;
+using barber_shop.Models;
 using barber_shop.Models.Enums;
 using barber_shop.Models.ViewModel;
 using barber_shop.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace barber_shop.Controllers
 {
-    [Authorize(Roles = "ADM")]
+    [Authorize(Roles = nameof(EnumAccountCategory.ADM))]
     public class AdministratorController : Controller
     {
         private readonly IBarberShopRepository _barberShopRepository;
-        private readonly IInsertClient _insertClient;
 
         public AdministratorController(
-            IBarberShopRepository barberShopRepository,
-            IInsertClient insertClient
+            IBarberShopRepository barberShopRepository
             )
         {
             _barberShopRepository = barberShopRepository;
-            _insertClient = insertClient;
         }
 
         public async Task<IActionResult> Index()

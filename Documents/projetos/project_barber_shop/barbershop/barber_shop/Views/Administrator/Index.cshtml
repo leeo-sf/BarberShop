@@ -1,4 +1,5 @@
-﻿@{
+﻿<script src="~/js/validator.js"></script>
+@{
     ViewData["Title"] = "Página do administrador";
 }
 
@@ -8,4 +9,14 @@
 
 <hr />
 
-<a asp-action="Register">Cadastrar Usuário</a>
+<select id="selectActionAdministrator" name="selectActionAdministrator">
+    <option value="" selected>Opções de Usuário</option>
+    <option onclick="redirecionarAdministrator('Access')" value="Register">Cadastrar Usuário</option>
+</select>
+
+
+<select id="selectActionService" name="selectActionService">
+    <option value="" selected>Opções de Serviços</option>
+    <option onclick="redirecionarService()" value="Service/Index">Serviços</option>
+    <option onclick="redirecionarService()" value="Service/Register">Criar Serviço</option>
+</select>

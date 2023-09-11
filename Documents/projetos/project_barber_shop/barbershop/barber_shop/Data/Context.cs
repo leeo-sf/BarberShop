@@ -14,5 +14,6 @@ namespace barber_shop.Data
         public DbSet<User> User { get; set; }
         public DbSet<Gender> Gender { get; set; }
         public DbSet<AccountCategory> AccountCategory { get; set; }
+        public DbSet<Service> Service { get; set; }
     }
 }
