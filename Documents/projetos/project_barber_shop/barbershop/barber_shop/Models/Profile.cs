@@ -18,8 +18,10 @@ namespace barber_shop.Models
         [StringLength(15, MinimumLength = 5, ErrorMessage = "O tamanho do {0} deve ser entre {2} e {1}")]
         [Display(Name = "Senha")]
         public string Password { get; set; }
+        [Display(Name = "Imagem")]
+        public byte[] Image { get; set; }
 
-        [Column("category_id")]
+        [Column("accountcategory_id")]
         public int CategoryId { get; set; }
 
         public AccountCategory Category { get; set; }

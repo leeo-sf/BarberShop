@@ -6,8 +6,10 @@ using barber_shop.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Web;
 
 namespace barber_shop.Controllers
 {
@@ -85,10 +87,17 @@ namespace barber_shop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult<Profile>> Register(UserFormViewModel obj)
+        public async Task<ActionResult<Profile>> Register(UserFormViewModel obj, IFormFile Image)
         {
             try
             {
+                if (Image is not null)
+                {
+                    MemoryStream target = new MemoryStream();
+                    Image.CopyToAsync(target);
+                    byte[] img = target.ToArray();
+                    obj.User.Profile.Image = img;
+                }
                 await _insertClient.Execute(obj);
                 return RedirectToAction("Login", "Access");
             }

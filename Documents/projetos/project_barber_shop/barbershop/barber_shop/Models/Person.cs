@@ -19,11 +19,11 @@ namespace barber_shop.Models
         [StringLength(11, ErrorMessage = "O {0} deve conter {1} caracteres")]
         [Display(Name = "CPF")]
         public string Cpf { get; set; }
-        [Column("id_gender")]
+        [Column("gender_id")]
         public int GenderId { get; set; }
         [Display(Name = "Genêro")]
         public Gender Gender { get; set; }
-        [Column("id_address")]
+        [Column("address_id")]
         public int AddressId { get; set; }
         public Address Address { get; set; }
         [Required]

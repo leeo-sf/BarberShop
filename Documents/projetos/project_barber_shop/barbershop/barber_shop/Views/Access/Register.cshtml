@@ -16,11 +16,16 @@
 <div class="container-cadastro">
     <section class="container-registro mt-3">
         <header>Formulário de Registro</header>
-        <form class="form-register" asp-action="Register">
+        <form class="form-register" asp-action="Register" enctype="multipart/form-data">
             <div class="input-box">
                 <label asp-for="User.Name"></label>
                 <input asp-for="User.Name" placeholder="Entre com seu nome">
                 <span asp-validation-for="User.Name" class="text-danger"></span>
+            </div>
+
+            <div class="mt-3">
+                <label asp-for="User.Profile.Image"></label> <br />
+                <input type="file" name="Image">
             </div>
 
             <div class="input-box">
