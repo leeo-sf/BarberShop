@@ -15,7 +15,11 @@
 {
     <div class="container-service mt-3">
         <div class="img-service">
-            <img src="#" alt="img-service" title="img-service">
+            @{
+                var base64 = Convert.ToBase64String(item.Image);
+                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            }
+            <img src="@imgSrc" alt="img-service" title="img-service" style="max-width:200px; max-height:200px;">
             <legend>@Html.DisplayFor(modelItem => item.Name)</legend>
         </div> <hr>
 
