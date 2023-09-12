@@ -9,7 +9,7 @@ namespace barber_shop.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 5, ErrorMessage = "O tamanho do {0} deve ser entre {2} e {1}")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "O tamanho do {0} deve ser entre {2} e {1}")]
         [Display(Name = "Logradouro")]
         public string PublicPlace { get; set; }
 
@@ -24,7 +24,7 @@ namespace barber_shop.Models
         public string Locality { get; set; }
 
         [Required]
-        [StringLength(8, ErrorMessage = "O tamanho do {0} deve ser entre {2} e {1}")]
+        [StringLength(8, ErrorMessage = "O {0} deve conter {1} caracteres")]
         [Display(Name = "CEP")]
         public string ZipCode { get; set; }
     }

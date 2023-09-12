@@ -8,9 +8,9 @@ namespace barber_shop.Models
         [JsonIgnore]
         public int Id { get; set; }
         [Required]
-        [StringLength(150, MinimumLength = 5, ErrorMessage = "O tamanho do {0} deve ser entre {2} e {1}")]
+        [StringLength(200, MinimumLength = 5, ErrorMessage = "O tamanho do {0} deve ser entre {2} e {1}")]
         [Display(Name = "Nome")]
-        public string Name { get; set; }
+        public string Description { get; set; }
         [Required]
         [Range(1.00, 999.99, ErrorMessage = "O {0} deve ser entre {2} e {1}")]
         [Display(Name = "Valor")]

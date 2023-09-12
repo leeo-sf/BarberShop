@@ -25,13 +25,5 @@ namespace barber_shop.Models
         public int CategoryId { get; set; }
 
         public AccountCategory Category { get; set; }
-
-        public Profile() { }
-
-        public Profile(string email, string password)
-        {
-            Email = email;
-            Password = password;
-        }
     }
 }

@@ -32,10 +32,10 @@ namespace barber_shop.Commands
                 throw new Exception("Email já cadastrado.");
             }
 
-            if (!obj.User.ValidateCpf())
-            {
-                throw new Exception("CPF inválido.");
-            }
+            //if (!obj.User.ValidateCpf())
+            //{
+            //    throw new Exception("CPF inválido.");
+            //}
 
             if (obj.User.Profile.CategoryId == 0)
             {

@@ -47,9 +47,12 @@ namespace barber_shop.Controllers
             }
 
             var user = await _barberShopRepository.GetProfileEmail(obj.Email);
+            //fazer relacionamento de profile com user (GetUserByEmail)
             List<Claim> claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Role, user.Category.Description.ToString().ToUpper())
+                new Claim(ClaimTypes.Role, user.Category.Description.ToString().ToUpper()),
+                //new Claim(ClaimTypes.Name, user.Email),
+                //enviar id do usuário logado
             };
 
             ClaimsIdentity claimsIdentify = new ClaimsIdentity(claims,
@@ -89,6 +92,16 @@ namespace barber_shop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult<Profile>> Register(UserFormViewModel obj, IFormFile Image)
         {
+            if (Image is not null)
+            {
+                MemoryStream target = new MemoryStream();
+                Image.CopyToAsync(target);
+                byte[] img = target.ToArray();
+                obj.User.Profile.Image = img;
+            }
+            await _insertClient.Execute(obj);
+            return RedirectToAction("Login", "Access");
+            /*
             try
             {
                 if (Image is not null)
@@ -118,6 +131,7 @@ namespace barber_shop.Controllers
                 }
                 return View(viewModel);
             }
+            */
         }
 
         //verifica se usuário já está logado

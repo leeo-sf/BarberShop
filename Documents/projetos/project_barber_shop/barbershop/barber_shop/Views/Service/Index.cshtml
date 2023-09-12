@@ -20,16 +20,19 @@
                 var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
             }
             <img src="@imgSrc" alt="img-service" title="img-service" style="max-width:200px; max-height:200px;">
-            <legend>@Html.DisplayFor(modelItem => item.Name)</legend>
+            <legend>@Html.DisplayFor(modelItem => item.Description)</legend>
         </div> <hr>
 
         <div class="text-service">
-            <h1>@Html.DisplayFor(modelItem => item.Name)</h1>
+            <h1>@Html.DisplayFor(modelItem => item.Description)</h1>
 
             <p>
                 R$ @Html.DisplayFor(modelItem => item.Value)
             </p>
 
+            <form asp-action="ToSchedule" asp-controller="Scheduling">
+                <button class="link-info">Agendar</button>
+            </form>
             <a class="link" href="#" target="blank"><p>Agendamento</p></a>
             @if (User.Identity.IsAuthenticated)
             {

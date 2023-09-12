@@ -4,13 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace barber_shop.Models
 {
-    public class Administrator : Person
+    public class Administrator : User
     {
-        [Column("profile_id")]
-        [JsonIgnore]
-        public int ProfileId { get; set; }
-
-        [Display(Name = "Perfil")]
-        public Profile Profile { get; set; }
     }
 }

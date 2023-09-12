@@ -18,6 +18,7 @@ namespace barber_shop.Services
         Task<AccountCategory[]> GetAccountCategories();
         Task<Service[]> GetServices();
         Task<Service> GetService(int id);
+        Task<User> GetUserByEmail(int email);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -117,6 +118,23 @@ namespace barber_shop.Services
         public async Task<Service> GetService(int id)
         {
             return await _context.Service.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<User> GetUserByEmail(int email)
+        {
+            return await _context.User
+                .Include(x => x.Profile)
+                .Where(x => x.Id == email)
+                .FirstOrDefaultAsync();
+            //return await _context.User.Include(x => x.Profile).Where(x => x.Profile.Email == email).FirstAsync();
+            //return await _context
+                //.User
+                //.Include(x => x.Profile)
+                //.Where(x => x.Profile.Email == email)
+                //.FirstOrDefaultAsync();
+
+
+                //.FirstOrDefaultAsync(x => x.Profile.Email == email);
         }
     }
 }
