@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/barber_shop.styles.css" asp-append-version="true" />
     <link rel="stylesheet" type="text/css" href="~/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/formLogin.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/formRegister.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/service/index.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body>
@@ -34,14 +37,15 @@
                                 <a class="nav-link active" aria-current="page" asp-controller="Service" asp-action="Index">Serviços</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" asp-controller="Scheduling" asp-action="Index">Agendamentos</a>
+                                <a class="nav-link active" aria-current="page" asp-controller="Scheduling" asp-action="ToSchedule">Agendamento</a>
                             </li>
+                            <!--Colocar dashbord do cliente para ter informações a conta dele-->
                             @if (User.Identity.IsAuthenticated)
                             {
-                                if (User.Claims.First().Value == EnumAccountCategory.ADM.ToString())
+                                if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" asp-controller="Administrator" asp-action="Index">Funções Administrativas</a>
+                                        <a class="nav-link active" aria-current="page" asp-controller="Administrator" asp-action="Index">Dashboard Admin</a>
                                     </li>
                                 }
                                 <li class="nav-item">

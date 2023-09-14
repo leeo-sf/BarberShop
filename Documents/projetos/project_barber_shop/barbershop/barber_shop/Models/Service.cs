@@ -10,7 +10,7 @@ namespace barber_shop.Models
         [Required]
         [StringLength(200, MinimumLength = 5, ErrorMessage = "O tamanho do {0} deve ser entre {2} e {1}")]
         [Display(Name = "Nome")]
-        public string Description { get; set; }
+        public string Name { get; set; }
         [Required]
         [Range(1.00, 999.99, ErrorMessage = "O {0} deve ser entre {2} e {1}")]
         [Display(Name = "Valor")]

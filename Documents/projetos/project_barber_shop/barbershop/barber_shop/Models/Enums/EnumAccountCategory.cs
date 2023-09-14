@@ -2,7 +2,7 @@
 {
     public enum EnumAccountCategory
     {
-        ADM = 1,
+        ADMINISTRATOR = 1,
         BARBER = 2,
         CLIENT = 3,
     }

@@ -34,13 +34,13 @@ namespace barber_shop.Controllers
             return View(services);
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADM))]
+        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         public async Task<IActionResult> Register()
         {
             return View();
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADM))]
+        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Service obj, IFormFile Image)
@@ -65,14 +65,14 @@ namespace barber_shop.Controllers
             }
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADM))]
+        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         public async Task<IActionResult> Edit(int id)
         {
             var service = await _barberShopRepository.GetService(id);
             return View(service);
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADM))]
+        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Service obj, IFormFile Image)
@@ -97,14 +97,14 @@ namespace barber_shop.Controllers
             }
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADM))]
+        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         public async Task<IActionResult> Delete(int? id)
         {
             var service = await _barberShopRepository.GetService(id.Value);
             return View(service);
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADM))]
+        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

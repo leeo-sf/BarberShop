@@ -1,6 +1,8 @@
 ﻿using barber_shop.Data;
 using barber_shop.Models;
+using barber_shop.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using NPOI.SS.Formula.Functions;
 using System.Linq.Expressions;
 
 namespace barber_shop.Services
@@ -18,7 +20,12 @@ namespace barber_shop.Services
         Task<AccountCategory[]> GetAccountCategories();
         Task<Service[]> GetServices();
         Task<Service> GetService(int id);
-        Task<User> GetUserByEmail(int email);
+        Task<User> GetUserByEmail(string email);
+        Task<SchedulingTimes[]> GetAllSchedulingTimes();
+        Task<User[]> GetAllBarbers();
+        Task<User> GetUserLoggedInByCpf(string cpf);
+        Task<SchedulingTimes> GetSchedulingTimeById(int id);
+        Task<Scheduling> GetBarberSchedulings(Scheduling obj);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -87,7 +94,8 @@ namespace barber_shop.Services
         public async Task<Profile> GetProfileEmail(string email)
         {
             //fazendo relacionamento com a tabela de category
-            return await _context.Profile.Include(x => x.Category).FirstOrDefaultAsync(x => x.Email == email);
+            return await this.GetOne<Profile>(x => x.Email == email);
+            //return await _context.Profile.Include(x => x.Category).FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task<Gender[]> GetGenders()
@@ -109,32 +117,71 @@ namespace barber_shop.Services
 
         public async Task<Service[]> GetServices()
         {
-            return await _context.Service.FromSqlInterpolated(
-                $@"SELECT * FROM db_barber_shop.service"
-            )
-                .ToArrayAsync();
+            return await this.GetAll<Service>();
         }
 
         public async Task<Service> GetService(int id)
         {
-            return await _context.Service.FirstOrDefaultAsync(x => x.Id == id);
+            return await this.GetOne<Service>(x => x.Id == id);
         }
 
-        public async Task<User> GetUserByEmail(int email)
+        public async Task<User> GetUserByEmail(string email)
         {
+            var userProfile = await this.GetProfileEmail(email);
+            return await _context.User
+                .Include(x => x.Profile) //fazendo relacionamento com a tabela de profile
+                .Include(x => x.Profile.Category) //azendo relacionamento com a tabela de accountcategory
+                .FirstOrDefaultAsync(x => x.ProfileId == userProfile.Id);
+
+            //NÃO TA FUNCIONANDO
+            //return await _context.Set<User>().FromSqlInterpolated(
+            //    $@"SELECT * FROM db_barber_shop.`user` as u 
+            //    INNER JOIN db_barber_shop.profile as p
+            //    ON u.profile_id = {email}"
+            //)
+            //    .AsNoTracking()
+            //    .SingleOrDefaultAsync();
+        }
+
+        public async Task<SchedulingTimes[]> GetAllSchedulingTimes()
+        {
+            return await this.GetAll<SchedulingTimes>();
+        }
+
+        public async Task<User[]> GetAllBarbers()
+        {
+            //precisa se relacionar com a tabela de profile
+            //a tabela de profile precisa se relacionar com a tabela accountcategory
+            //para saber e o usuário é barber
             return await _context.User
                 .Include(x => x.Profile)
-                .Where(x => x.Id == email)
+                .Include(x => x.Profile.Category)
+                .Where(x => x.Profile.Category.Description == nameof(EnumAccountCategory.BARBER))
+                .ToArrayAsync();
+        }
+
+        public async Task<User> GetUserLoggedInByCpf(string cpf)
+        {
+            //método que pegar o usuário logado pelo cpf
+            return await this.GetOne<User>(x => x.Cpf == cpf);
+        }
+
+        public async Task<SchedulingTimes> GetSchedulingTimeById(int id)
+        {
+            return await this.GetOne<SchedulingTimes>(x => x.Id == id);
+        }
+
+        public async Task<Scheduling> GetBarberSchedulings(Scheduling obj)
+        {
+            //método que auxilia na descoberta para saber se o berbeiro possuí agendamentos naquele dia e horário
+            return await _context.Scheduling
+                .Include(x => x.SchedulingTimes) //fazendo include com a tabela de horários
+                .Where(
+                x => x.BarberId == obj.BarberId &&
+                x.Date == obj.Date &&
+                x.SchedulingTimesId == obj.SchedulingTimesId
+                ) //quando a data for igual a data selecionada pelo usuário e o id do horário for igual ao id selecionado pelo usuário
                 .FirstOrDefaultAsync();
-            //return await _context.User.Include(x => x.Profile).Where(x => x.Profile.Email == email).FirstAsync();
-            //return await _context
-                //.User
-                //.Include(x => x.Profile)
-                //.Where(x => x.Profile.Email == email)
-                //.FirstOrDefaultAsync();
-
-
-                //.FirstOrDefaultAsync(x => x.Profile.Email == email);
         }
     }
 }

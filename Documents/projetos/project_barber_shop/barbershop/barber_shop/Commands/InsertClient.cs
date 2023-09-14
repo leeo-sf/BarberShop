@@ -3,6 +3,7 @@ using barber_shop.Models.Enums;
 using barber_shop.Models.ViewModel;
 using barber_shop.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace barber_shop.Commands
 {
@@ -32,16 +33,27 @@ namespace barber_shop.Commands
                 throw new Exception("Email já cadastrado.");
             }
 
-            //if (!obj.User.ValidateCpf())
-            //{
-            //    throw new Exception("CPF inválido.");
-            //}
+            if (!Person.ValidateCpf(obj.User.Cpf))
+            {
+                throw new Exception("CPF inválido.");
+            }
 
             if (obj.User.Profile.CategoryId == 0)
             {
                 obj.User.Profile.CategoryId = (int)EnumAccountCategory.CLIENT;
             }
-            await _barberShopRepository.Insert(client);
+            
+            try
+            {
+                await _barberShopRepository.Insert(client);
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.ToString().Contains("Duplicate"))
+                {
+                    throw new Exception("Alguma informação já está vinculada a uma conta.");
+                }
+            }
         }
     }
 }

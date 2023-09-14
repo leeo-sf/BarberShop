@@ -37,16 +37,16 @@ namespace barber_shop.Models
         public DateTime BirthDate { get; set; }
 
 
-        public bool ValidateCpf()
+        public static bool ValidateCpf(string cpf)
         {
             try
             {
-                if (Cpf.Length != 11 || AvoidSequence(Cpf))
+                if (cpf.Length != 11 || AvoidSequence(cpf))
                 {
                     return false;
                 }
 
-                string newCpf = Cpf.Substring(0, 9);
+                string newCpf = cpf.Substring(0, 9);
                 int total = 0;
                 int reverse = 10;
                 int sequence = 27;
@@ -77,7 +77,7 @@ namespace barber_shop.Models
                     sequence -= 1;
                 }
 
-                if (!(newCpf == Cpf))
+                if (!(newCpf == cpf))
                 {
                     return false;
                 }
@@ -91,7 +91,7 @@ namespace barber_shop.Models
             }
         }
 
-        private bool AvoidSequence(string cpf)
+        private static bool AvoidSequence(string cpf)
         {
             switch (cpf)
             {

@@ -1,5 +1,4 @@
-﻿<link rel="stylesheet" type="text/css" href="~/css/formRegister.css" />
-@model barber_shop.Models.Service
+﻿@model barber_shop.Models.Service
 
 @{
     ViewData["Title"] = "Criar Serviço";
@@ -17,9 +16,9 @@
         <header>Registro de Serviço</header>
         <form class="form-register" asp-action="Register" enctype="multipart/form-data">
             <div class="input-box">
-                <label asp-for="Description"></label>
-                <input asp-for="Description" placeholder="Digite o nome do serviço 'Barba'">
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Name"></label>
+                <input asp-for="Name" placeholder="Digite o nome do serviço 'Barba'">
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="input-box">

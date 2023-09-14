@@ -46,13 +46,11 @@ namespace barber_shop.Controllers
                 return View();
             }
 
-            var user = await _barberShopRepository.GetProfileEmail(obj.Email);
-            //fazer relacionamento de profile com user (GetUserByEmail)
+            var user = await _barberShopRepository.GetUserByEmail(obj.Email);
             List<Claim> claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Role, user.Category.Description.ToString().ToUpper()),
-                //new Claim(ClaimTypes.Name, user.Email),
-                //enviar id do usuário logado
+                new Claim(ClaimTypes.Role, user.Profile.Category.Description.ToString().ToUpper()),
+                new Claim(ClaimTypes.Name, user.Cpf),
             };
 
             ClaimsIdentity claimsIdentify = new ClaimsIdentity(claims,
@@ -66,7 +64,7 @@ namespace barber_shop.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentify), properties);
 
-            if (claims.First().Value == EnumAccountCategory.ADM.ToString())
+            if (claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
             {
                 return RedirectToAction(nameof(Index), "Administrator");
             }
@@ -79,7 +77,7 @@ namespace barber_shop.Controllers
             var viewModel = new UserFormViewModel { Genders = genders };
             if (User.Identity.IsAuthenticated)
             {
-                if (User.Claims.First().Value == EnumAccountCategory.ADM.ToString())
+                if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
                 {
                     var accountCategories = await _barberShopRepository.GetAccountCategories();
                     viewModel.AccountCategories = accountCategories;
@@ -92,16 +90,6 @@ namespace barber_shop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult<Profile>> Register(UserFormViewModel obj, IFormFile Image)
         {
-            if (Image is not null)
-            {
-                MemoryStream target = new MemoryStream();
-                Image.CopyToAsync(target);
-                byte[] img = target.ToArray();
-                obj.User.Profile.Image = img;
-            }
-            await _insertClient.Execute(obj);
-            return RedirectToAction("Login", "Access");
-            /*
             try
             {
                 if (Image is not null)
@@ -123,7 +111,7 @@ namespace barber_shop.Controllers
                 var viewModel = new UserFormViewModel { Genders = genders };
                 if (User.Identity.IsAuthenticated)
                 {
-                    if (User.Claims.First().Value == EnumAccountCategory.ADM.ToString())
+                    if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
                     {
                         var accountCategories = await _barberShopRepository.GetAccountCategories();
                         viewModel.AccountCategories = accountCategories;
@@ -131,7 +119,6 @@ namespace barber_shop.Controllers
                 }
                 return View(viewModel);
             }
-            */
         }
 
         //verifica se usuário já está logado

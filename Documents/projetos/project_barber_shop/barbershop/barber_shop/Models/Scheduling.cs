@@ -10,10 +10,8 @@ namespace barber_shop.Models
         public int Id { get; set; }
         [Column("client_id")]
         public int ClientId { get; set; }
-        public Client Client { get; set; }
         [Column("barber_id")]
         public int BarberId { get; set; }
-        public Barber Barber { get; set; }
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
@@ -21,6 +19,7 @@ namespace barber_shop.Models
         public DateTime Date { get; set; }
         [Column("schedulingtimes_id")]
         public int SchedulingTimesId { get; set; }
+        [Display(Name = "Horário do agendamento")]
         public SchedulingTimes SchedulingTimes { get; set; }
         [Column("service_id")]
         public int ServiceId { get; set; }

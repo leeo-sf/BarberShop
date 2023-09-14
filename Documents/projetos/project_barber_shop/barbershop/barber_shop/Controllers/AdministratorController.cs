@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace barber_shop.Controllers
 {
-    [Authorize(Roles = nameof(EnumAccountCategory.ADM))]
+    [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
     public class AdministratorController : Controller
     {
         private readonly IBarberShopRepository _barberShopRepository;

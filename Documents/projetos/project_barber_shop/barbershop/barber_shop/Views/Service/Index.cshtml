@@ -1,5 +1,4 @@
-﻿<link rel="stylesheet" type="text/css" href="~/css/service/index.css" />
-@using barber_shop.Models.Enums;
+﻿@using barber_shop.Models.Enums;
 @model barber_shop.Models.Service[]
 
 @{
@@ -8,8 +7,14 @@
 
 <div class="text-center">
     <h1 class="display-4">Serviços</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
+        {
+            <a asp-action="Register" class="btn btn-primary" id="btn-nenhum-cadastro">Create New</a>
+        }
+    }
 </div>
-
 
 @foreach (var item in Model)
 {
@@ -20,26 +25,23 @@
                 var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
             }
             <img src="@imgSrc" alt="img-service" title="img-service" style="max-width:200px; max-height:200px;">
-            <legend>@Html.DisplayFor(modelItem => item.Description)</legend>
+            <legend>@Html.DisplayFor(modelItem => item.Name)</legend>
         </div> <hr>
 
         <div class="text-service">
-            <h1>@Html.DisplayFor(modelItem => item.Description)</h1>
+            <h1>@Html.DisplayFor(modelItem => item.Name)</h1>
 
             <p>
                 R$ @Html.DisplayFor(modelItem => item.Value)
             </p>
 
-            <form asp-action="ToSchedule" asp-controller="Scheduling">
-                <button class="link-info">Agendar</button>
-            </form>
-            <a class="link" href="#" target="blank"><p>Agendamento</p></a>
+            <a class="btn btn-primary" asp-action="ToSchedule" asp-controller="Scheduling">Agendar</a>
             @if (User.Identity.IsAuthenticated)
             {
-                if (User.Claims.First().Value == EnumAccountCategory.ADM.ToString())
+                if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
                 {
-                    <a class="link" asp-action="Edit" asp-route-id="@item.Id" target="blank"><p>Editar</p></a>
-                    <a class="link" asp-action="Delete" asp-route-id="@item.Id" target="blank"><p>Deletar</p></a>
+                    <a class="link" asp-action="Edit" asp-route-id="@item.Id"><p>Editar</p></a>
+                    <a class="link" asp-action="Delete" asp-route-id="@item.Id"><p>Deletar</p></a>
                 }
             }
         </div>
