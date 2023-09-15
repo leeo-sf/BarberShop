@@ -21,10 +21,10 @@ namespace barber_shop.Services
         Task<Service[]> GetServices();
         Task<Service> GetService(int id);
         Task<User> GetUserByEmail(string email);
-        Task<SchedulingTimes[]> GetAllSchedulingTimes();
+        Task<SchedulingTime[]> GetAllSchedulingTimes();
         Task<User[]> GetAllBarbers();
         Task<User> GetUserLoggedInByCpf(string cpf);
-        Task<SchedulingTimes> GetSchedulingTimeById(int id);
+        Task<SchedulingTime> GetSchedulingTimeById(int id);
         Task<Scheduling> GetBarberSchedulings(Scheduling obj);
     }
 
@@ -102,7 +102,7 @@ namespace barber_shop.Services
         {
             //VÊ se o nome da tabela está certo
             return await _context.Gender.FromSqlInterpolated(
-            $@"SELECT * FROM db_barber_shop.Gender"
+            $@"SELECT * FROM sql11646521.GENDER"
             )
                 .ToArrayAsync();
         }
@@ -110,7 +110,7 @@ namespace barber_shop.Services
         public async Task<AccountCategory[]> GetAccountCategories()
         {
             return await _context.AccountCategory.FromSqlInterpolated(
-                $@"SELECT * FROM db_barber_shop.AccountCategory"
+                $@"SELECT * FROM sql11646521.ACCOUNTCATEGORY"
             )
                 .ToArrayAsync();
         }
@@ -143,9 +143,9 @@ namespace barber_shop.Services
             //    .SingleOrDefaultAsync();
         }
 
-        public async Task<SchedulingTimes[]> GetAllSchedulingTimes()
+        public async Task<SchedulingTime[]> GetAllSchedulingTimes()
         {
-            return await this.GetAll<SchedulingTimes>();
+            return await this.GetAll<SchedulingTime>();
         }
 
         public async Task<User[]> GetAllBarbers()
@@ -166,9 +166,9 @@ namespace barber_shop.Services
             return await this.GetOne<User>(x => x.Cpf == cpf);
         }
 
-        public async Task<SchedulingTimes> GetSchedulingTimeById(int id)
+        public async Task<SchedulingTime> GetSchedulingTimeById(int id)
         {
-            return await this.GetOne<SchedulingTimes>(x => x.Id == id);
+            return await this.GetOne<SchedulingTime>(x => x.Id == id);
         }
 
         public async Task<Scheduling> GetBarberSchedulings(Scheduling obj)

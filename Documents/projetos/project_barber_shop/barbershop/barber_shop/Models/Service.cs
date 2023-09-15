@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace barber_shop.Models
 {
+    [Table("SERVICE")]
     public class Service
     {
         [JsonIgnore]

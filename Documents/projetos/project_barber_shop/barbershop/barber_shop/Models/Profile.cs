@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace barber_shop.Models
 {
+    [Table("PROFILE")]
     public class Profile
     {
         [JsonIgnore]

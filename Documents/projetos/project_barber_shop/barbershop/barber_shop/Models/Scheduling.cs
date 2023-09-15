@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace barber_shop.Models
 {
+    [Table("SCHEDULING")]
     public class Scheduling
     {
         [JsonIgnore]
@@ -20,7 +21,7 @@ namespace barber_shop.Models
         [Column("schedulingtimes_id")]
         public int SchedulingTimesId { get; set; }
         [Display(Name = "Horário do agendamento")]
-        public SchedulingTimes SchedulingTimes { get; set; }
+        public SchedulingTime SchedulingTimes { get; set; }
         [Column("service_id")]
         public int ServiceId { get; set; }
         public Service Service { get; set; }

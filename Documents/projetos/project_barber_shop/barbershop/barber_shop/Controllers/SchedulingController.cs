@@ -35,7 +35,6 @@ namespace barber_shop.Controllers
             return View();
         }
 
-        //método agendar (recebe um service caso a pessoa clique no serviço no botão agendar) (caso não clique o serviço irá vir vazio)
         public async Task<IActionResult> ToSchedule()
         {
             var schedulingTimes = await _barberShopRepository.GetAllSchedulingTimes();

@@ -1,5 +1,4 @@
 ﻿using barber_shop.Models;
-using barber_shop.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace barber_shop.Data
@@ -16,6 +15,6 @@ namespace barber_shop.Data
         public DbSet<AccountCategory> AccountCategory { get; set; }
         public DbSet<Service> Service { get; set; }
         public DbSet<Scheduling> Scheduling { get; set; }
-        public DbSet<SchedulingTimes> SchedulingTimes { get; set; }
+        public DbSet<SchedulingTime> SchedulingTimes { get; set; }
     }
 }

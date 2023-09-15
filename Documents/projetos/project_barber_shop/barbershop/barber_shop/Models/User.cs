@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace barber_shop.Models
 {
+    [Table("USER")]
     public class User : Person
     {
         [Column("profile_id")]
