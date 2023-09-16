@@ -11,15 +11,18 @@ namespace barber_shop.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IBarberShopRepository _barberShopRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IBarberShopRepository barberShopRepository)
         {
             _logger = logger;
+            _barberShopRepository = barberShopRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View();
+            var services = await _barberShopRepository.GetServices();
+            return View(services);
         }
     }
 }

@@ -28,12 +28,6 @@ namespace barber_shop.Controllers
             _deleteService = deleteService;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            var services = await _barberShopRepository.GetServices();
-            return View(services);
-        }
-
         [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         public async Task<IActionResult> Register()
         {
