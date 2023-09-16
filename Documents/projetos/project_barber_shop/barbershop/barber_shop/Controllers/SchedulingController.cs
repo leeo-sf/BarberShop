@@ -23,16 +23,11 @@ namespace barber_shop.Controllers
             _insertScheduling = insertScheduling;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
-        public async Task<IActionResult> WeeklyScheduling()
+        public async Task<IActionResult> Index()
         {
-            //lista todos agendamentos da semana ou mês (definir)
-            return View();
+            var schedulings = await _barberShopRepository.GetAllSchedulings();
+            return View(schedulings);
         }
 
         public async Task<IActionResult> ToSchedule()

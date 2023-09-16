@@ -1,6 +1,8 @@
 ﻿using barber_shop.Data;
 using barber_shop.Models;
 using barber_shop.Models.Enums;
+using barber_shop.Models.ViewModel;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NPOI.SS.Formula.Functions;
 using System.Linq.Expressions;
@@ -26,6 +28,7 @@ namespace barber_shop.Services
         Task<User> GetUserLoggedInByCpf(string cpf);
         Task<SchedulingTime> GetSchedulingTimeById(int id);
         Task<Scheduling> GetBarberSchedulings(Scheduling obj);
+        Task<Scheduling[]> GetAllSchedulings();
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -182,6 +185,17 @@ namespace barber_shop.Services
                 x.SchedulingTimesId == obj.SchedulingTimesId
                 ) //quando a data for igual a data selecionada pelo usuário e o id do horário for igual ao id selecionado pelo usuário
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<Scheduling[]> GetAllSchedulings()
+        {
+            //fazer relacionamento entre tabelas
+            return await _context.Scheduling
+                .Include(x => x.Client)
+                .Include(x => x.Barber)
+                .Include(x => x.SchedulingTimes)
+                .Include(x => x.Service)
+                .ToArrayAsync();
         }
     }
 }

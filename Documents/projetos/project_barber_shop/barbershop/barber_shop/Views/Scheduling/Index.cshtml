@@ -1,7 +1,74 @@
-﻿@{
-    ViewData["Title"] = "Home Agendamento";
+﻿@model barber_shop.Models.Scheduling[];
+
+@{
+    ViewData["Title"] = "Agendamentos";
 }
 
 <div class="text-center">
     <h1 class="display-4">Agendamento</h1>
 </div>
+
+
+@if (Model.Count() == 0)
+{
+    <div class="nenhum-cadastro">
+        <h4 id="msg-nenhum-cadastro">Nenhuma agendamento</h4>
+    </div>
+}
+else
+{
+    <!--incluir pesquisar datas e gerar relatórios-->
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr class="success">
+                <th>
+                    Cliente
+                </th>
+                <th>
+                    Barberiro
+                </th>
+                <th>
+                    Data
+                </th>
+                <th>
+                    Horário
+                </th>
+                <th>
+                    Serviço
+                </th>
+                <th>
+                    Valor
+                </th>
+                <th>
+                    Ação
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Client.Name
+                    </td>
+                    <td>
+                        @item.Barber.Name
+                    </td>
+                    <td>
+                        @item.Date.ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @item.SchedulingTimes.Description
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Service.Name)
+                    </td>
+                    <td>
+                        R$@Html.DisplayFor(modelItem => item.Service.Value)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

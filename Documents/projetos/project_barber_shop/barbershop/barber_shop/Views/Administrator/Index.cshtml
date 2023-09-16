@@ -9,14 +9,21 @@
 
 <hr />
 
+<p>Alguns não ta funcionando</p>
 <select id="selectActionAdministrator" name="selectActionAdministrator">
     <option value="" selected>Opções de Usuário</option>
-    <option onclick="redirecionarAdministrator('Access')" value="Register">Cadastrar Usuário</option>
+    <option onclick="redirecionarAdministrator()" value="Access/Register">Cadastrar Usuário</option>
 </select>
 
 
 <select id="selectActionService" name="selectActionService">
     <option value="" selected>Opções de Serviços</option>
-    <option onclick="redirecionarService()" value="Service/Index">Serviços</option>
+    <option onclick="redirecionarService()" value="Home/Index">Serviços</option>
     <option onclick="redirecionarService()" value="Service/Register">Criar Serviço</option>
+</select>
+
+<select id="selectActionScheduling" name="selectActionScheduling">
+    <option value="" selected>Opções de Agendamento</option>
+    <option onclick="redirecionarScheduling()" value="Scheduling/Index">Agendamentos</option>
+    <option onclick="redirecionarScheduling()" value="Scheduling/ToSchedule">Agendar</option>
 </select>

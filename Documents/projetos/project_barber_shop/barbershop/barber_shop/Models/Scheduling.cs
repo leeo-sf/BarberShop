@@ -11,8 +11,10 @@ namespace barber_shop.Models
         public int Id { get; set; }
         [Column("client_id")]
         public int ClientId { get; set; }
+        public User Client { get; set; }
         [Column("barber_id")]
         public int BarberId { get; set; }
+        public User Barber { get; set; }
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
