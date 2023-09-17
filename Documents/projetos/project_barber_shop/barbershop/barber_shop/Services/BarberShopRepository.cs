@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NPOI.SS.Formula.Functions;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 
 namespace barber_shop.Services
 {
@@ -29,6 +30,8 @@ namespace barber_shop.Services
         Task<SchedulingTime> GetSchedulingTimeById(int id);
         Task<Scheduling> GetBarberSchedulings(Scheduling obj);
         Task<Scheduling[]> GetAllSchedulings();
+        Task<Scheduling[]> GetUserSchedules(int idUser);
+        Task<Scheduling[]> GetBarberSchedules(int idBarber);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -195,6 +198,28 @@ namespace barber_shop.Services
                 .Include(x => x.Barber)
                 .Include(x => x.SchedulingTimes)
                 .Include(x => x.Service)
+                .ToArrayAsync();
+        }
+
+        public async Task<Scheduling[]> GetUserSchedules(int idUser)
+        {
+            return await _context.Scheduling
+                .Include(x => x.Client)
+                .Include(x => x.Barber)
+                .Include(x => x.Service)
+                .Include(x => x.SchedulingTimes)
+                .Where(x => x.ClientId == idUser)
+                .ToArrayAsync();
+        }
+
+        public async Task<Scheduling[]> GetBarberSchedules(int idBarber)
+        {
+            return await _context.Scheduling
+                .Include(x => x.Client)
+                .Include(x => x.Barber)
+                .Include(x => x.Service)
+                .Include(x => x.SchedulingTimes)
+                .Where(x => x.BarberId == idBarber)
                 .ToArrayAsync();
         }
     }
