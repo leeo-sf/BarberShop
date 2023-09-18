@@ -7,6 +7,7 @@
 <div class="text-center">
     <h1 class="display-4">Bem vindo usuário</h1>
 </div>
+<title>oi</title>
 
 <hr />
 
@@ -30,11 +31,12 @@
                 var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
             }
             <img src="@imgSrc" alt="img-service" title="img-service" style="max-width:200px; max-height:200px;">
-            <legend>@Html.DisplayFor(modelItem => item.Name)</legend>
+
         </div> <hr>
 
         <div class="text-service">
-            <h1>@Html.DisplayFor(modelItem => item.Name)</h1>
+            <h1>@item.Name</h1>
+            <h1>a</h1>
 
             <p>
                 R$ @Html.DisplayFor(modelItem => item.Value)
