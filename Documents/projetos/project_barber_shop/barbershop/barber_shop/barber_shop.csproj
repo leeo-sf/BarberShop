@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\alert.js" />
     <Content Remove="wwwroot\js\validator.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\alert.js" />
     <_ContentIncludedByDefault Remove="wwwroot\js\validator.js" />
   </ItemGroup>
 
@@ -30,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\alert.js" />
     <None Include="wwwroot\js\validator.js" />
   </ItemGroup>
 

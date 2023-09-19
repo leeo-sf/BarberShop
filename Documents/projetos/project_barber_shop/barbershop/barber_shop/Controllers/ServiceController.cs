@@ -92,13 +92,6 @@ namespace barber_shop.Controllers
         }
 
         [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            var service = await _barberShopRepository.GetService(id.Value);
-            return View(service);
-        }
-
-        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

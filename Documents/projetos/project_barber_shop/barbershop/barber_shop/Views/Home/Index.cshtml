@@ -1,4 +1,6 @@
 ﻿<link rel="stylesheet" type="text/css" href="~/css/service/card.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 @using barber_shop.Models.Enums;
 @model barber_shop.Models.Service[];
 @{
@@ -22,13 +24,33 @@
 <hr />
 
 <div class="text-center">
-    <h1 class="display-4">Bem vindo usuário</h1>
+    <h1 class="display-4">Bem Vindo Usuário</h1>
 </div>
 
 <hr />
 
+<div class="imgqmsomos">
+    <img src="~/imgs/pexels-caleb-oquendo-3162022 (3).jpg" />
+</div>
+
+<hr />
+
+<h1>
+    Quem somos?
+</h1>
+
+<p>
+    Quem Somos?
+
+    Somos a BarberShop, o seu destino definitivo para cuidados masculinos de alta qualidade. Nossa equipe de profissionais experientes é apaixonada por realçar a sua beleza e confiança. Oferecemos uma variedade de serviços, incluindo cortes de cabelo, barbas precisas, combos de corte + barba, luzes para um toque de estilo e cuidados especializados com sobrancelhas. Na BarberShop, seu visual é nossa prioridade, e estamos comprometidos em oferecer um serviço excepcional a cada visita.
+
+    Venha experimentar o que faz da BarberShop a escolha preferida de homens que valorizam a qualidade e o estilo. Seu próximo look está a apenas uma visita de distância.
+
+    BarberShop - Estilo e Confiabilidade, em Cada Serviço.
+</p>
+
 <div class="text-center">
-    <h1 class="display-4" id="serv">Serviços</h1>
+    <h1 class="display-4" id="serv">Serviços</h1><!--ID SERV para tela ir até serviços-->
     <hr />
     @if (User.Identity.IsAuthenticated)
     {
@@ -41,7 +63,7 @@
 
 @foreach (var item in Model)
 {
-    <div class="card" style="display: inline-block;  margin: 69px;">
+    <div class="card" style="display: inline-block;  margin: 99px; justify-content:center">
         <div class="card-img">
             @{
                 var base64 = Convert.ToBase64String(item.Image);
@@ -59,17 +81,55 @@
             </button>
 
         </div>
-        
+
         @if (User.Identity.IsAuthenticated)
         {
             if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
             {
                 <div class="btnadm">
                     <a asp-action="Edit" asp-controller="Service" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
-                    <a asp-action="Delete" asp-controller="Service" asp-route-id="@item.Id" class="btn btn-danger">Deletar</a>
+                    @*                     <button asp-action="Delete" asp-controller="Service" asp-route-id="@item.Id" type="submit" class="btn btn-danger" onclick="Confirmar()">Deletar</button>
+        *@
+                    <form asp-action="Delete" id="type" asp-controller="Service" method="post" asp-route-id="@item.Id">
+                        <button type="button" class="btn btn-danger" onclick="Confirmar()">
+                            Delete
+                        </button>
+                    </form>
+
                 </div>
             }
         }
-
     </div>
 }
+<script>
+    function Confirmar() {
+        if (confirm("Deseja deletar?") == true) {
+            console.log("deletar");
+            var teste = document.getElementById('type');
+            teste.submit();
+            return true;
+        } else {
+            console.log("não deletar");
+            return false;
+        }
+    }
+    function confirmDelete(serviceId) {
+        Swal.fire({
+            title: 'Você tem certeza que quer deletar este serviço?',
+            text: "Você não vai conseguir reverter isso!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, deletar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar uma solicitação POST para a ação "Delete" do controlador
+                $.post(`/Service/Delete/${serviceId}`, function (data) {
+                    // Lógica de tratamento de sucesso ou erro aqui
+                    // Você pode redirecionar para outra página ou atualizar a exibição conforme necessário.
+                });
+            }
+        });
+    }
+</script>

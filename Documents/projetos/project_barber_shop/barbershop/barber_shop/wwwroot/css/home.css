@@ -1,3 +1,6 @@
-﻿body {
-
+﻿.imgqmsomos {
+    display: inline-block; /* Use um layout flex para centralizar vertical e horizontalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    height: 10px;
 }
