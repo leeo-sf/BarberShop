@@ -21,6 +21,7 @@ builder.Services.AddScoped<IInsertService, InsertService>();
 builder.Services.AddScoped<IUpdateService, UpdateService>();
 builder.Services.AddScoped<IDeleteService, DeleteService>();
 builder.Services.AddScoped<IInsertScheduling, InsertScheduling>();
+builder.Services.AddScoped<IGenerateReport, GenerateReport>();
 builder.Services.AddScoped<BarberShopRepository>();
 
 

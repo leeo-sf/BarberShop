@@ -13,14 +13,17 @@ namespace barber_shop.Controllers
     {
         private readonly IBarberShopRepository _barberShopRepository;
         private readonly IInsertScheduling _insertScheduling;
+        private readonly IGenerateReport _generateReport;
 
         public SchedulingController(
             IBarberShopRepository barberShopRepository,
-            IInsertScheduling insertScheduling
+            IInsertScheduling insertScheduling,
+            IGenerateReport generateReport
             )
         {
             _barberShopRepository = barberShopRepository;
             _insertScheduling = insertScheduling;
+            _generateReport = generateReport;
         }
 
         [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
@@ -58,6 +61,16 @@ namespace barber_shop.Controllers
                 SchedulingFormViewModel viewModel = new SchedulingFormViewModel { Services = services, Barbers = barbers, SchedulingTimes = schedulingTimes };
                 return View(viewModel);
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Scheduling[]>> GenerateReport(
+          DateTimeOffset mindate,
+          DateTimeOffset maxdate
+        )
+        {
+            await _generateReport.Execute(mindate, maxdate);
+            return View();
         }
     }
 }
