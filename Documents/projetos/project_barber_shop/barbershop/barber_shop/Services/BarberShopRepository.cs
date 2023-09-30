@@ -108,7 +108,7 @@ namespace barber_shop.Services
         {
             //VÊ se o nome da tabela está certo
             return await _context.Gender.FromSqlInterpolated(
-            $@"SELECT * FROM sql11646521.GENDER"
+                $@"SELECT * FROM GENDER"
             )
                 .ToArrayAsync();
         }
@@ -116,7 +116,7 @@ namespace barber_shop.Services
         public async Task<AccountCategory[]> GetAccountCategories()
         {
             return await _context.AccountCategory.FromSqlInterpolated(
-                $@"SELECT * FROM sql11646521.ACCOUNTCATEGORY"
+                $@"SELECT * FROM ACCOUNTCATEGORY"
             )
                 .ToArrayAsync();
         }
