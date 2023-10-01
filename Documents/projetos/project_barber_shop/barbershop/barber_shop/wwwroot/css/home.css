@@ -1,0 +1,90 @@
+﻿.qmsomos{
+    position:relative;
+}
+
+.imgqmsomos {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px; /* Ajuste a altura mínima conforme necessário */
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5); /* Adicione a sombra aqui */
+}
+
+
+.center-screen {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh; /* Isso define a altura mínima para cobrir a tela inteira */
+    margin-left: 550px;
+}
+
+.btnadm a,
+.btnadm form {
+    display: inline-block;
+}
+
+.containerqmsomos {
+    font-family: sans-serif;
+    position: absolute; /* Posição absoluta para sobrepor .imgqmsomos */
+    margin-top: 150px; /* Metade da altura do .container para que fique metade em cima */
+    left: 50%; /* Posiciona o .container no meio horizontalmente */
+    transform: translateX(-50%); /* Corrige o deslocamento horizontal */
+    z-index: 2; /* Z-index maior para que fique sobre .imgqmsomos */
+    padding-right: 300px;
+}
+
+    .containerqmsomos .boxqmsomos {
+        width: 490px;
+        height: 750px;
+        padding: 1rem;
+        background-color: darkslategray;
+        border-radius: 10px;
+        transition: all ease .3s;
+        color:aliceblue;
+    }
+
+    .containerqmsomos .boxqmsomos {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size:17px;
+    }
+
+        .containerqmsomos .boxqmsomos .titleqmsomos {
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: .1em;
+            text-align:center;
+        }
+
+        .containerqmsomos .boxqmsomos .divqmsomos{
+            display: block;
+            margin-bottom: .5rem;
+        }
+
+        .containerqmsomos .boxqmsomos .divqmsomos p {
+            margin: 0;
+            font-weight: 300;
+            letter-spacing: .1em;
+            text-align:justify;
+        }
+
+        .containerqmsomos .boxqmsomos .divqmsomos .bqmsomos {
+            margin: 0;
+            font-weight: 300;
+            letter-spacing: .1em;
+            text-align:center;
+
+        }
+
+        .containerqmsomos .boxqmsomos .divqmsomos .titleqmsomos {
+            font-size: .7rem;
+            font-weight: 300;
+        }
+
+            .containerqmsomos .boxqmsomos .divqmsomos span:nth-child(3) {
+                font-weight: 500;
+                margin-right: .2rem;
+            }
+

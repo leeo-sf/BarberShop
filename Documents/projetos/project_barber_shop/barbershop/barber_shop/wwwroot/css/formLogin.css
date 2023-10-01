@@ -2,20 +2,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 80vh;
+    padding-bottom:320px;
+    padding-top: 370px;
 }
 
 .form-login {
     background-color: #fff;
     display: block;
-    padding: 1rem;
-    max-width: 350px;
+    padding: 4rem;
+    max-width: 410px;
     border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 40px lightgray;
 }
 
 .form-title-login {
-    font-size: 1.25rem;
+    font-size: 25px;
     line-height: 1.75rem;
     font-weight: 600;
     text-align: center;
@@ -24,6 +26,7 @@
 
 .input-container-login {
     position: relative;
+    width:300px;
 }
 
     .input-container-login input, .form-login button {
@@ -36,7 +39,7 @@
         background-color: #fff;
         padding: 1rem;
         padding-right: 3rem;
-        font-size: 0.875rem;
+        font-size: 18px;
         line-height: 1.25rem;
         width: 300px;
         border-radius: 0.5rem;
@@ -78,11 +81,12 @@
 
 .signup-link-login {
     color: #6B7280;
-    font-size: 0.875rem;
+    font-size: 15px;
     line-height: 1.25rem;
     text-align: center;
 }
 
     .signup-link-login a {
-        text-decoration: underline;
+        text-decoration: none;
+        font-weight: bold;
     }

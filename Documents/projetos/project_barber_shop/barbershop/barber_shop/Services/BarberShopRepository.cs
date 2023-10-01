@@ -32,6 +32,7 @@ namespace barber_shop.Services
         Task<Scheduling[]> GetAllSchedulings();
         Task<Scheduling[]> GetUserSchedules(int idUser);
         Task<Scheduling[]> GetBarberSchedules(int idBarber);
+        Task<Scheduling[]> GetAllSchedulingsReport(DateTimeOffset createdFrom, DateTimeOffset createdUntil);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -108,7 +109,7 @@ namespace barber_shop.Services
         {
             //VÊ se o nome da tabela está certo
             return await _context.Gender.FromSqlInterpolated(
-            $@"SELECT * FROM sql11646521.GENDER"
+                $@"SELECT * FROM GENDER"
             )
                 .ToArrayAsync();
         }
@@ -116,7 +117,7 @@ namespace barber_shop.Services
         public async Task<AccountCategory[]> GetAccountCategories()
         {
             return await _context.AccountCategory.FromSqlInterpolated(
-                $@"SELECT * FROM sql11646521.ACCOUNTCATEGORY"
+                $@"SELECT * FROM ACCOUNTCATEGORY"
             )
                 .ToArrayAsync();
         }
@@ -199,6 +200,21 @@ namespace barber_shop.Services
                 .Include(x => x.SchedulingTimes)
                 .Include(x => x.Service)
                 .ToArrayAsync();
+        }
+
+        public async Task<Scheduling[]> GetAllSchedulingsReport(DateTimeOffset createdFrom, DateTimeOffset createdUntil)
+        {
+            var utcCreatedFrom = createdFrom.UtcDateTime;
+            var utcCreatedUntil = createdUntil.UtcDateTime;
+
+            return await _context.Scheduling
+             .Include(x => x.Client)
+             .Include(x => x.Barber)
+             .Include(x => x.SchedulingTimes)
+             .Include(x => x.Service)
+             .Where(x =>
+              x.Date >= utcCreatedFrom && x.Date <= utcCreatedUntil)
+             .ToArrayAsync();
         }
 
         public async Task<Scheduling[]> GetUserSchedules(int idUser)

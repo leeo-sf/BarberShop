@@ -1,9 +1,13 @@
 using barber_shop.Commands;
 using barber_shop.Data;
+using barber_shop.Integration;
+using barber_shop.Integration.Interfces;
+using barber_shop.Integration.Refit;
 using barber_shop.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Refit;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +25,9 @@ builder.Services.AddScoped<IInsertService, InsertService>();
 builder.Services.AddScoped<IUpdateService, UpdateService>();
 builder.Services.AddScoped<IDeleteService, DeleteService>();
 builder.Services.AddScoped<IInsertScheduling, InsertScheduling>();
+builder.Services.AddScoped<IGenerateReport, GenerateReport>();
 builder.Services.AddScoped<BarberShopRepository>();
+builder.Services.AddScoped<IViaCepIntegration, ViaCepIntegration>();
 
 
 // Add services to the container.
@@ -34,6 +40,10 @@ builder.Services.AddAuthentication(
         options.LoginPath = "/Access/Login";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     });
+
+builder.Services.AddRefitClient<IViaCepIntegrationRefit>().ConfigureHttpClient(x =>
+    x.BaseAddress = new Uri("https://viacep.com.br")
+    );
 
 var app = builder.Build();
 

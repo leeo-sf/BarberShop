@@ -9,6 +9,8 @@
     <h1 class="display-4">Realizar Agendamento</h1>
 </div>
 
+<hr />
+
 @if (TempData["ErrorScheduling"] is not null)
 {
     <div class="alert alert-danger alert-dismissible fade show mt-2 container-cadastro" id="alert-register" role="alert" heigth="100px">
@@ -30,17 +32,17 @@
                 <label asp-for="Scheduling.SchedulingTimes" class="control-label"></label>
                 <!--asp-items constroi uma caixa de seleção com base na lista informada-->
                 <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
-                <select asp-for="Scheduling.SchedulingTimesId" asp-items="@(new SelectList(Model.SchedulingTimes, "Id", "Description"))"></select>
+                <select class = "custom-select" asp-for="Scheduling.SchedulingTimesId" asp-items="@(new SelectList(Model.SchedulingTimes, "Id", "Description"))"></select>
             </div>
 
             <div class="input-box">
                 <label class="control-label">Barbeiro</label>
-                <select asp-for="Scheduling.BarberId" asp-items="@(new SelectList(Model.Barbers, "Id", "Name"))"></select>
+                <select class = "custom-select1" asp-for="Scheduling.BarberId" asp-items="@(new SelectList(Model.Barbers, "Id", "Name"))"></select>
             </div>
 
             <div class="input-box">
                 <label class="control-label">Serviço</label>
-                <select asp-for="Scheduling.ServiceId" asp-items="@(new SelectList(Model.Services, "Id", "Name"))"></select>
+                <select class="custom-select2" asp-for="Scheduling.ServiceId" asp-items="@(new SelectList(Model.Services, "Id", "Name"))"></select>
             </div>
 
             @if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR) || User.Claims.First().Value == nameof(EnumAccountCategory.BARBER))

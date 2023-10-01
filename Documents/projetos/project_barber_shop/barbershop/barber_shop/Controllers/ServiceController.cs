@@ -50,7 +50,7 @@ namespace barber_shop.Controllers
                 byte[] img = target.ToArray();
                 obj.Image = img;
                 await _insertService.Execute(obj);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
@@ -82,20 +82,13 @@ namespace barber_shop.Controllers
                 byte[] img = target.ToArray();
                 obj.Image = img;
                 await _updateService.Execute(obj);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
                 TempData["ErrorRegister"] = ex.Message;
                 return View();
             }
-        }
-
-        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            var service = await _barberShopRepository.GetService(id.Value);
-            return View(service);
         }
 
         [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
@@ -106,12 +99,13 @@ namespace barber_shop.Controllers
             try
             {
                 await _deleteService.Execute(id);
-                return RedirectToAction(nameof(Index));
+                TempData["SuccessDelete"] = "Serviço Deletado";
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
                 TempData["ErrorDelete"] = ex.Message;
-                return View();
+                return RedirectToAction("Index", "Home");
             }
         }
     }
