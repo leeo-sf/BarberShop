@@ -26,7 +26,7 @@ namespace barber_shop.Models
         public string Locality { get; set; }
 
         [Required]
-        [StringLength(8, ErrorMessage = "O {0} deve conter {1} caracteres")]
+        [StringLength(8, MinimumLength = 7, ErrorMessage = "Preencha o {0} corretamente")]
         [Display(Name = "CEP")]
         public string ZipCode { get; set; }
     }

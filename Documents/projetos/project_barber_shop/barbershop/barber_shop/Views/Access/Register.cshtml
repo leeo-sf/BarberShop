@@ -30,7 +30,7 @@
 
             <div class="input-box">
                 <label asp-for="User.Cpf"></label>
-                <input asp-for="User.Cpf" placeholder="Entre com seu CPF" type="text">
+                <input id="cpf" asp-for="User.Cpf" placeholder="Entre com seu CPF" type="text">
                 <span asp-validation-for="User.Cpf" class="text-danger"></span>
             </div>
 
@@ -102,10 +102,12 @@
                     </div>
                 }
             }
-            <button>Submit</button>
+            <button>Cadastrar-se</button>
         </form>
     </section>
 </div>
+
+<script src="~/js/register.js"></script>
 
 @section Scripts{
     @{
