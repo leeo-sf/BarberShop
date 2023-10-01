@@ -41,28 +41,34 @@
                 <select asp-for="User.GenderId" asp-items="@(new SelectList(Model.Genders, "Id", "Description"))"></select>
             </div>
 
+            <div class="column-register">
+                <div class="input-box">
+                    <label asp-for="User.Address.ZipCode"></label>
+                    <input id="zipCode" asp-for="User.Address.ZipCode" placeholder="Entre com seu CEP">
+                </div>
+                <div class="input-box">
+                    <label></label>
+                    <input id="btnBuscar" class="btn btn-primary" type="button" value="Pesquisar Cep" onclick="BuscaCep()" />
+                </div>
+            </div>
+            <span asp-validation-for="User.Address.ZipCode" class="text-danger"></span>
+
             <div class="input-box">
                 <label asp-for="User.Address.PublicPlace"></label>
-                <input asp-for="User.Address.PublicPlace" placeholder="Entre com seu logradouro">
+                <input id="publicPlace" asp-for="User.Address.PublicPlace" placeholder="Entre com seu logradouro">
                 <span asp-validation-for="User.Address.PublicPlace" class="text-danger"></span>
             </div>
 
             <div class="input-box">
                 <label asp-for="User.Address.Neighborhood"></label>
-                <input asp-for="User.Address.Neighborhood" placeholder="Entre com seu bairro">
+                <input id="neighborhood" asp-for="User.Address.Neighborhood" placeholder="Entre com seu bairro">
                 <span asp-validation-for="User.Address.Neighborhood" class="text-danger"></span>
             </div>
 
             <div class="input-box">
                 <label asp-for="User.Address.Locality"></label>
-                <input asp-for="User.Address.Locality" placeholder="Entre com sua localidade">
+                <input id="locality" asp-for="User.Address.Locality" placeholder="Entre com sua localidade">
                 <span asp-validation-for="User.Address.Locality" class="text-danger"></span>
-            </div>
-
-            <div class="input-box">
-                <label asp-for="User.Address.ZipCode"></label>
-                <input asp-for="User.Address.ZipCode" placeholder="Entre com seu CEP">
-                <span asp-validation-for="User.Address.ZipCode" class="text-danger"></span>
             </div>
 
             <div class="column-register">

@@ -1,4 +1,5 @@
 ﻿using barber_shop.Commands;
+using barber_shop.Integration.Interfces;
 using barber_shop.Models;
 using barber_shop.Models.Enums;
 using barber_shop.Models.ViewModel;
@@ -17,13 +18,16 @@ namespace barber_shop.Controllers
     {
         private readonly IInsertClient _insertClient;
         private readonly IBarberShopRepository _barberShopRepository;
+        private readonly IViaCepIntegration _viaCepIntegration;
 
         public AccessController(
          IBarberShopRepository barberShopRepository,
-         IInsertClient insertClient
+         IInsertClient insertClient,
+         IViaCepIntegration viaCepIntegration
          ){
             _barberShopRepository = barberShopRepository;
             _insertClient = insertClient;
+            _viaCepIntegration = viaCepIntegration;
         }
 
         public async Task<IActionResult> Login()
@@ -137,6 +141,13 @@ namespace barber_shop.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Access");
+        }
+
+        public async Task<IActionResult> GetAddressData(string zipCode)
+        {
+            var responseData = await _viaCepIntegration.GetDataViaCep(zipCode);
+
+            return Json(responseData);
         }
     }
 }
