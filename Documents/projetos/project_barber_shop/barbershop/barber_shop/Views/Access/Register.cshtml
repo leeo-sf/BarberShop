@@ -19,7 +19,7 @@
         <form class="form-register" asp-action="Register" enctype="multipart/form-data">
             <div class="input-box">
                 <label asp-for="User.Name"></label>
-                <input asp-for="User.Name" placeholder="Entre com seu nome">
+                <input asp-for="User.Name" placeholder="Insira seu nome">
                 <span asp-validation-for="User.Name" class="text-danger"></span>
             </div>
 
@@ -30,7 +30,7 @@
 
             <div class="input-box">
                 <label asp-for="User.Cpf"></label>
-                <input id="cpf" asp-for="User.Cpf" placeholder="Entre com seu CPF" type="text">
+                <input id="cpf" asp-for="User.Cpf" placeholder="Insira seu CPF" type="text">
                 <span asp-validation-for="User.Cpf" class="text-danger"></span>
             </div>
 
@@ -38,7 +38,7 @@
                 <label asp-for="User.Gender" class="control-label"></label>
                 <!--asp-items constroi uma caixa de seleção com base na lista informada-->
                 <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
-                <select asp-for="User.GenderId" asp-items="@(new SelectList(Model.Genders, "Id", "Description"))"></select>
+                <select class="generos" asp-for="User.GenderId" asp-items="@(new SelectList(Model.Genders, "Id", "Description"))"></select>
             </div>
 
             <div class="column-register">

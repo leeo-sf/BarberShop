@@ -2,17 +2,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom:210px;
+    padding-bottom:136px;
+    padding-top:50px;
 }
 
 .container-registro {
     position: relative;
     max-width: 500px;
     width: 100%;
-    background-color: #fff;
+    background-color: white;
     padding: 25px;
     border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 40px lightgray;
 }
 
     .container-registro header {
@@ -26,13 +27,36 @@
         margin-top: 15px;
     }
 
+.form-register .custom-select {
+    border-radius: 6px;
+    border-color: blue;
+}
+
+.form-register .custom-select1 {
+    border-radius: 6px;
+    border-color: blue;
+}
+.form-register .custom-select2 {
+    border-radius: 6px;
+    border-color: blue;
+}
+
 .form-register .input-box {
     width: 100%;
     margin-top: 10px;
+    }
+
+.input-box select.generos{
+    border-radius: 6px;
+    border-color: blue;
 }
 
 .input-box label {
-    color: #000;
+    color: black    ;
+}
+
+.mt-3{
+    border-radius:6px;
 }
 
 .form-register :where(.input-box input) {
