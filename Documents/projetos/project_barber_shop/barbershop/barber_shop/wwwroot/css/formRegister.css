@@ -51,12 +51,12 @@
     border-color: blue;
 }
 
-.input-box label {
-    color: black    ;
+#Nome, #cpf, #zipCode, #publicPlace, #neighborhood, #locality, #telefone, #datadeaniversario, #email, #senha {
+    color: black;
 }
 
-.mt-3{
-    border-radius:6px;
+.input-box {
+    color: black;
 }
 
 .form-register :where(.input-box input) {
@@ -99,3 +99,8 @@
     .form-register button:hover {
         background: #EE3E34;
     }
+
+#btnBuscar{
+    width: 50px;
+    margin-top:29px;
+}

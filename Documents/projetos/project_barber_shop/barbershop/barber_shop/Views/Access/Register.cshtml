@@ -19,13 +19,13 @@
         <form class="form-register" asp-action="Register" enctype="multipart/form-data">
             <div class="input-box">
                 <label asp-for="User.Name"></label>
-                <input asp-for="User.Name" placeholder="Insira seu nome">
+                <input id="Nome" asp-for="User.Name" placeholder="Insira seu nome">
                 <span asp-validation-for="User.Name" class="text-danger"></span>
             </div>
 
-            <div class="mt-3">
-                <label asp-for="User.Profile.Image"></label> <br />
-                <input type="file" name="Image">
+            <div class="mt-3" >
+                <label asp-for="User.Profile.Image"> </label> <br />
+                <input type="file" name="Image" >
             </div>
 
             <div class="input-box">
@@ -44,55 +44,55 @@
             <div class="column-register">
                 <div class="input-box">
                     <label asp-for="User.Address.ZipCode"></label>
-                    <input id="zipCode" asp-for="User.Address.ZipCode" placeholder="Entre com seu CEP">
+                    <input id="zipCode" asp-for="User.Address.ZipCode" placeholder="Insira seu CEP">
                 </div>
                 <div class="input-box">
                     <label></label>
-                    <input id="btnBuscar" class="btn btn-primary" type="button" value="Pesquisar Cep" onclick="BuscaCep()" />
+                    <input id="btnBuscar" class="btn btn-primary" type="button" value="&#128269;" onclick="BuscaCep()" />
                 </div>
             </div>
             <span asp-validation-for="User.Address.ZipCode" class="text-danger"></span>
 
             <div class="input-box">
                 <label asp-for="User.Address.PublicPlace"></label>
-                <input id="publicPlace" asp-for="User.Address.PublicPlace" placeholder="Entre com seu logradouro">
+                <input id="publicPlace" asp-for="User.Address.PublicPlace" placeholder="Insira seu logradouro">
                 <span asp-validation-for="User.Address.PublicPlace" class="text-danger"></span>
             </div>
 
             <div class="input-box">
                 <label asp-for="User.Address.Neighborhood"></label>
-                <input id="neighborhood" asp-for="User.Address.Neighborhood" placeholder="Entre com seu bairro">
+                <input id="neighborhood" asp-for="User.Address.Neighborhood" placeholder="Insira seu bairro">
                 <span asp-validation-for="User.Address.Neighborhood" class="text-danger"></span>
             </div>
 
             <div class="input-box">
                 <label asp-for="User.Address.Locality"></label>
-                <input id="locality" asp-for="User.Address.Locality" placeholder="Entre com sua localidade">
+                <input id="locality" asp-for="User.Address.Locality" placeholder="Insira sua localidade">
                 <span asp-validation-for="User.Address.Locality" class="text-danger"></span>
             </div>
 
             <div class="column-register">
                 <div class="input-box">
                     <label asp-for="User.Telephone"></label>
-                    <input asp-for="User.Telephone" placeholder="Enter com seu telefone" type="telephone">
+                    <input id="telefone" asp-for="User.Telephone" placeholder="Insira seu telefone" type="telephone">
                     <span asp-validation-for="User.Telephone" class="text-danger"></span>
                 </div>
                 <div class="input-box">
                     <label asp-for="User.BirthDate"></label>
-                    <input asp-for="User.BirthDate">
+                    <input id="datadeaniversario" asp-for="User.BirthDate">
                     <span asp-validation-for="User.BirthDate" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="input-box">
                 <label asp-for="User.Profile.Email"></label>
-                <input asp-for="User.Profile.Email">
+                <input id="email" asp-for="User.Profile.Email" placeholder="Insira seu email">
                 <span asp-validation-for="User.Profile.Email" class="text-danger"></span>
             </div>
 
             <div class="input-box">
                 <label asp-for="User.Profile.Password"></label>
-                <input asp-for="User.Profile.Password" type="password">
+                <input id="senha" asp-for="User.Profile.Password" type="password" placeholder="Insira sua senha">
                 <span asp-validation-for="User.Profile.Password" class="text-danger"></span>
             </div>
 
