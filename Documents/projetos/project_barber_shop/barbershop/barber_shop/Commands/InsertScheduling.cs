@@ -1,4 +1,5 @@
-﻿using barber_shop.Models;
+﻿using barber_shop.Extensions;
+using barber_shop.Models;
 using barber_shop.Models.ViewModel;
 using barber_shop.Services;
 using FluentValidation.Validators;
@@ -26,6 +27,7 @@ namespace barber_shop.Commands
 
         public async Task Execute(SchedulingFormViewModel obj, string cpfLoggedIn)
         {
+            var documentFormated = obj.CpfResponsible.FormatCpf();
             User user;
             var schedulingTime = await _barberShopRepository.GetSchedulingTimeById(obj.Scheduling.SchedulingTimesId);
             //data atual, data do agendamento
@@ -62,11 +64,11 @@ namespace barber_shop.Commands
             else
             {
                 //valida o cpf
-                if (!Person.ValidateCpf(obj.CpfResponsible))
+                if (!Person.ValidateCpf(documentFormated))
                 {
                     throw new Exception("CPF Inválido.");
                 }
-                user = await _barberShopRepository.GetUserLoggedInByCpf(obj.CpfResponsible);
+                user = await _barberShopRepository.GetUserLoggedInByCpf(documentFormated);
                 //se o usuário for nulo significa que ele não tem cadastro
                 if (user == null)
                 {
