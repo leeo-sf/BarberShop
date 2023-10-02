@@ -26,7 +26,7 @@ namespace barber_shop.Commands
 
         public async Task Execute(UserFormViewModel obj)
         {
-            var documentFormated = obj.User.Cpf.FormatCpf();
+            obj.User.Cpf = obj.User.Cpf.FormatCpf();
             var client = obj.User;
 
             var profile = await _barberShopRepository.GetProfileEmail(client.Profile.Email);
@@ -35,7 +35,7 @@ namespace barber_shop.Commands
                 throw new Exception("Email já cadastrado.");
             }
 
-            if (!Person.ValidateCpf(documentFormated))
+            if (!Person.ValidateCpf(obj.User.Cpf))
             {
                 throw new Exception("CPF inválido.");
             }

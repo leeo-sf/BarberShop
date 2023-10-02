@@ -27,7 +27,6 @@ namespace barber_shop.Commands
 
         public async Task Execute(SchedulingFormViewModel obj, string cpfLoggedIn)
         {
-            var documentFormated = obj.CpfResponsible.FormatCpf();
             User user;
             var schedulingTime = await _barberShopRepository.GetSchedulingTimeById(obj.Scheduling.SchedulingTimesId);
             //data atual, data do agendamento
@@ -63,12 +62,13 @@ namespace barber_shop.Commands
             //caso não esteja nulo significa que o usuário que está fazendo um agendamento é o adm ou o barbeiro para o usuário (eles irão informar o cpf do cliente que quer agendar)
             else
             {
+                obj.CpfResponsible = StringExtension.FormatCpf(obj.CpfResponsible);
                 //valida o cpf
-                if (!Person.ValidateCpf(documentFormated))
+                if (!Person.ValidateCpf(obj.CpfResponsible))
                 {
                     throw new Exception("CPF Inválido.");
                 }
-                user = await _barberShopRepository.GetUserLoggedInByCpf(documentFormated);
+                user = await _barberShopRepository.GetUserLoggedInByCpf(obj.CpfResponsible);
                 //se o usuário for nulo significa que ele não tem cadastro
                 if (user == null)
                 {
