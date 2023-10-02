@@ -49,7 +49,7 @@
             {
                 <div class="input-box">
                     <label>Digite o CPF do cliente que será agendado</label>
-                    <input asp-for="CpfResponsible">
+                    <input id="cpf" asp-for="CpfResponsible">
                     <span asp-validation-for="CpfResponsible" class="text-danger"></span>
                 </div>
             }
@@ -58,6 +58,8 @@
         </form>
     </section>
 </div>
+
+<script src="~/js/register.js"></script>
 
 @section Scripts{
     @{
