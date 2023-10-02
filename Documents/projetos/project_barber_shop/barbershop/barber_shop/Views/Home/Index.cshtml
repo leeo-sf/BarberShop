@@ -12,7 +12,7 @@
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Nao e possivel deletar o servico pois tem agendamento'
+            text: 'Não é possível deletar o serviço pois o mesmo tem agendamento'
         })
     </script>
 }
@@ -21,7 +21,7 @@ else if (TempData["SuccessDelete"] is not null)
     <script>
         Swal.fire({
             icon: 'success',
-            title: 'Serviço deletado',
+            title: 'Serviço deletado!',
             showConfirmButton: false,
             timer: 2000
         })
