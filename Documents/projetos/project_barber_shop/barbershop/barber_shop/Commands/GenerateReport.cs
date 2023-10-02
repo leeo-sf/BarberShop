@@ -53,7 +53,8 @@ namespace barber_shop.Commands
                 }
                 workbook.SaveAs(Path.GetFullPath(fileName));
             }
-            return getAllSchedulingsReport;
+            var getAllSchedulings = await _barberShopRepository.GetAllSchedulings();
+            return getAllSchedulings;
         }
     }
 }

@@ -213,7 +213,8 @@ namespace barber_shop.Services
              .Include(x => x.SchedulingTimes)
              .Include(x => x.Service)
              .Where(x =>
-              x.Date >= utcCreatedFrom && x.Date <= utcCreatedUntil)
+              x.Date >= Convert.ToDateTime(utcCreatedFrom.ToString("yyyy-MM-dd")) &&
+              x.Date <= Convert.ToDateTime(utcCreatedUntil.ToString("yyyy-MM-dd")))
              .ToArrayAsync();
         }
 

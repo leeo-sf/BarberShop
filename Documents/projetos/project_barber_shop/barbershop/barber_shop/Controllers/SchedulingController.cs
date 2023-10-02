@@ -64,13 +64,14 @@ namespace barber_shop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         public async Task<ActionResult<Scheduling[]>> GenerateReport(
           DateTimeOffset mindate,
           DateTimeOffset maxdate
         )
         {
-            await _generateReport.Execute(mindate, maxdate);
-            return View();
+            var getAllSchedulings = await _generateReport.Execute(mindate, maxdate);
+            return View(nameof(Index), getAllSchedulings);
         }
     }
 }
