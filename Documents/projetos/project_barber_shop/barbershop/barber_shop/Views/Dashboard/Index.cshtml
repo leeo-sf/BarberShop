@@ -47,6 +47,9 @@ else
                 <th>
                     Valor
                 </th>
+                <th>
+                    Ação
+                </th>
             </tr>
         </thead>
 
@@ -78,6 +81,19 @@ else
                     <td>
                         R$@item.Service.Value
                     </td>
+                    @if (item.Date > DateTimeOffset.Now)
+                    {
+                        <td>
+                            <a asp-action="ReSchedule" asp-controller="Scheduling" asp-route-id="@item.Id" class="btn btn-primary">Reagendar</a>
+                            <a class="btn btn-danger">Cancelar</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

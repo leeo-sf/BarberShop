@@ -30,6 +30,7 @@ builder.Services.AddScoped<IGenerateReport, GenerateReport>();
 builder.Services.AddScoped<BarberShopRepository>();
 builder.Services.AddScoped<IViaCepIntegration, ViaCepIntegration>();
 builder.Services.AddScoped<IEmail, Email>();
+builder.Services.AddScoped<IUpdateScheduling, UpdateScheduling>();
 
 
 // Add services to the container.

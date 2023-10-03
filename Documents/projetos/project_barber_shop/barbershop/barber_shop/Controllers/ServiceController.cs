@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace barber_shop.Controllers
 {
+    [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
     public class ServiceController : Controller
     {
         private readonly IInsertService _insertService;
@@ -28,13 +29,11 @@ namespace barber_shop.Controllers
             _deleteService = deleteService;
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         public async Task<IActionResult> Register()
         {
             return View();
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Service obj, IFormFile Image)
@@ -59,14 +58,12 @@ namespace barber_shop.Controllers
             }
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         public async Task<IActionResult> Edit(int id)
         {
             var service = await _barberShopRepository.GetService(id);
             return View(service);
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Service obj, IFormFile Image)
@@ -91,7 +88,6 @@ namespace barber_shop.Controllers
             }
         }
 
-        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

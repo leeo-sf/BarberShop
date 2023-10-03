@@ -24,3 +24,8 @@ function BuscaCep() {
         }
     })
 }
+
+function FormatCpf() {
+    let cpfResponsible = document.getElementById("cpfResponsible");
+    cpfResponsible.value = cpfResponsible.value.replace(/[^0-9]/g, "").replace(/^([\d]{3})([\d]{3})?([\d]{3})?([\d]{2})?/, "$1.$2.$3-$4");
+}

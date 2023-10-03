@@ -33,6 +33,7 @@ namespace barber_shop.Services
         Task<Scheduling[]> GetUserSchedules(int idUser);
         Task<Scheduling[]> GetBarberSchedules(int idBarber);
         Task<Scheduling[]> GetAllSchedulingsReport(DateTimeOffset createdFrom, DateTimeOffset createdUntil);
+        Task<Scheduling> GetSchedulingById(int id);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -240,6 +241,17 @@ namespace barber_shop.Services
                 .Include(x => x.SchedulingTimes)
                 .Where(x => x.BarberId == idBarber)
                 .ToArrayAsync();
+        }
+
+        public async Task<Scheduling> GetSchedulingById(int id)
+        {
+            return await _context.Scheduling
+                .Include(x => x.Client)
+                .Include(x => x.Barber)
+                .Include(x => x.Service)
+                .Include(x => x.SchedulingTimes)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
         }
     }
 }
