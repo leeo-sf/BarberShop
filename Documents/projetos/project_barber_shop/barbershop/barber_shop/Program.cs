@@ -1,6 +1,7 @@
 using barber_shop.Commands;
 using barber_shop.Data;
 using barber_shop.Integration;
+using barber_shop.Integration.Email;
 using barber_shop.Integration.Interfces;
 using barber_shop.Integration.Refit;
 using barber_shop.Services;
@@ -28,6 +29,7 @@ builder.Services.AddScoped<IInsertScheduling, InsertScheduling>();
 builder.Services.AddScoped<IGenerateReport, GenerateReport>();
 builder.Services.AddScoped<BarberShopRepository>();
 builder.Services.AddScoped<IViaCepIntegration, ViaCepIntegration>();
+builder.Services.AddScoped<IEmail, Email>();
 
 
 // Add services to the container.

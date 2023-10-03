@@ -70,7 +70,8 @@ namespace barber_shop.Controllers
           DateTimeOffset maxdate
         )
         {
-            var getAllSchedulings = await _generateReport.Execute(mindate, maxdate);
+            var getAllSchedulings = await _generateReport.Execute(mindate, maxdate, User.Identity.Name);
+            TempData["GeneratedReport"] = "Relatório gerado e enviado";
             return View(nameof(Index), getAllSchedulings);
         }
     }

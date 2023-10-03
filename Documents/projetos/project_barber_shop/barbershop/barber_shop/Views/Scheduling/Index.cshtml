@@ -4,6 +4,21 @@
     ViewData["Title"] = "Agendamentos";
 }
 
+@if (TempData["GeneratedReport"] is not null)
+{
+    <script>
+        Swal.fire({
+            title: 'Relatório gerado, fique atento no email cadastrado pelos próximos instantes',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        })
+    </script>
+}
+
 <div class="text-center">
     <h1 class="display-4">Agendamento</h1>
 </div>

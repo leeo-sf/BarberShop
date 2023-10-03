@@ -1,4 +1,5 @@
-﻿using barber_shop.Models;
+﻿using barber_shop.Integration.Email;
+using barber_shop.Models;
 using barber_shop.Services;
 using ClosedXML.Excel;
 using System.Diagnostics;
@@ -7,22 +8,27 @@ namespace barber_shop.Commands
 {
     public interface IGenerateReport
     {
-        Task<Scheduling[]> Execute(DateTimeOffset createdFrom, DateTimeOffset createdUntil);
+        Task<Scheduling[]> Execute(DateTimeOffset createdFrom, DateTimeOffset createdUntil, string loggedInUserCpf);
     }
 
     public class GenerateReport : IGenerateReport
     {
         private readonly IBarberShopRepository _barberShopRepository;
+        private readonly IEmail _email;
 
         public GenerateReport(
-            IBarberShopRepository barberShopRepository)
+            IBarberShopRepository barberShopRepository,
+            IEmail email
+            )
         {
             _barberShopRepository = barberShopRepository;
+            _email = email;
         }
 
-        public async Task<Scheduling[]> Execute(DateTimeOffset createdFrom, DateTimeOffset createdUntil)
+        public async Task<Scheduling[]> Execute(DateTimeOffset createdFrom, DateTimeOffset createdUntil, string loggedInUserCpf)
         {
             var getAllSchedulingsReport = await _barberShopRepository.GetAllSchedulingsReport(createdFrom, createdUntil);
+            var getUserLoggedIn = await _barberShopRepository.GetUserLoggedInByCpf(loggedInUserCpf);
             var fileName = @"C:\Relatorios BarberShop\" + Guid.NewGuid() + " Relatorio.xlsx";
 
             using (var workbook = new XLWorkbook())
@@ -52,6 +58,20 @@ namespace barber_shop.Commands
                     line++;
                 }
                 workbook.SaveAs(Path.GetFullPath(fileName));
+            }
+            
+            try
+            {
+                await _email.SendEmail(
+                    emailTo: getUserLoggedIn.Profile.Email,
+                    subject: $"Relatório BarberShop",
+                    body: $"Segue em anexo relatório entre as datas {createdFrom.ToString("dd/MM/yyyy")} até {createdUntil.ToString("dd/MM/yyyy")}",
+                    attachments: fileName
+                    );
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
             var getAllSchedulings = await _barberShopRepository.GetAllSchedulings();
             return getAllSchedulings;

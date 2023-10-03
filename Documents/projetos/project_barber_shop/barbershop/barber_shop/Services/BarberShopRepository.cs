@@ -169,8 +169,10 @@ namespace barber_shop.Services
 
         public async Task<User> GetUserLoggedInByCpf(string cpf)
         {
-            //método que pegar o usuário logado pelo cpf
-            return await this.GetOne<User>(x => x.Cpf == cpf);
+            return await _context.User
+                .Include(x => x.Profile)
+                .Where(x => x.Cpf == cpf)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<SchedulingTime> GetSchedulingTimeById(int id)
