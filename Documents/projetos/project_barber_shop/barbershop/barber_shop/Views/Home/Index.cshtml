@@ -6,6 +6,17 @@
     ViewData["Title"] = "Home";
 }
 
+@if (TempData["ErroUpdateScheduling"] is not null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '@TempData["ErroUpdateScheduling"].ToString()'
+        })
+    </script>
+}
+
 @if (TempData["ErrorDelete"] is not null)
 {
     <script>

@@ -70,6 +70,11 @@ namespace barber_shop.Controllers
         public async Task<IActionResult> ReSchedule(int id)
         {
             var schedulingById = await _barberShopRepository.GetSchedulingById(id);
+            if (DateOnly.FromDateTime(schedulingById.Date) < DateOnly.FromDateTime(DateTime.Now))
+            {
+                TempData["ErroUpdateScheduling"] = "Nao e possivel reagendar este agendamento.";
+                return RedirectToAction("Index", "Home");
+            }
             var schedulingTimes = await _barberShopRepository.GetAllSchedulingTimes();
             var barbers = await _barberShopRepository.GetAllBarbers();
             var services = await _barberShopRepository.GetServices();
