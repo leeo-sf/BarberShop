@@ -23,6 +23,7 @@ namespace barber_shop.Commands
         public async Task Execute(SchedulingFormViewModel obj, string cpfLoggedIn)
         {
             User user;
+            var scheduling = await _barberShopRepository.GetSchedulingById(obj.Scheduling.Id);
             var schedulingTime = await _barberShopRepository.GetSchedulingTimeById(obj.Scheduling.SchedulingTimesId);
             //data atual, data do agendamento
             var currentDate = DateOnly.FromDateTime(DateTime.Now);
@@ -35,6 +36,12 @@ namespace barber_shop.Commands
                 ).AddMinutes(
                 Convert.ToInt32(
                     schedulingTime.Description.Substring(3, 2)));
+
+            //se a data do agendamento que estiver no banco já estiver passado não pode reagendar
+            if (DateOnly.FromDateTime(scheduling.Date) <= currentDate)
+            {
+                throw new Exception("Nao e possivel reagendar este agedamento.");
+            }
 
             //caso a data seja menor que a data atual
             if (dateSheduling < currentDate)
@@ -79,8 +86,7 @@ namespace barber_shop.Commands
                 throw new Exception("O barbeiro selecionado ja possui agendamento nesse dia e horario");
             }
 
-            var scheduling = obj.Scheduling;
-            await _barberShopRepository.Update(scheduling);
+            await _barberShopRepository.Update(obj.Scheduling);
         }
     }
 }
