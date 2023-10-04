@@ -73,8 +73,7 @@ namespace barber_shop.Commands
             {
                 throw new Exception(ex.Message);
             }
-            var getAllSchedulings = await _barberShopRepository.GetAllSchedulings();
-            return getAllSchedulings;
+            return getAllSchedulingsReport;
         }
     }
 }

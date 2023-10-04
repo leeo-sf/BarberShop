@@ -84,6 +84,10 @@ namespace barber_shop.Controllers
             try
             {
                 await _updateScheduling.Execute(obj, User.Identity.Name);
+                if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
+                {
+                    return RedirectToAction(nameof(Index));
+                }
                 return RedirectToAction("Index", "Dashboard");
             }
             catch (Exception ex)
@@ -105,9 +109,9 @@ namespace barber_shop.Controllers
           DateTimeOffset maxdate
         )
         {
-            var getAllSchedulings = await _generateReport.Execute(mindate, maxdate, User.Identity.Name);
+            await _generateReport.Execute(mindate, maxdate, User.Identity.Name);
             TempData["GeneratedReport"] = "Relatório gerado e enviado";
-            return View(nameof(Index), getAllSchedulings);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
