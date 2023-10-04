@@ -32,17 +32,27 @@
                 <label asp-for="Scheduling.SchedulingTimes" class="control-label"></label>
                 <!--asp-items constroi uma caixa de seleção com base na lista informada-->
                 <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
-                <select class = "custom-select" asp-for="Scheduling.SchedulingTimesId" asp-items="@(new SelectList(Model.SchedulingTimes, "Id", "Description"))"></select>
+                <select class="custom-select" asp-for="Scheduling.SchedulingTimesId" asp-items="@(new SelectList(Model.SchedulingTimes, "Id", "Description"))"></select>
             </div>
 
             <div class="input-box">
                 <label class="control-label">Barbeiro</label>
-                <select class = "custom-select1" asp-for="Scheduling.BarberId" asp-items="@(new SelectList(Model.Barbers, "Id", "Name"))"></select>
+                <select class="custom-select1" asp-for="Scheduling.BarberId" asp-items="@(new SelectList(Model.Barbers, "Id", "Name"))"></select>
             </div>
 
             <div class="input-box">
-                <label class="control-label">Serviço</label>
-                <select class="custom-select2" asp-for="Scheduling.ServiceId" asp-items="@(new SelectList(Model.Services, "Id", "Name"))"></select>
+                <select asp-for="Scheduling.ServiceId" required>
+                    <option style="display: inline-block" disabled selected>Selecione um Serviço</option>
+                    @foreach (var item in Model.Services)
+                    {
+                        <option value="@item.Id" onclick="capturaValor(@item.Value.ToString())">@item.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label class="control-label">Valor do Serviço Selecionado</label>
+                <strong>R$</strong> - <p id="valorSelecionado"></p>
             </div>
 
             @if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR) || User.Claims.First().Value == nameof(EnumAccountCategory.BARBER))

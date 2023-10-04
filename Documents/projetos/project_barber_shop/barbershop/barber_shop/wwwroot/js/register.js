@@ -24,3 +24,9 @@ function BuscaCep() {
         }
     })
 }
+
+function capturaValor(element) {
+    $(document).ready(function () {
+        $("#valorSelecionado").text(element).val();
+    })
+}

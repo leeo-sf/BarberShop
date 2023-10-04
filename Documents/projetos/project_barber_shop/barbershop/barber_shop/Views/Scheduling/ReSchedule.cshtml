@@ -45,8 +45,23 @@
             </div>
 
             <div class="input-box">
-                <label class="control-label">Serviço</label>
-                <select class="custom-select2" asp-for="Scheduling.ServiceId" asp-items="@(new SelectList(Model.Services, "Id", "Name"))"></select>
+                <select asp-for="Scheduling.ServiceId" required>
+                    <option style="display: inline-block" disabled selected>Selecione um Serviço</option>
+                    @foreach (var item in Model.Services)
+                    {
+                        <option value="@item.Id" onclick="capturaValor(@item.Value.ToString())">@item.Name</option>
+                        <script>
+                            $(document).ready(function () {
+                                $("#valorSelecionado").text(@item.Value).val();
+                            })
+                        </script>
+                    }
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label class="control-label">Valor do Serviço Selecionado</label>
+                <strong>R$</strong> - <p id="valorSelecionado"></p>
             </div>
 
             @if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR) || User.Claims.First().Value == nameof(EnumAccountCategory.BARBER))
