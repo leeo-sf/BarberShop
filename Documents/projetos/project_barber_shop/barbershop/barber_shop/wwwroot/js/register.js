@@ -30,3 +30,9 @@ function capturaValor(element) {
         $("#valorSelecionado").text(element).val();
     })
 }
+
+function AlterouForm() {
+    var btn = document.getElementById("reagendar");
+    btn.disabled = false;
+    btn.style = "opacity: none";
+}

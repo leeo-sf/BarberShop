@@ -25,7 +25,7 @@
 <div class="container-cadastro">
     <section class="container-registro mt-3">
         <header>Registro de Serviço</header>
-        <form class="form-register" asp-action="ReSchedule">
+        <form class="form-register" asp-action="ReSchedule" name="form_reagendar" id="form_reagendar" onchange="AlterouForm()">
             <div class="input-box">
                 <label asp-for="Scheduling.Date"></label>
                 <input asp-for="Scheduling.Date">
@@ -76,7 +76,7 @@
                 </div>
             }
 
-            <button type="submit">Reagendar</button>
+            <button id="reagendar" style="opacity: 0.5;" type="submit" disabled="true">Reagendar</button>
             <input type="hidden" asp-for="Scheduling.Id" />
         </form>
     </section>
