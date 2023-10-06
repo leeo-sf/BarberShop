@@ -28,7 +28,7 @@
         <form class="form-register" asp-action="ReSchedule" name="form_reagendar" id="form_reagendar" onchange="AlterouForm()">
             <div class="input-box">
                 <label asp-for="Scheduling.Date"></label>
-                <input asp-for="Scheduling.Date">
+                <input id="dateAgendamento" asp-for="Scheduling.Date">
                 <span asp-validation-for="Scheduling.Date" class="text-danger"></span>
             </div>
 
@@ -36,28 +36,32 @@
                 <label asp-for="Scheduling.SchedulingTimes" class="control-label"></label>
                 <!--asp-items constroi uma caixa de seleção com base na lista informada-->
                 <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
-                <select class="custom-select" asp-for="Scheduling.SchedulingTimesId" asp-items="@(new SelectList(Model.SchedulingTimes, "Id", "Description"))"></select>
+                <select id="horaAgendamento" class="custom-select" asp-for="Scheduling.SchedulingTimesId" asp-items="@(new SelectList(Model.SchedulingTimes, "Id", "Description"))"></select>
             </div>
 
             <div class="input-box">
                 <label class="control-label">Barbeiro</label>
-                <select class="custom-select1" asp-for="Scheduling.BarberId" asp-items="@(new SelectList(Model.Barbers, "Id", "Name"))"></select>
+                <select id="barbeiro" class="custom-select1" asp-for="Scheduling.BarberId" asp-items="@(new SelectList(Model.Barbers, "Id", "Name"))"></select>
             </div>
 
             <div class="input-box">
-                <select asp-for="Scheduling.ServiceId" required>
+                <select id="servicoSelecionado" asp-for="Scheduling.ServiceId" required>
                     <option style="display: inline-block" disabled selected>Selecione um Serviço</option>
                     @foreach (var item in Model.Services)
                     {
                         <option value="@item.Id" onclick="capturaValor(@item.Value.ToString())">@item.Name</option>
-                        <script>
-                            $(document).ready(function () {
-                                $("#valorSelecionado").text(@item.Value).val();
-                            })
-                        </script>
                     }
                 </select>
             </div>
+
+            <script>
+                $(window).load(function () {
+                    document.getElementById("horaAgendamento").value = @Model.Scheduling.SchedulingTimes.Id.ToString();
+                    document.getElementById("barbeiro").value = @Model.Scheduling.BarberId.ToString();
+                    document.getElementById("servicoSelecionado").value = @Model.Scheduling.ServiceId.ToString();
+                    document.getElementById("valorSelecionado").innerText = @Model.Scheduling.Service.Value.ToString();
+                });
+            </script>
 
             <div class="input-box">
                 <label class="control-label">Valor do Serviço Selecionado</label>
