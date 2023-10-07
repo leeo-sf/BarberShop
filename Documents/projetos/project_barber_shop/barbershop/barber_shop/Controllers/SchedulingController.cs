@@ -16,18 +16,21 @@ namespace barber_shop.Controllers
         private readonly IInsertScheduling _insertScheduling;
         private readonly IGenerateReport _generateReport;
         private readonly IUpdateScheduling _updateScheduling;
+        private readonly IDeleteScheduling _deleteScheduling;
 
         public SchedulingController(
             IBarberShopRepository barberShopRepository,
             IInsertScheduling insertScheduling,
             IGenerateReport generateReport,
-            IUpdateScheduling updateScheduling
+            IUpdateScheduling updateScheduling,
+            IDeleteScheduling deleteScheduling
             )
         {
             _barberShopRepository = barberShopRepository;
             _insertScheduling = insertScheduling;
             _generateReport = generateReport;
             _updateScheduling = updateScheduling;
+            _deleteScheduling = deleteScheduling;
         }
 
         [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
@@ -117,6 +120,26 @@ namespace barber_shop.Controllers
             await _generateReport.Execute(mindate, maxdate, User.Identity.Name);
             TempData["GeneratedReport"] = "Relatório gerado e enviado";
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteScheduling(int id)
+        {
+            try
+            {
+                await _deleteScheduling.Exectute(id);
+                if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return RedirectToAction("Index", "Dashboard");
+            }
+            catch (Exception ex)
+            {
+                TempData["DeleteScheduling"] = ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }
