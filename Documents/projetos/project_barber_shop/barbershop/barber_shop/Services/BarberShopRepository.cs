@@ -191,6 +191,7 @@ namespace barber_shop.Services
                 x.Date == obj.Date &&
                 x.SchedulingTimesId == obj.SchedulingTimesId
                 ) //quando a data for igual a data selecionada pelo usuário e o id do horário for igual ao id selecionado pelo usuário
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
 
