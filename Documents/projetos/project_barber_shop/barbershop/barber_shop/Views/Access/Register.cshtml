@@ -45,6 +45,15 @@
                 <div class="input-box">
                     <label asp-for="User.Address.ZipCode"></label>
                     <input id="zipCode" asp-for="User.Address.ZipCode" placeholder="Insira seu CEP">
+                    <script>
+                        const zipCodeFormat = document.querySelector("#zipCode");
+
+                        zipCodeFormat.addEventListener("keyup", () => {
+                            let value = zipCodeFormat.value.replace(/[^0-9]/g, "");
+
+                            zipCodeFormat.value = value;
+                        });
+                    </script>
                 </div>
                 <div class="input-box">
                     <label></label>
@@ -74,7 +83,16 @@
             <div class="column-register">
                 <div class="input-box">
                     <label asp-for="User.Telephone"></label>
-                    <input id="telefone" asp-for="User.Telephone" placeholder="Insira seu telefone" type="telephone">
+                    <input id="telefone" asp-for="User.Telephone" placeholder="Insira seu telefone">
+                    <script>
+                        const telefone = document.querySelector("#telefone");
+
+                        telefone.addEventListener("keyup", () => {
+                            let value = telefone.value.replace(/[^0-9]/g, "");
+
+                            telefone.value = value;
+                        });
+                    </script>
                     <span asp-validation-for="User.Telephone" class="text-danger"></span>
                 </div>
                 <div class="input-box">
