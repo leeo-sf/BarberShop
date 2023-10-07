@@ -203,6 +203,7 @@ namespace barber_shop.Services
                 .Include(x => x.Barber)
                 .Include(x => x.SchedulingTimes)
                 .Include(x => x.Service)
+                .OrderByDescending(x => x.Date)
                 .ToArrayAsync();
         }
 
