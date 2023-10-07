@@ -45,7 +45,8 @@
             </div>
 
             <div class="input-box">
-                <select id="servicoSelecionado" asp-for="Scheduling.ServiceId" required>
+                <label class="control-label">Serviço</label>
+                <select class="custom-select" id="servicoSelecionado" asp-for="Scheduling.ServiceId" required>
                     <option style="display: inline-block" disabled selected>Selecione um Serviço</option>
                     @foreach (var item in Model.Services)
                     {
