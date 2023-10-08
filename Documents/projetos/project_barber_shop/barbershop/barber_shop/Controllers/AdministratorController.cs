@@ -22,9 +22,9 @@ namespace barber_shop.Controllers
             _barberShopRepository = barberShopRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(User? user)
         {
-            return View();
+            return View(user);
         }
 
         public async Task<IActionResult> Register()

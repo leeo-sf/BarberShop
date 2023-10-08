@@ -35,6 +35,7 @@ namespace barber_shop.Services
         Task<Scheduling[]> GetAllSchedulingsReport(DateTimeOffset createdFrom, DateTimeOffset createdUntil);
         Task<Scheduling> GetSchedulingById(int id);
         Task CompleteAppointments();
+        Task<User> GetUserByCpf(string cpf);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -265,6 +266,18 @@ namespace barber_shop.Services
                 pastAppointment.Concluded = true;
             }
             await Update(pastAppointments);
+        }
+
+        public async Task<User> GetUserByCpf(string cpf)
+        {
+            return await _context.User
+                .Include(x => x.Profile)
+                .Include(x => x.Profile.Category)
+                .Include(x => x.Address)
+                .Include(x => x.Gender)
+                .Where(x => x.Cpf == cpf)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
 
         private async Task<Scheduling[]> GetPastAppointments()
