@@ -39,14 +39,17 @@
 </div>
 <hr />
 
-<form asp-action="GenerateReport">
+<form asp-action="GenerateReport" style="display: inline-block;">
     <div class="minmaxdate">
         <p>
             <b>Data Mínima: </b><input type="date" name="mindate" class="mindate" /> <b>Data Máxima: </b><input type="date" name="maxdate" class="maxdate" />
             &nbsp;&nbsp; <button type="submit" class="btn btn-primary">Gerar Relatorio</button>
         </p>
-
     </div>
+</form>
+
+<form asp-action="CompleteAppointments" asp-controller="Scheduling" style="display: inline-block;">
+    <button type="submit" class="btn btn-outline-warning">Concluí Agendamentos</button>
 </form>
 
 @if (Model.Count() == 0)
@@ -80,7 +83,7 @@ else
                     Valor
                 </th>
                 <th>
-                    Ação
+                    Ação/Concluído
                 </th>
             </tr>
         </thead>

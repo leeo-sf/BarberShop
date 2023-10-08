@@ -141,5 +141,14 @@ namespace barber_shop.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
+        public async Task<IActionResult> CompleteAppointments()
+        {
+            await _barberShopRepository.CompleteAppointments();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
