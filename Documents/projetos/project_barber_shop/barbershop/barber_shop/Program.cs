@@ -33,6 +33,7 @@ builder.Services.AddScoped<IEmail, Email>();
 builder.Services.AddScoped<IUpdateScheduling, UpdateScheduling>();
 builder.Services.AddScoped<IDeleteScheduling, DeleteScheduling>();
 builder.Services.AddScoped<IValidateSchedulingAndReScheduling, ValidateSchedulingAndReScheduling>();
+builder.Services.AddScoped<IUpdatePassword, UpdatePassword>();
 
 
 // Add services to the container.

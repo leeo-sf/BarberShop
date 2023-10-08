@@ -1,11 +1,40 @@
 ﻿@using barber_shop.Models.Enums;
-@model barber_shop.Models.Scheduling[];
+@model barber_shop.Models.ViewModel.DashboardViewModel;
 @{
     ViewData["Title"] = "Dashboard";
 }
 
 <div class="text-center">
     <h1 class="display-4">Dashboard</h1>
+</div>
+<hr />
+
+<div class="card-client">
+    <div class="user-picture">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path>
+        </svg>
+    </div>
+    <p class="name-client">
+        @Model.User.Name
+        <span>
+            @Model.User.Cpf
+        </span>
+    </p>
+    <div class="social-media">
+        <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+            </svg>
+            <span class="tooltip-social">Alterar dados</span>
+        </a>
+        <a asp-action="ChangePassword">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
+            </svg>
+            <span class="tooltip-social">Alterar senha</span>
+        </a>
+    </div>
 </div>
 
 <hr />
@@ -14,7 +43,7 @@
     <h1 class="display-4">Meus Agendamentos</h1>
 </div>
 
-@if (Model.Count() == 0)
+@if (Model.Schedulings.Count() == 0)
 {
     <div class="text-center">
         <p class="display-4">Nenhum agendamento</p>
@@ -54,7 +83,7 @@ else
         </thead>
 
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Schedulings)
             {
                 <tr>
                     @if (User.Claims.First().Value == EnumAccountCategory.BARBER.ToString())
@@ -124,3 +153,4 @@ else
     </table>
 }
 <script src="~/js/alert.js"></script>
+<link rel="stylesheet" type="text/css" href="~/css/dashboard/index.css" />
