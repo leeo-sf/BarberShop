@@ -36,6 +36,7 @@ namespace barber_shop.Services
         Task<Scheduling> GetSchedulingById(int id);
         Task CompleteAppointments();
         Task<User> GetUserByCpf(string cpf);
+        Task<bool> GetUserByTelephone(string telephone);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -278,6 +279,12 @@ namespace barber_shop.Services
                 .Where(x => x.Cpf == cpf)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> GetUserByTelephone(string telephone)
+        {
+            return await _context.User
+                .AnyAsync(x => x.Telephone == telephone);
         }
 
         private async Task<Scheduling[]> GetPastAppointments()

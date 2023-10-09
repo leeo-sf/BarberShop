@@ -27,34 +27,42 @@ namespace barber_shop.Commands
         public async Task Execute(UserFormViewModel obj)
         {
             obj.User.Cpf = obj.User.Cpf.FormatCpf();
-            var client = obj.User;
 
-            var profile = await _barberShopRepository.GetProfileEmail(client.Profile.Email);
+            var profile = await _barberShopRepository.GetProfileEmail(obj.User.Profile.Email);
             if (profile is not null)
             {
                 throw new Exception("Email já cadastrado.");
             }
-
             if (!Person.ValidateCpf(obj.User.Cpf))
             {
                 throw new Exception("CPF inválido.");
+            }
+
+            var userByCpf = await _barberShopRepository.GetUserByCpf(obj.User.Cpf);
+            if (userByCpf is not null)
+            {
+                throw new Exception("CPF já vinculado a uma conta.");
+            }
+
+            var userByTelefone = await _barberShopRepository.GetUserByTelephone(obj.User.Telephone);
+            if (userByTelefone)
+            {
+                throw new Exception("Telefone já vinculado a uma conta");
             }
 
             if (obj.User.Profile.CategoryId == 0)
             {
                 obj.User.Profile.CategoryId = (int)EnumAccountCategory.CLIENT;
             }
-            
+
             try
             {
-                await _barberShopRepository.Insert(client);
+                await _barberShopRepository.Insert(obj.User);
             }
             catch (DbUpdateException ex)
             {
-                if (ex.ToString().Contains("Duplicate"))
-                {
-                    throw new Exception("Alguma informação já está vinculada a uma conta.");
-                }
+                throw new Exception(ex.Message);
+
             }
         }
     }
