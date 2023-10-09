@@ -24,6 +24,7 @@ namespace barber_shop.Services
         Task<Service[]> GetServices();
         Task<Service> GetService(int id);
         Task<User> GetUserByEmail(string email);
+        Task<User> GetUserById(int id);
         Task<SchedulingTime[]> GetAllSchedulingTimes();
         Task<User[]> GetAllBarbers();
         Task<User> GetUserLoggedInByCpf(string cpf);
@@ -36,7 +37,8 @@ namespace barber_shop.Services
         Task<Scheduling> GetSchedulingById(int id);
         Task CompleteAppointments();
         Task<User> GetUserByCpf(string cpf);
-        Task<bool> GetUserByTelephone(string telephone);
+        Task<bool> ThisPhoneExist(string telephone);
+        Task<User> GetUserByTelephone(string telephone);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -142,6 +144,7 @@ namespace barber_shop.Services
             return await _context.User
                 .Include(x => x.Profile) //fazendo relacionamento com a tabela de profile
                 .Include(x => x.Profile.Category) //azendo relacionamento com a tabela de accountcategory
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.ProfileId == userProfile.Id);
 
             //NÃO TA FUNCIONANDO
@@ -281,7 +284,31 @@ namespace barber_shop.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> GetUserByTelephone(string telephone)
+        public async Task<User> GetUserByTelephone(string telephone)
+        {
+            return await _context.User
+                .Include(x => x.Profile)
+                .Include(x => x.Profile.Category)
+                .Include(x => x.Address)
+                .Include(x => x.Gender)
+                .Where(x => x.Telephone == telephone)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserById(int id)
+        {
+            return await _context.User
+                .Include(x => x.Profile)
+                .Include(x => x.Profile.Category)
+                .Include(x => x.Address)
+                .Include(x => x.Gender)
+                .Where(x => x.Id == id)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> ThisPhoneExist(string telephone)
         {
             return await _context.User
                 .AnyAsync(x => x.Telephone == telephone);

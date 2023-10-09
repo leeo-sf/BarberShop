@@ -44,7 +44,7 @@ namespace barber_shop.Commands
                 throw new Exception("CPF já vinculado a uma conta.");
             }
 
-            var userByTelefone = await _barberShopRepository.GetUserByTelephone(obj.User.Telephone);
+            var userByTelefone = await _barberShopRepository.ThisPhoneExist(obj.User.Telephone);
             if (userByTelefone)
             {
                 throw new Exception("Telefone já vinculado a uma conta");

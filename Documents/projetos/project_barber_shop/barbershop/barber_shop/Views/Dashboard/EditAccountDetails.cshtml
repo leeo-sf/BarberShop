@@ -1,0 +1,145 @@
+﻿@model barber_shop.Models.ViewModel.UserFormViewModel
+@using Microsoft.AspNetCore.Identity;
+@using barber_shop.Models.Enums;
+
+@{
+    ViewData["Title"] = "Editar Conta";
+}
+
+@if (TempData["ErrorEditAccount"] is not null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '@TempData["ErrorEditAccount"].ToString()'
+        })
+    </script>
+}
+<div class="container-cadastro">
+    <section class="container-registro mt-3">
+        <header>Editar Conta</header>
+        <form class="form-register" asp-action="EditAccountDetails" enctype="multipart/form-data">
+            <div class="input-box">
+                <label asp-for="User.Name"></label>
+                <input id="Nome" asp-for="User.Name" placeholder="Insira seu nome">
+                <span asp-validation-for="User.Name" class="text-danger"></span>
+            </div>
+
+            <div class="mt-3">
+                <label asp-for="User.Profile.Image"> </label> <br />
+                <input type="file" name="Image">
+            </div>
+
+            <div class="input-box">
+                <label asp-for="User.Cpf"></label>
+                <input id="cpf" asp-for="User.Cpf" placeholder="Insira seu CPF" type="text">
+                <script>
+                    cpfResponsible = document.getElementById("cpf");
+                    cpfResponsible.value = cpfResponsible.value.replace(/[^0-9]/g, "").replace(/^([\d]{3})([\d]{3})?([\d]{3})?([\d]{2})?/, "$1.$2.$3-$4");
+                </script>
+                <span asp-validation-for="User.Cpf" class="text-danger"></span>
+            </div>
+
+            <div class="input-box">
+                <label asp-for="User.Gender" class="control-label"></label>
+                <!--asp-items constroi uma caixa de seleção com base na lista informada-->
+                <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
+                <select class="generos" asp-for="User.GenderId" asp-items="@(new SelectList(Model.Genders, "Id", "Description"))"></select>
+            </div>
+
+            <div class="column-register">
+                <div class="input-box">
+                    <label asp-for="User.Address.ZipCode"></label>
+                    <input id="zipCode" asp-for="User.Address.ZipCode" placeholder="Insira seu CEP">
+                    <script>
+                        const zipCodeFormat = document.querySelector("#zipCode");
+
+                        zipCodeFormat.addEventListener("keyup", () => {
+                            let value = zipCodeFormat.value.replace(/[^0-9]/g, "");
+
+                            zipCodeFormat.value = value;
+                        });
+                    </script>
+                </div>
+                <div class="input-box">
+                    <label></label>
+                    <input id="btnBuscar" class="btn btn-primary" type="button" value="&#128269;" onclick="BuscaCep()" />
+                </div>
+            </div>
+            <span asp-validation-for="User.Address.ZipCode" class="text-danger"></span>
+
+            <div class="input-box">
+                <label asp-for="User.Address.PublicPlace"></label>
+                <input id="publicPlace" asp-for="User.Address.PublicPlace" placeholder="Insira seu logradouro">
+                <span asp-validation-for="User.Address.PublicPlace" class="text-danger"></span>
+            </div>
+
+            <div class="input-box">
+                <label asp-for="User.Address.Neighborhood"></label>
+                <input id="neighborhood" asp-for="User.Address.Neighborhood" placeholder="Insira seu bairro">
+                <span asp-validation-for="User.Address.Neighborhood" class="text-danger"></span>
+            </div>
+
+            <div class="input-box">
+                <label asp-for="User.Address.Locality"></label>
+                <input id="locality" asp-for="User.Address.Locality" placeholder="Insira sua localidade">
+                <span asp-validation-for="User.Address.Locality" class="text-danger"></span>
+            </div>
+
+            <div class="column-register">
+                <div class="input-box">
+                    <label asp-for="User.Telephone"></label>
+                    <input id="telefone" asp-for="User.Telephone" placeholder="Insira seu telefone">
+                    <script>
+                        const telefone = document.querySelector("#telefone");
+
+                        telefone.addEventListener("keyup", () => {
+                            let value = telefone.value.replace(/[^0-9]/g, "");
+
+                            telefone.value = value;
+                        });
+                    </script>
+                    <span asp-validation-for="User.Telephone" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label asp-for="User.BirthDate"></label>
+                    <input id="datadeaniversario" asp-for="User.BirthDate">
+                    <span asp-validation-for="User.BirthDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="input-box">
+                <label asp-for="User.Profile.Email"></label>
+                <input id="email" asp-for="User.Profile.Email" placeholder="Insira seu email">
+                <span asp-validation-for="User.Profile.Email" class="text-danger"></span>
+            </div>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
+                {
+                    <div class="input-box">
+                        <label asp-for="User.Profile" class="control-label"></label>
+                        <!--asp-items constroi uma caixa de seleção com base na lista informada-->
+                        <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
+                        <select asp-for="User.Profile.CategoryId" asp-items="@(new SelectList(Model.AccountCategories, "Id", "Description"))"></select>
+                    </div>
+                }
+            }
+            <input type="hidden" asp-for="User.Id" />
+            <input type="hidden" asp-for="User.Profile.Id" />
+            <input type="hidden" asp-for="User.Profile.CategoryId" />
+            <input type="hidden" asp-for="User.Address.Id" />
+            <input type="hidden" asp-for="User.AddressId" />
+            <button>Salvar</button>
+        </form>
+    </section>
+</div>
+<script src="~/js/register.js"></script>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

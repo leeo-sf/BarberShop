@@ -34,6 +34,7 @@ builder.Services.AddScoped<IUpdateScheduling, UpdateScheduling>();
 builder.Services.AddScoped<IDeleteScheduling, DeleteScheduling>();
 builder.Services.AddScoped<IValidateSchedulingAndReScheduling, ValidateSchedulingAndReScheduling>();
 builder.Services.AddScoped<IUpdatePassword, UpdatePassword>();
+builder.Services.AddScoped<IEditAccountDetails, EditAccountDetails>();
 
 
 // Add services to the container.
