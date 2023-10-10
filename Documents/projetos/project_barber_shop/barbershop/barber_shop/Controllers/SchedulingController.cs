@@ -34,9 +34,17 @@ namespace barber_shop.Controllers
         }
 
         [Authorize(Roles = nameof(EnumAccountCategory.ADMINISTRATOR))]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var schedulings = await _barberShopRepository.GetAllSchedulings();
+            Scheduling[] schedulings;
+            if (id is not null)
+            {
+                schedulings = await _barberShopRepository.GetUserSchedules(id.Value);
+            }
+            else
+            {
+                schedulings = await _barberShopRepository.GetAllSchedulings();
+            }
             return View(schedulings);
         }
 
