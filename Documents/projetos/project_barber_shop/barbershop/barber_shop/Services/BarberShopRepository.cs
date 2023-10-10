@@ -27,6 +27,7 @@ namespace barber_shop.Services
         Task<User> GetUserById(int id);
         Task<SchedulingTime[]> GetAllSchedulingTimes();
         Task<User[]> GetAllBarbers();
+        Task<User[]> GetAllUsers();
         Task<User> GetUserLoggedInByCpf(string cpf);
         Task<SchedulingTime> GetSchedulingTimeById(int id);
         Task<Scheduling> GetBarberSchedulings(Scheduling obj);
@@ -171,6 +172,17 @@ namespace barber_shop.Services
                 .Include(x => x.Profile)
                 .Include(x => x.Profile.Category)
                 .Where(x => x.Profile.Category.Description == nameof(EnumAccountCategory.BARBER))
+                .ToArrayAsync();
+        }
+
+        public async Task<User[]> GetAllUsers()
+        {
+            return await _context.User
+                .Include(x => x.Profile)
+                .Include(x => x.Profile.Category)
+                .Include(x => x.Address)
+                .Include(x => x.Gender)
+                .AsNoTracking()
                 .ToArrayAsync();
         }
 

@@ -21,7 +21,7 @@ namespace barber_shop.Commands
 
         public async Task Excute(User obj, string cpfLoggedIn)
         {
-            obj.Cpf = obj.Cpf.FormatCpf();
+            obj.Cpf = obj.Cpf.RemoveFormatCpf();
             var user = await _barberShopRepository.GetUserByCpf(obj.Cpf);
 
             if (user is null)

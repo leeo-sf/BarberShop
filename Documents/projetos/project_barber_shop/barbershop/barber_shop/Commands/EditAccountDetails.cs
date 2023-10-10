@@ -24,7 +24,7 @@ namespace barber_shop.Commands
 
         public async Task Execute(UserFormViewModel obj, string cpfLoggedIn)
         {
-            obj.User.Cpf = obj.User.Cpf.FormatCpf();
+            obj.User.Cpf = obj.User.Cpf.RemoveFormatCpf();
 
             var profile = await _barberShopRepository.GetUserByEmail(obj.User.Profile.Email);
             if (profile is not null)

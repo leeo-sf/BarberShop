@@ -34,5 +34,11 @@ namespace barber_shop.Controllers
             //mas com permissões diferentes (podendo escolher o perfil do usuário a ser cadastrado)
             return RedirectToAction("Register", "Access");
         }
+
+        public async Task<IActionResult> ManageAccount()
+        {
+            var users = await _barberShopRepository.GetAllUsers();
+            return View(users);
+        }
     }
 }

@@ -49,7 +49,7 @@ namespace barber_shop.Controllers
         public async Task<IActionResult> ManageAccount(string? cpf)
         {
             User user;
-            cpf = cpf.FormatCpf();
+            cpf = cpf.RemoveFormatCpf();
             if (cpf is not null)
             {
                 user = await _barberShopRepository.GetUserByCpf(cpf);

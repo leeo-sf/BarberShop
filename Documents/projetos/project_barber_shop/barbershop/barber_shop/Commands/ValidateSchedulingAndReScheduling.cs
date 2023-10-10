@@ -81,7 +81,7 @@ namespace barber_shop.Commands
             //caso não esteja nulo significa que o usuário que está fazendo um agendamento é o adm ou o barbeiro para o usuário (eles irão informar o cpf do cliente que quer agendar)
             else
             {
-                obj.CpfResponsible = StringExtension.FormatCpf(obj.CpfResponsible);
+                obj.CpfResponsible = StringExtension.RemoveFormatCpf(obj.CpfResponsible);
                 //valida o cpf
                 if (!Person.ValidateCpf(obj.CpfResponsible))
                 {
