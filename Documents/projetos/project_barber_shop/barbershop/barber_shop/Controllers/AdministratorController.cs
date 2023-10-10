@@ -1,4 +1,5 @@
 ﻿using barber_shop.Commands;
+using barber_shop.Extensions;
 using barber_shop.Models;
 using barber_shop.Models.Enums;
 using barber_shop.Models.ViewModel;
@@ -39,6 +40,22 @@ namespace barber_shop.Controllers
         {
             var users = await _barberShopRepository.GetAllUsers();
             return View(users);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageAccount(string? cpf)
+        {
+            User user;
+            cpf = cpf.RemoveFormatCpf();
+            if (cpf is not null)
+            {
+                user = await _barberShopRepository.GetUserByCpf(cpf);
+                return RedirectToAction("Index", "Administrator", user);
+            }
+            user = await _barberShopRepository.GetUserByCpf(User.Identity.Name);
+            //retornar a view do cliente com os dados dele
+            return View();
         }
     }
 }

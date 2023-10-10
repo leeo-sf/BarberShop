@@ -40,24 +40,8 @@ namespace barber_shop.Controllers
             {
                 mySchedule = await _barberShopRepository.GetUserSchedules(user.Id);
             }
-            DashboardViewModel viewModel = new DashboardViewModel { User = user, Schedulings =  mySchedule };
+            DashboardViewModel viewModel = new DashboardViewModel { User = user, Schedulings = mySchedule };
             return View(viewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ManageAccount(string? cpf)
-        {
-            User user;
-            cpf = cpf.RemoveFormatCpf();
-            if (cpf is not null)
-            {
-                user = await _barberShopRepository.GetUserByCpf(cpf);
-                return RedirectToAction("Index", "Administrator", user);
-            }
-            user = await _barberShopRepository.GetUserByCpf(User.Identity.Name);
-            //retornar a view do cliente com os dados dele
-            return View();
         }
 
         public async Task<IActionResult> ChangePassword()
@@ -86,6 +70,18 @@ namespace barber_shop.Controllers
             var genders = await _barberShopRepository.GetGenders();
             var user = await _barberShopRepository.GetUserById(id);
             var viewModel = new UserFormViewModel { User = user, Genders = genders };
+            if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR))
+            {
+                viewModel.AccountCategories = await _barberShopRepository.GetAccountCategories();
+            }
+
+            if (user.Cpf != User.Identity.Name)
+            {
+                if (!(User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR)))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             return View(viewModel);
         }
 
@@ -102,10 +98,14 @@ namespace barber_shop.Controllers
             }
             try
             {
-                await _editAccountDetails.Execute(obj, User.Identity.Name);
+                await _editAccountDetails.Execute(obj, User.Identity.Name, User.Claims.First().Value.ToString());
+                if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR))
+                {
+                    return RedirectToAction("ManageAccount", "Administrator");
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["ErrorEditAccount"] = ex.Message;
                 var genders = await _barberShopRepository.GetGenders();

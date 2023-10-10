@@ -3,13 +3,14 @@ using barber_shop.Models;
 using barber_shop.Models.Enums;
 using barber_shop.Models.ViewModel;
 using barber_shop.Services;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
 
 namespace barber_shop.Commands
 {
     public interface IEditAccountDetails
     {
-        Task Execute(UserFormViewModel obj, string cpfLoggedIn);
+        Task Execute(UserFormViewModel obj, string cpfLoggedIn, string profileLoggedIn);
     }
 
     public class EditAccountDetails : IEditAccountDetails
@@ -22,7 +23,7 @@ namespace barber_shop.Commands
             _barberShopRepository = barberShopRepository;
         }
 
-        public async Task Execute(UserFormViewModel obj, string cpfLoggedIn)
+        public async Task Execute(UserFormViewModel obj, string cpfLoggedIn, string profileLoggedIn)
         {
             obj.User.Cpf = obj.User.Cpf.RemoveFormatCpf();
 
@@ -65,6 +66,13 @@ namespace barber_shop.Commands
             try
             {
                 obj.User.Profile.Password = userByCpf.Profile.Password;
+                if (userByCpf.Cpf != cpfLoggedIn)
+                {
+                    if (!(profileLoggedIn == nameof(EnumAccountCategory.ADMINISTRATOR)))
+                    {
+                        throw new Exception("Voce nao tem permissao");
+                    }
+                }
                 await _barberShopRepository.Update(obj.User);
             }
             catch (DbUpdateException ex)
