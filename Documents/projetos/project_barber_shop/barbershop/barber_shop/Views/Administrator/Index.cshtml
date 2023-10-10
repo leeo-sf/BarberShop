@@ -1,4 +1,5 @@
-﻿@model barber_shop.Models.User;
+﻿@using barber_shop.Extensions;
+@model barber_shop.Models.User;
 @{
     ViewData["Title"] = "Dashboard Adm";
 }
@@ -90,7 +91,7 @@
                     @Model.Name
                 </td>
                 <td>
-                    @Model.Cpf
+                    @StringExtension.FormatCpf(Model.Cpf)
                 </td>
                 <td>
                     @Model.Telephone
@@ -149,5 +150,4 @@ else
     </div>
 }
 
-<script src="~/js/register.js"></script>
 <script src="~/js/alert.js"></script>
