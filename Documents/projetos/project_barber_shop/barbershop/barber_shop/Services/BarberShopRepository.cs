@@ -142,12 +142,15 @@ namespace barber_shop.Services
         public async Task<User> GetUserByEmail(string email)
         {
             var userProfile = await this.GetProfileEmail(email);
-            return await _context.User
-                .Include(x => x.Profile) //fazendo relacionamento com a tabela de profile
-                .Include(x => x.Profile.Category) //azendo relacionamento com a tabela de accountcategory
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.ProfileId == userProfile.Id);
-
+            if (userProfile is not null)
+            {
+                return await _context.User
+                    .Include(x => x.Profile) //fazendo relacionamento com a tabela de profile
+                    .Include(x => x.Profile.Category) //azendo relacionamento com a tabela de accountcategory
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.ProfileId == userProfile.Id);
+            }
+            return null;
             //NÃO TA FUNCIONANDO
             //return await _context.Set<User>().FromSqlInterpolated(
             //    $@"SELECT * FROM db_barber_shop.`user` as u 
