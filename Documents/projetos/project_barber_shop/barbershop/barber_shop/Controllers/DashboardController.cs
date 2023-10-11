@@ -142,6 +142,7 @@ namespace barber_shop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(EnumAccountCategory.CLIENT))]
         public async Task<IActionResult> EvaluatesBarber(string comments, int idBarber, string cpf)
         {
             try
