@@ -26,54 +26,37 @@ namespace barber_shop.Commands
         public async Task Execute(UserFormViewModel obj, string cpfLoggedIn, string profileLoggedIn)
         {
             obj.User.Cpf = obj.User.Cpf.RemoveFormatCpf();
+            var userLoggedIn = await _barberShopRepository.GetUserByCpf(cpfLoggedIn);
+            var user = await _barberShopRepository.GetUserById(obj.User.Id);
 
+            //se o id do usuário logado (que está tentando alterar os dados) for diferente do id do usuário que será alterado
+            //e se o usuário logado não for um ADM DEVE dar erro
+            if (obj.User.Id != userLoggedIn.Id && !(profileLoggedIn == nameof(EnumAccountCategory.ADMINISTRATOR)))
+            {
+                throw new Exception("Voce nao tem permissao.");
+            }
+
+            //se existir o email no banco de dados
+            //e o proprietário não for o mesmo que estiver tentando alterar DEVE dar erro
             var profile = await _barberShopRepository.GetUserByEmail(obj.User.Profile.Email);
-            if (profile is not null)
+            if (profile is not null && !(obj.User.Profile.Id == profile.Id))
             {
-                if (!(obj.User.Profile.Id == profile.Id))
-                {
-                    throw new Exception("Email ja cadastrado.");
-                }
-            }
-            if (!Person.ValidateCpf(obj.User.Cpf))
-            {
-                throw new Exception("CPF invalido.");
+                throw new Exception("O email ja foi vinculado a uma conta.");
             }
 
-            var userByCpf = await _barberShopRepository.GetUserByCpf(obj.User.Cpf);
-            if (userByCpf is not null)
-            {
-                if (!(obj.User.Id == userByCpf.Id))
-                {
-                    throw new Exception("CPF ja vinculado a uma conta.");
-                }
-            }
-
+            //se existir o telefone no banco de dados
+            //e o proprietário não for o mesmo que estiver tentando alterar DEVE dar erro
             var userByTelefone = await _barberShopRepository.GetUserByTelephone(obj.User.Telephone);
-            if (userByTelefone is not null)
+            if (userByTelefone is not null && !(obj.User.Id == userByTelefone.Id))
             {
-                if (!(obj.User.Id == userByTelefone.Id))
-                {
-                    throw new Exception("Telefone ja vinculado a uma conta");
-                }
-            }
-
-            if (obj.User.Profile.CategoryId == 0)
-            {
-                obj.User.Profile.CategoryId = (int)EnumAccountCategory.CLIENT;
+                throw new Exception("Telefone ja vinculado a uma conta");
             }
 
             try
             {
-                var user = await _barberShopRepository.GetUserById(obj.User.Id);
+                //atribuindo a senha do usuário que está no banco pois, o serviço de alterar senha é outro
+                //nesse formulário só é possível alterar os dados cadastrais
                 obj.User.Profile.Password = user.Profile.Password;
-                if (user.Cpf != cpfLoggedIn)
-                {
-                    if (!(profileLoggedIn == nameof(EnumAccountCategory.ADMINISTRATOR)))
-                    {
-                        throw new Exception("Voce nao tem permissao");
-                    }
-                }
                 await _barberShopRepository.Update(obj.User);
             }
             catch (DbUpdateException ex)

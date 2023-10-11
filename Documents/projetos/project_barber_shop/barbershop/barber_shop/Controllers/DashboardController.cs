@@ -111,6 +111,10 @@ namespace barber_shop.Controllers
                 var genders = await _barberShopRepository.GetGenders();
                 var user = await _barberShopRepository.GetUserById(obj.User.Id);
                 var viewModel = new UserFormViewModel { User = user, Genders = genders };
+                if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR))
+                {
+                    viewModel.AccountCategories = await _barberShopRepository.GetAccountCategories();
+                }
                 return View(viewModel);
             }
         }
