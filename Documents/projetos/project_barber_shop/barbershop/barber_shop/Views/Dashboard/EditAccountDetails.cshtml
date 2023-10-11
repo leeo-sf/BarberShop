@@ -33,11 +33,7 @@
 
             <div class="input-box">
                 <label asp-for="User.Cpf"></label>
-                <input id="cpf" asp-for="User.Cpf" placeholder="Insira seu CPF" type="text">
-                <script>
-                    cpfResponsible = document.getElementById("cpf");
-                    cpfResponsible.value = cpfResponsible.value.replace(/[^0-9]/g, "").replace(/^([\d]{3})([\d]{3})?([\d]{3})?([\d]{2})?/, "$1.$2.$3-$4");
-                </script>
+                <input id="cpf" asp-for="User.Cpf" placeholder="Insira seu CPF" type="text" readonly>
                 <span asp-validation-for="User.Cpf" class="text-danger"></span>
             </div>
 
@@ -136,7 +132,11 @@
         </form>
     </section>
 </div>
+<script src="~/js/register.js"></script>
 <script>
+    cpfResponsible = document.getElementById("cpf");
+    cpfResponsible.value = cpfResponsible.value.replace(/[^0-9]/g, "").replace(/^([\d]{3})([\d]{3})?([\d]{3})?([\d]{2})?/, "$1.$2.$3-$4");
+
     function BuscaCep() {
         var zipCodeUser = document.querySelector('#zipCode').value;
         $.ajax({

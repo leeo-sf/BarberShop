@@ -65,8 +65,9 @@ namespace barber_shop.Commands
 
             try
             {
-                obj.User.Profile.Password = userByCpf.Profile.Password;
-                if (userByCpf.Cpf != cpfLoggedIn)
+                var user = await _barberShopRepository.GetUserById(obj.User.Id);
+                obj.User.Profile.Password = user.Profile.Password;
+                if (user.Cpf != cpfLoggedIn)
                 {
                     if (!(profileLoggedIn == nameof(EnumAccountCategory.ADMINISTRATOR)))
                     {
