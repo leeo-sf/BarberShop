@@ -1,6 +1,6 @@
 ﻿@using barber_shop.Models.Enums;
 @model barber_shop.Models.ViewModel.DashboardBarberViewModel;
-
+<link rel="stylesheet" type="text/css" href="~/css/dashboard/dashboardBarber.css" />
 @{
     ViewData["Title"] = "Perfil do barbeiro";
 }
@@ -49,7 +49,7 @@
     {
         if (User.Claims.First().Value == EnumAccountCategory.CLIENT.ToString())
         {
-            <a href="#" class="btn btn-primary" id="btn-nenhum-cadastro">Avaliar Barbeiro</a>
+            <a href="#avaliaBarbeiro" class="btn btn-primary" id="btn-nenhum-cadastro">Avaliar Barbeiro</a>
         }
     }
 </div>
@@ -75,6 +75,29 @@ else
                     @item.Description
                 </p>
             </div>
+        </div>
+    }
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    if (User.Claims.First().Value == EnumAccountCategory.CLIENT.ToString())
+    {
+        <hr />
+        <div class="container-feedback">
+            <h1 class="h1feedback">Avaliar Barbeiro</h1>
+            <form id="avaliaBarbeiro" asp-action="EvaluatesBarber" asp-controller="Dashboard">
+                <label class="labelfeedback" for="rating">Barbeiro:</label>
+                <p>@Model.Barber.Name</p>
+
+                <label class="labelfeedback">Comentários:</label>
+                <textarea class="textareafeedback" id="comments" name="comments" rows="5" maxlength="500" required></textarea>
+
+                <input type="hidden" name="idBarber" value="@Model.Barber.Id" />
+                <input type="hidden" name="cpf" value="@User.Identity.Name" />
+
+                <button class="btnfeedback" type="submit">Enviar Avaliação</button>
+            </form>
         </div>
     }
 }

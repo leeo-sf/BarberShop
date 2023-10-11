@@ -139,5 +139,28 @@ namespace barber_shop.Controllers
             };
             return View(viewModel);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EvaluatesBarber(string comments, int idBarber, string cpf)
+        {
+            try
+            {
+                var user = await _barberShopRepository.GetUserByCpf(cpf);
+                var assesments = new Assessments
+                {
+                    BarberId = idBarber,
+                    ClientId = user.Id,
+                    Description = comments,
+                };
+                await _barberShopRepository.Insert(assesments);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErroUpdateScheduling"] = ex.Message;
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
