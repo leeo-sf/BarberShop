@@ -125,9 +125,17 @@ namespace barber_shop.Controllers
           DateTimeOffset maxdate
         )
         {
-            await _generateReport.Execute(mindate, maxdate, User.Identity.Name);
-            TempData["GeneratedReport"] = "Relatório gerado e enviado";
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _generateReport.Execute(mindate, maxdate, User.Identity.Name);
+                TempData["GeneratedReport"] = "Relatório gerado e enviado";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex )
+            {
+                TempData["ErrorGeneratedReport"] = ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         [HttpPost]

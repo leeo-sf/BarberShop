@@ -28,6 +28,10 @@ namespace barber_shop.Commands
         public async Task<Scheduling[]> Execute(DateTimeOffset createdFrom, DateTimeOffset createdUntil, string loggedInUserCpf)
         {
             var getAllSchedulingsReport = await _barberShopRepository.GetAllSchedulingsReport(createdFrom, createdUntil);
+            if (getAllSchedulingsReport.Count() == 0)
+            {
+                throw new Exception("Nenhum dado foi encontrado");
+            }
             var getUserLoggedIn = await _barberShopRepository.GetUserLoggedInByCpf(loggedInUserCpf);
             var fileName = @"C:\Relatorios BarberShop\" + Guid.NewGuid() + " Relatorio.xlsx";
 
