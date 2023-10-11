@@ -1,6 +1,6 @@
 ﻿@using barber_shop.Extensions;
 @using barber_shop.Models.Enums;
-@model barber_shop.Models.ViewModel.DashboardViewModel;
+@model barber_shop.Models.Scheduling[];
 @{
     ViewData["Title"] = "Dashboard";
 }
@@ -9,7 +9,7 @@
     <h1 class="display-4">Meus Agendamentos</h1>
 </div>
 
-@if (Model.Schedulings.Count() == 0)
+@if (Model.Count() == 0)
 {
     <div class="text-center">
         <p class="display-4">Nenhum agendamento</p>
@@ -49,7 +49,7 @@ else
         </thead>
 
         <tbody>
-            @foreach (var item in Model.Schedulings)
+            @foreach (var item in Model)
             {
                 <tr>
                     @if (User.Claims.First().Value == EnumAccountCategory.BARBER.ToString())

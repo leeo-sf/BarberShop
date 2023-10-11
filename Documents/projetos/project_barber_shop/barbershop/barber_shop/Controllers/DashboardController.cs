@@ -38,7 +38,7 @@ namespace barber_shop.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> MySchedules()
         {
             Scheduling[] mySchedule;
             var user = await _barberShopRepository.GetUserLoggedInByCpf(User.Identity.Name);
@@ -50,8 +50,7 @@ namespace barber_shop.Controllers
             {
                 mySchedule = await _barberShopRepository.GetUserSchedules(user.Id);
             }
-            DashboardViewModel viewModel = new DashboardViewModel { User = user, Schedulings = mySchedule };
-            return View(viewModel);
+            return View(mySchedule);
         }
 
         public async Task<IActionResult> ChangePassword()
