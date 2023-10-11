@@ -28,6 +28,16 @@ namespace barber_shop.Controllers
             _editAccountDetails = editAccountDetails;
         }
 
+        public async Task<IActionResult> MyDashboard()
+        {
+            var user = await _barberShopRepository.GetUserLoggedInByCpf(User.Identity.Name);
+            if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR))
+            {
+                return RedirectToAction("Index", "Administrator");
+            }
+            return View(user);
+        }
+
         public async Task<IActionResult> Index()
         {
             Scheduling[] mySchedule;
