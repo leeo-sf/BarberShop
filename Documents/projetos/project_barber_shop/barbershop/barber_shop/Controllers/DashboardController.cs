@@ -127,5 +127,17 @@ namespace barber_shop.Controllers
                 return View(viewModel);
             }
         }
+
+        public async Task<IActionResult> DashboardBarber(int id)
+        {
+            var barber = await _barberShopRepository.GetUserById(id);
+            var commentsBarber = await _barberShopRepository.GetBarberCommentById(barber.Id);
+            var viewModel = new DashboardBarberViewModel 
+            { 
+                Barber = barber, 
+                Assessments = commentsBarber 
+            };
+            return View(viewModel);
+        }
     }
 }

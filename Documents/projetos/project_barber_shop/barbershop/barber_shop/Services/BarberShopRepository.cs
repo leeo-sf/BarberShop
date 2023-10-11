@@ -40,6 +40,7 @@ namespace barber_shop.Services
         Task<User> GetUserByCpf(string cpf);
         Task<bool> ThisPhoneExist(string telephone);
         Task<User> GetUserByTelephone(string telephone);
+        Task<Assessments[]> GetBarberCommentById(int idBarber);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -327,6 +328,16 @@ namespace barber_shop.Services
         {
             return await _context.User
                 .AnyAsync(x => x.Telephone == telephone);
+        }
+
+        public async Task<Assessments[]> GetBarberCommentById(int idBarber)
+        {
+            return await _context.Assessments
+                .Include(x => x.Barber)
+                .Include(x => x.Client)
+                .Where(x => x.BarberId == idBarber)
+                .AsNoTracking()
+                .ToArrayAsync();
         }
 
         private async Task<Scheduling[]> GetPastAppointments()

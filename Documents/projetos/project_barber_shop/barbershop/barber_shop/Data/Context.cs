@@ -16,5 +16,6 @@ namespace barber_shop.Data
         public DbSet<Service> Service { get; set; }
         public DbSet<Scheduling> Scheduling { get; set; }
         public DbSet<SchedulingTime> SchedulingTimes { get; set; }
+        public DbSet<Assessments> Assessments { get; set; }
     }
 }

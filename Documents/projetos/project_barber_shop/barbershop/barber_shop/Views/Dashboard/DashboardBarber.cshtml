@@ -1,0 +1,80 @@
+﻿@using barber_shop.Models.Enums;
+@model barber_shop.Models.ViewModel.DashboardBarberViewModel;
+
+@{
+    ViewData["Title"] = "Perfil do barbeiro";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Perfil do Barbeiro</h1>
+</div>
+<hr />
+<br />
+
+<div class="text-center">
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <div class="card-img">
+                    @{
+                        string imgSrc;
+                        if (Model.Barber.Profile.Image is not null)
+                        {
+                            var base64 = Convert.ToBase64String(Model.Barber.Profile.Image);
+                            imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                        }
+                        else
+                        {
+                            imgSrc = null;
+                        }
+                    }
+                    <img src="@imgSrc" alt="img-barber" style="max-width:200px; max-height:200px;">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Barber.Name</h5>
+                    <p class="card-text">Email - <strong>@Model.Barber.Profile.Email</strong> <br /> Telefone - <strong>@Model.Barber.Telephone</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<hr />
+<div class="text-center">
+    <h1 class="display-4">Avaliações do Barbeiro</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.Claims.First().Value == EnumAccountCategory.CLIENT.ToString())
+        {
+            <a href="#" class="btn btn-primary" id="btn-nenhum-cadastro">Avaliar Barbeiro</a>
+        }
+    }
+</div>
+<hr />
+
+@if (Model.Assessments.Count() == 0)
+{
+    <div class="text-center">
+        <h4>Nenhuma comentário</h4>
+    </div>
+}
+else
+{
+    foreach (var item in Model.Assessments)
+    {
+        <div class="card m-3" style="width: 18rem; display:inline-block;">
+            <div class="card-body">
+                <h5 class="card-title">@item.Client.Name</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">
+                    Descrição da avaliação
+                </h6>
+                <p class="card-text">
+                    @item.Description
+                </p>
+            </div>
+        </div>
+    }
+}
