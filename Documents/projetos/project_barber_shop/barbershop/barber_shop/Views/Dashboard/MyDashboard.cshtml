@@ -1,6 +1,6 @@
 ﻿@using barber_shop.Extensions;
 @using barber_shop.Models.Enums;
-@model barber_shop.Models.User;
+@model barber_shop.Models.ViewModel.DashboardViewModel;
 @{
     ViewData["Title"] = "Dashboard";
 }
@@ -17,13 +17,13 @@
         </svg>
     </div>
     <p class="name-client">
-        @Model.Name
+        @Model.User.Name
         <span>
-            @StringExtension.FormatCpf(Model.Cpf)
+            @StringExtension.FormatCpf(Model.User.Cpf)
         </span>
     </p>
     <div class="social-media">
-        <a asp-action="EditAccountDetails" asp-route-id="@Model.Id">
+        <a asp-action="EditAccountDetails" asp-route-id="@Model.User.Id">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
                 <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
             </svg>
@@ -43,10 +43,128 @@
     if (User.Claims.First().Value == EnumAccountCategory.BARBER.ToString())
     {
         <div class="m-3" style="display: inline-block">
-            <a class="btn btn-outline-primary" asp-action="DashboardBarber" asp-controller="Dashboard" asp-route-id="@Model.Id">
+            <a class="btn btn-outline-primary" asp-action="DashboardBarber" asp-controller="Dashboard" asp-route-id="@Model.User.Id">
                 Avaliações
             </a>
         </div>
     }
 }
+
+<hr />
+
+<div class="text-center">
+    <h1 class="display-4">Meus Agendamentos</h1>
+</div>
+
+@if (Model.Schedulings.Count() == 0)
+{
+    <div class="text-center">
+        <p class="display-4">Nenhum agendamento</p>
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr class="success">
+                <th>
+                    @if (User.Claims.First().Value == EnumAccountCategory.BARBER.ToString())
+                    {
+                        @Html.DisplayName("Cliente")
+                    }
+                    else
+                    {
+                        @Html.DisplayName("Barbeiro")
+                    }
+                </th>
+                <th>
+                    Data
+                </th>
+                <th>
+                    Horário
+                </th>
+                <th>
+                    Serviço
+                </th>
+                <th>
+                    Valor
+                </th>
+                <th>
+                    Ação/Concluído
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.Schedulings)
+            {
+                <tr>
+                    @if (User.Claims.First().Value == EnumAccountCategory.BARBER.ToString())
+                    {
+                        <td>
+                            @item.Client.Name
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @item.Barber.Name
+                        </td>
+                    }
+                    <td>
+                        @item.Date.ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @item.SchedulingTimes.Description
+                    </td>
+                    <td>
+                        @item.Service.Name
+                    </td>
+                    <td>
+                        R$@item.Service.Value
+                    </td>
+                    @if (item.Date > DateTimeOffset.Now)
+                    {
+                        <td>
+                            <div style="display: inline-block;">
+                                <abbr title="Reagendar">
+                                    <div class="btn btn-outline-primary" style="text-decoration: none; color: inherit;">
+                                        <a asp-action="ReSchedule" asp-controller="Scheduling" asp-route-id="@item.Id">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </abbr>
+                            </div>
+
+                            <div style="display: inline-block;">
+                                <abbr title="Cancelar agendamento">
+                                    <form asp-action="DeleteScheduling" asp-controller="Scheduling" method="post" asp-route-id="@item.Id" onsubmit="return Confirmar()">
+                                        <button class="btn btn-outline-danger" type="submit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-x" viewBox="0 0 16 16">
+                                                <path d="M6.146 8.146a.5.5 0 0 1 .708 0L8 9.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 10l1.147 1.146a.5.5 0 0 1-.708.708L8 10.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 10 6.146 8.854a.5.5 0 0 1 0-.708z" />
+                                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z" />
+                                                <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </abbr>
+                            </div>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Concluded)
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<script src="~/js/alert.js"></script>
+<link rel="stylesheet" type="text/css" href="~/css/dashboard/index.css" />
 <link rel="stylesheet" type="text/css" href="~/css/dashboard/index.css" />

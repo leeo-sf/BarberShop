@@ -45,12 +45,6 @@
                             <!--Colocar dashbord do cliente para ter informações a conta dele-->
                             @if (User.Identity.IsAuthenticated)
                             {
-                                if (User.Claims.First().Value == EnumAccountCategory.CLIENT.ToString() || User.Claims.First().Value == EnumAccountCategory.BARBER.ToString())
-                                {
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" asp-controller="Dashboard" asp-action="MySchedules">Meus Agendamentos</a>
-                                    </li>
-                                }
                                 <li class="nav-item">
                                     <a class="btn btn-outline-secondary mt-4" asp-action="MyDashboard" asp-controller="Dashboard">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">

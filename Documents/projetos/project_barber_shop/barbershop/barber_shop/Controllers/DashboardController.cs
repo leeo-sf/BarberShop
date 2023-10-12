@@ -30,27 +30,27 @@ namespace barber_shop.Controllers
 
         public async Task<IActionResult> MyDashboard()
         {
+            Scheduling[] mySchedluings;
             var user = await _barberShopRepository.GetUserLoggedInByCpf(User.Identity.Name);
             if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR))
             {
                 return RedirectToAction("Index", "Administrator");
             }
-            return View(user);
-        }
 
-        public async Task<IActionResult> MySchedules()
-        {
-            Scheduling[] mySchedule;
-            var user = await _barberShopRepository.GetUserLoggedInByCpf(User.Identity.Name);
             if (User.Claims.First().Value == nameof(EnumAccountCategory.BARBER))
             {
-                mySchedule = await _barberShopRepository.GetBarberSchedules(user.Id);
+                mySchedluings = await _barberShopRepository.GetBarberSchedules(user.Id);
             }
             else
             {
-                mySchedule = await _barberShopRepository.GetUserSchedules(user.Id);
+                mySchedluings = await _barberShopRepository.GetUserSchedules(user.Id);
             }
-            return View(mySchedule);
+            var viewModel = new DashboardViewModel
+            {
+                Schedulings = mySchedluings,
+                User = user
+            };
+            return View(viewModel);
         }
 
         public async Task<IActionResult> ChangePassword()
