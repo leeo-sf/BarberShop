@@ -42,6 +42,7 @@ namespace barber_shop.Services
         Task<User> GetUserByTelephone(string telephone);
         Task<Assessments[]> GetBarberCommentById(int idBarber);
         Task<PhotoOfBarberServices[]> GetPhotosOfTheBarberServicesById(int idBarber);
+        Task<PhotoOfBarberServices> GetPhotoOfTheBarberGalleryById(int idPhoto);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -337,6 +338,14 @@ namespace barber_shop.Services
                 .Where(x => x.BarberId == idBarber)
                 .AsNoTracking()
                 .ToArrayAsync();
+        }
+
+        public async Task<PhotoOfBarberServices> GetPhotoOfTheBarberGalleryById(int idPhoto)
+        {
+            return await _context.PhotoOfBarberServices
+                .Where(x => x.Id == idPhoto)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Assessments[]> GetBarberCommentById(int idBarber)

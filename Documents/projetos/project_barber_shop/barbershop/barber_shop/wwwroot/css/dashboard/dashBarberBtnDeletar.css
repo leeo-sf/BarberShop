@@ -1,0 +1,26 @@
+﻿.imagem-container {
+    position: relative;
+    display: inline-block;
+}
+
+.imagem {
+    width: 100%; /* Ajuste conforme necessário */
+    height: auto; /* Ajuste conforme necessário */
+}
+
+.botao-deletar-img {
+    position: absolute;
+    top: 50%; /* Posicione o botão no centro vertical */
+    left: 50%; /* Posicione o botão no centro horizontal */
+    transform: translate(-50%, -50%); /* Centralize o botão */
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    display: none; /* O botão estará oculto inicialmente */
+}
+
+.imagem-container:hover .botao-deletar-img {
+    display: block; /* Mostra o botão quando o mouse está sobre a imagem */
+}

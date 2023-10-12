@@ -192,5 +192,15 @@ namespace barber_shop.Controllers
             }
             return RedirectToAction(nameof(MyDashboard));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(EnumAccountCategory.BARBER))]
+        public async Task<IActionResult> DeletePhotoToMyGallery(int id)
+        {
+            var photoGallery = await _barberShopRepository.GetPhotoOfTheBarberGalleryById(id);
+            await _barberShopRepository.Delete(photoGallery);
+            return RedirectToAction(nameof(MyDashboard));
+        }
     }
 }
