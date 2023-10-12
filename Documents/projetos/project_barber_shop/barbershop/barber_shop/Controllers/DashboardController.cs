@@ -17,15 +17,18 @@ namespace barber_shop.Controllers
         private readonly IBarberShopRepository _barberShopRepository;
         private readonly IUpdatePassword _updatePassword;
         private readonly IEditAccountDetails _editAccountDetails;
+        private readonly IInsertPhotoOfBarberServices _insertPhotoOfBarberServices;
 
         public DashboardController(
             IBarberShopRepository barberShopRepository,
             IUpdatePassword updatePassword,
-            IEditAccountDetails editAccountDetails)
+            IEditAccountDetails editAccountDetails,
+            IInsertPhotoOfBarberServices insertPhotoOfBarberServices)
         {
             _barberShopRepository = barberShopRepository;
             _updatePassword = updatePassword;
             _editAccountDetails = editAccountDetails;
+            _insertPhotoOfBarberServices = insertPhotoOfBarberServices;
         }
 
         public async Task<IActionResult> MyDashboard()
@@ -65,7 +68,7 @@ namespace barber_shop.Controllers
             try
             {
                 await _updatePassword.Excute(obj, User.Identity.Name);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MyDashboard));
             }
             catch (Exception ex)
             {
@@ -110,9 +113,9 @@ namespace barber_shop.Controllers
                 await _editAccountDetails.Execute(obj, User.Identity.Name, User.Claims.First().Value.ToString());
                 if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR))
                 {
-                    return RedirectToAction("ManageAccount", "Administrator");
+                    return RedirectToAction("Index", "Administrator");
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MyDashboard));
             }
             catch (Exception ex)
             {
@@ -132,10 +135,12 @@ namespace barber_shop.Controllers
         {
             var barber = await _barberShopRepository.GetUserById(id);
             var commentsBarber = await _barberShopRepository.GetBarberCommentById(barber.Id);
-            var viewModel = new DashboardBarberViewModel 
-            { 
-                Barber = barber, 
-                Assessments = commentsBarber 
+            var photosOfBarberServices = await _barberShopRepository.GetPhotosOfTheBarberServicesById(barber.Id);
+            var viewModel = new DashboardBarberViewModel
+            {
+                Barber = barber,
+                Assessments = commentsBarber,
+                PhotoOfBarberServices = photosOfBarberServices
             };
             return View(viewModel);
         }
@@ -162,6 +167,30 @@ namespace barber_shop.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> AddMyPhotoToMyGallery()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(EnumAccountCategory.BARBER))]
+        public async Task<IActionResult> AddMyPhotoToMyGallery(
+            string cpf,
+            IFormFile Image)
+        {
+            try
+            {
+                await _insertPhotoOfBarberServices.Execute(cpf, Image);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return View();
+            }
+            return RedirectToAction(nameof(MyDashboard));
         }
     }
 }

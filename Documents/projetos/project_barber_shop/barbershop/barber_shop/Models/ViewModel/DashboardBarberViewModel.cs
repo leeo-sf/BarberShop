@@ -4,6 +4,6 @@
     {
         public User Barber { get; set; }
         public Assessments[] Assessments { get; set; }
-        //fotos dos serviços do barbeiro
+        public PhotoOfBarberServices[] PhotoOfBarberServices { get; set; }
     }
 }

@@ -104,7 +104,7 @@ namespace barber_shop.Controllers
                 {
                     return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("MyDashboard", "Dashboard");
             }
             catch (Exception ex)
             {
@@ -149,7 +149,7 @@ namespace barber_shop.Controllers
                 {
                     return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("MyDashboard", "Dashboard");
             }
             catch (Exception ex)
             {
