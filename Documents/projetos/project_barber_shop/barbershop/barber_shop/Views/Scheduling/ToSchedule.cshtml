@@ -2,7 +2,7 @@
 @model barber_shop.Models.ViewModel.SchedulingFormViewModel
 
 @{
-    ViewData["Title"] = "Agendamento";
+    ViewData["Title"] = "Agendar";
 }
 
 <div class="text-center">
@@ -13,10 +13,13 @@
 
 @if (TempData["ErrorScheduling"] is not null)
 {
-    <div class="alert alert-danger alert-dismissible fade show mt-2 container-cadastro" id="alert-register" role="alert" heigth="100px">
-        @TempData["ErrorScheduling"].ToString()
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '@TempData["ErrorScheduling"].ToString()'
+        })
+    </script>
 }
 <div class="container-cadastro">
     <section class="container-registro mt-3">
@@ -29,20 +32,41 @@
             </div>
 
             <div class="input-box">
-                <label asp-for="Scheduling.SchedulingTimes" class="control-label"></label>
-                <!--asp-items constroi uma caixa de seleção com base na lista informada-->
-                <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
-                <select class = "custom-select" asp-for="Scheduling.SchedulingTimesId" asp-items="@(new SelectList(Model.SchedulingTimes, "Id", "Description"))"></select>
+                <label class="control-label">Horário do Agendamento</label>
+                <select class="custom-select1" asp-for="Scheduling.SchedulingTimesId" required>
+                    <option style="display: inline-block" disabled selected>Selecione um Horário</option>
+                    @foreach (var item in Model.SchedulingTimes)
+                    {
+                        <option value="@item.Id">@item.Description</option>
+                    }
+                </select>
             </div>
 
             <div class="input-box">
                 <label class="control-label">Barbeiro</label>
-                <select class = "custom-select1" asp-for="Scheduling.BarberId" asp-items="@(new SelectList(Model.Barbers, "Id", "Name"))"></select>
+                <select class="custom-select1" asp-for="Scheduling.BarberId" required>
+                    <option style="display: inline-block" disabled selected>Selecione um Barbeiro</option>
+                    @foreach (var item in Model.Barbers)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
             </div>
 
             <div class="input-box">
                 <label class="control-label">Serviço</label>
-                <select class="custom-select2" asp-for="Scheduling.ServiceId" asp-items="@(new SelectList(Model.Services, "Id", "Name"))"></select>
+                <select class="custom-select1" asp-for="Scheduling.ServiceId" required>
+                    <option style="display: inline-block" disabled selected>Selecione um Serviço</option>
+                    @foreach (var item in Model.Services)
+                    {
+                        <option value="@item.Id" onclick="capturaValor(@item.Value.ToString())">@item.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label class="control-label">Valor do Serviço Selecionado</label>
+                <strong>R$</strong> - <p id="valorSelecionado"></p>
             </div>
 
             @if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR) || User.Claims.First().Value == nameof(EnumAccountCategory.BARBER))

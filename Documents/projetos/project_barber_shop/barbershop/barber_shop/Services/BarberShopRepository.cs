@@ -24,8 +24,10 @@ namespace barber_shop.Services
         Task<Service[]> GetServices();
         Task<Service> GetService(int id);
         Task<User> GetUserByEmail(string email);
+        Task<User> GetUserById(int id);
         Task<SchedulingTime[]> GetAllSchedulingTimes();
         Task<User[]> GetAllBarbers();
+        Task<User[]> GetAllUsers();
         Task<User> GetUserLoggedInByCpf(string cpf);
         Task<SchedulingTime> GetSchedulingTimeById(int id);
         Task<Scheduling> GetBarberSchedulings(Scheduling obj);
@@ -33,6 +35,14 @@ namespace barber_shop.Services
         Task<Scheduling[]> GetUserSchedules(int idUser);
         Task<Scheduling[]> GetBarberSchedules(int idBarber);
         Task<Scheduling[]> GetAllSchedulingsReport(DateTimeOffset createdFrom, DateTimeOffset createdUntil);
+        Task<Scheduling> GetSchedulingById(int id);
+        Task CompleteAppointments();
+        Task<User> GetUserByCpf(string cpf);
+        Task<bool> ThisPhoneExist(string telephone);
+        Task<User> GetUserByTelephone(string telephone);
+        Task<Assessments[]> GetBarberCommentById(int idBarber);
+        Task<PhotoOfBarberServices[]> GetPhotosOfTheBarberServicesById(int idBarber);
+        Task<PhotoOfBarberServices> GetPhotoOfTheBarberGalleryById(int idPhoto);
     }
 
     public class BarberShopRepository : IBarberShopRepository
@@ -135,11 +145,15 @@ namespace barber_shop.Services
         public async Task<User> GetUserByEmail(string email)
         {
             var userProfile = await this.GetProfileEmail(email);
-            return await _context.User
-                .Include(x => x.Profile) //fazendo relacionamento com a tabela de profile
-                .Include(x => x.Profile.Category) //azendo relacionamento com a tabela de accountcategory
-                .FirstOrDefaultAsync(x => x.ProfileId == userProfile.Id);
-
+            if (userProfile is not null)
+            {
+                return await _context.User
+                    .Include(x => x.Profile) //fazendo relacionamento com a tabela de profile
+                    .Include(x => x.Profile.Category) //azendo relacionamento com a tabela de accountcategory
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.ProfileId == userProfile.Id);
+            }
+            return null;
             //NÃO TA FUNCIONANDO
             //return await _context.Set<User>().FromSqlInterpolated(
             //    $@"SELECT * FROM db_barber_shop.`user` as u 
@@ -167,10 +181,23 @@ namespace barber_shop.Services
                 .ToArrayAsync();
         }
 
+        public async Task<User[]> GetAllUsers()
+        {
+            return await _context.User
+                .Include(x => x.Profile)
+                .Include(x => x.Profile.Category)
+                .Include(x => x.Address)
+                .Include(x => x.Gender)
+                .AsNoTracking()
+                .ToArrayAsync();
+        }
+
         public async Task<User> GetUserLoggedInByCpf(string cpf)
         {
-            //método que pegar o usuário logado pelo cpf
-            return await this.GetOne<User>(x => x.Cpf == cpf);
+            return await _context.User
+                .Include(x => x.Profile)
+                .Where(x => x.Cpf == cpf)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<SchedulingTime> GetSchedulingTimeById(int id)
@@ -188,6 +215,7 @@ namespace barber_shop.Services
                 x.Date == obj.Date &&
                 x.SchedulingTimesId == obj.SchedulingTimesId
                 ) //quando a data for igual a data selecionada pelo usuário e o id do horário for igual ao id selecionado pelo usuário
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
 
@@ -199,6 +227,7 @@ namespace barber_shop.Services
                 .Include(x => x.Barber)
                 .Include(x => x.SchedulingTimes)
                 .Include(x => x.Service)
+                .OrderByDescending(x => x.Date)
                 .ToArrayAsync();
         }
 
@@ -237,6 +266,103 @@ namespace barber_shop.Services
                 .Include(x => x.Service)
                 .Include(x => x.SchedulingTimes)
                 .Where(x => x.BarberId == idBarber)
+                .ToArrayAsync();
+        }
+
+        public async Task<Scheduling> GetSchedulingById(int id)
+        {
+            return await _context.Scheduling
+                .Include(x => x.Client)
+                .Include(x => x.Barber)
+                .Include(x => x.Service)
+                .Include(x => x.SchedulingTimes)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task CompleteAppointments()
+        {
+            var pastAppointments = await this.GetPastAppointments();
+            foreach (var pastAppointment  in pastAppointments)
+            {
+                pastAppointment.Concluded = true;
+            }
+            await Update(pastAppointments);
+        }
+
+        public async Task<User> GetUserByCpf(string cpf)
+        {
+            return await _context.User
+                .Include(x => x.Profile)
+                .Include(x => x.Profile.Category)
+                .Include(x => x.Address)
+                .Include(x => x.Gender)
+                .Where(x => x.Cpf == cpf)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByTelephone(string telephone)
+        {
+            return await _context.User
+                .Include(x => x.Profile)
+                .Include(x => x.Profile.Category)
+                .Include(x => x.Address)
+                .Include(x => x.Gender)
+                .Where(x => x.Telephone == telephone)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserById(int id)
+        {
+            return await _context.User
+                .Include(x => x.Profile)
+                .Include(x => x.Profile.Category)
+                .Include(x => x.Address)
+                .Include(x => x.Gender)
+                .Where(x => x.Id == id)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> ThisPhoneExist(string telephone)
+        {
+            return await _context.User
+                .AnyAsync(x => x.Telephone == telephone);
+        }
+
+        public async Task<PhotoOfBarberServices[]> GetPhotosOfTheBarberServicesById(int idBarber)
+        {
+            return await _context.PhotoOfBarberServices
+                .Where(x => x.BarberId == idBarber)
+                .AsNoTracking()
+                .ToArrayAsync();
+        }
+
+        public async Task<PhotoOfBarberServices> GetPhotoOfTheBarberGalleryById(int idPhoto)
+        {
+            return await _context.PhotoOfBarberServices
+                .Where(x => x.Id == idPhoto)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Assessments[]> GetBarberCommentById(int idBarber)
+        {
+            return await _context.Assessments
+                .Include(x => x.Barber)
+                .Include(x => x.Client)
+                .Where(x => x.BarberId == idBarber)
+                .AsNoTracking()
+                .ToArrayAsync();
+        }
+
+        private async Task<Scheduling[]> GetPastAppointments()
+        {
+            return await _context.Scheduling
+                .Where(x => x.Date < DateTime.Now)
+                .AsNoTracking()
                 .ToArrayAsync();
         }
     }

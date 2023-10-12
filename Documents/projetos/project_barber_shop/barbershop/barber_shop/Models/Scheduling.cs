@@ -27,5 +27,6 @@ namespace barber_shop.Models
         [Column("service_id")]
         public int ServiceId { get; set; }
         public Service Service { get; set; }
+        public bool Concluded { get; set; }
     }
 }

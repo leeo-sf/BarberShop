@@ -3,34 +3,37 @@
 @using barber_shop.Models.Enums;
 
 @{
-    ViewData["Title"] = "Criar Conta";
+    ViewData["Title"] = "Editar Conta";
 }
 
-@if (TempData["ErrorRegister"] is not null)
+@if (TempData["ErrorEditAccount"] is not null)
 {
-    <div class="alert alert-danger alert-dismissible fade show mt-2 container-cadastro" id="alert-register" role="alert" heigth="100px">
-        @TempData["ErrorRegister"].ToString()
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '@TempData["ErrorEditAccount"].ToString()'
+        })
+    </script>
 }
 <div class="container-cadastro">
     <section class="container-registro mt-3">
-        <header>Formulário de Registro</header>
-        <form class="form-register" asp-action="Register" enctype="multipart/form-data">
+        <header>Editar Conta</header>
+        <form class="form-register" asp-action="EditAccountDetails" enctype="multipart/form-data">
             <div class="input-box">
                 <label asp-for="User.Name"></label>
                 <input id="Nome" asp-for="User.Name" placeholder="Insira seu nome">
                 <span asp-validation-for="User.Name" class="text-danger"></span>
             </div>
 
-            <div class="mt-3" >
+            <div class="mt-3">
                 <label asp-for="User.Profile.Image"> </label> <br />
-                <input type="file" name="Image" >
+                <input type="file" name="Image">
             </div>
 
             <div class="input-box">
                 <label asp-for="User.Cpf"></label>
-                <input id="cpf" asp-for="User.Cpf" placeholder="Insira seu CPF" type="text">
+                <input id="cpf" asp-for="User.Cpf" placeholder="Insira seu CPF" type="text" readonly>
                 <span asp-validation-for="User.Cpf" class="text-danger"></span>
             </div>
 
@@ -108,12 +111,6 @@
                 <span asp-validation-for="User.Profile.Email" class="text-danger"></span>
             </div>
 
-            <div class="input-box">
-                <label asp-for="User.Profile.Password"></label>
-                <input id="senha" asp-for="User.Profile.Password" type="password" placeholder="Insira sua senha">
-                <span asp-validation-for="User.Profile.Password" class="text-danger"></span>
-            </div>
-
             @if (User.Identity.IsAuthenticated)
             {
                 if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
@@ -126,15 +123,36 @@
                     </div>
                 }
             }
-            <button>Cadastrar-se</button>
+            <input type="hidden" asp-for="User.Id" />
+            <input type="hidden" asp-for="User.Profile.Id" />
+            <input type="hidden" asp-for="User.Profile.CategoryId" />
+            <input type="hidden" asp-for="User.Address.Id" />
+            <input type="hidden" asp-for="User.AddressId" />
+            <button>Salvar</button>
         </form>
     </section>
 </div>
-
 <script src="~/js/register.js"></script>
+<script>
+    cpfResponsible = document.getElementById("cpf");
+    cpfResponsible.value = cpfResponsible.value.replace(/[^0-9]/g, "").replace(/^([\d]{3})([\d]{3})?([\d]{3})?([\d]{2})?/, "$1.$2.$3-$4");
 
-@section Scripts{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    function BuscaCep() {
+        var zipCodeUser = document.querySelector('#zipCode').value;
+        $.ajax({
+            type: "GET",
+            url: "/Access/GetAddressData",
+            data: { zipCode: zipCodeUser },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.cep === null) {
+                    alert('CEP não encontrado');
+                }
+                $('#publicPlace').val(data.logradouro);
+                $('#neighborhood').val(data.bairro);
+                $('#locality').val(data.localidade);
+            }
+        })
     }
-    }
+</script>

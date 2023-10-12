@@ -1,4 +1,5 @@
 ﻿using barber_shop.Commands;
+using barber_shop.Extensions;
 using barber_shop.Models;
 using barber_shop.Models.Enums;
 using barber_shop.Models.ViewModel;
@@ -22,17 +23,20 @@ namespace barber_shop.Controllers
             _barberShopRepository = barberShopRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? cpf)
         {
-            return View();
-        }
-
-        public async Task<IActionResult> Register()
-        {
-            //padronizando registro de um novo usuário
-            //quando o adm for registrar um usuário será redirecionado para a mesma página de cadastro que client
-            //mas com permissões diferentes (podendo escolher o perfil do usuário a ser cadastrado)
-            return RedirectToAction("Register", "Access");
+            DashboardAdministratorViewModel viewModel = new DashboardAdministratorViewModel();
+            if (cpf is not null)
+            {
+                var user = await _barberShopRepository.GetUserByCpf(cpf);
+                viewModel.User = user;
+            }
+            else
+            {
+                var users = await _barberShopRepository.GetAllUsers();
+                viewModel.Users = users;
+            }
+            return View(viewModel);
         }
     }
 }

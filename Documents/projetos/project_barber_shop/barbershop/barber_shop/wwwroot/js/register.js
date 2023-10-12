@@ -24,3 +24,15 @@ function BuscaCep() {
         }
     })
 }
+
+function capturaValor(element) {
+    $(document).ready(function () {
+        $("#valorSelecionado").text(element).val();
+    })
+}
+
+function AlterouForm() {
+    var btn = document.getElementById("reagendar");
+    btn.disabled = false;
+    btn.style = "opacity: none";
+}

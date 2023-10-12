@@ -1,4 +1,5 @@
 ﻿using barber_shop.Models;
+using barber_shop.Models.ViewModel;
 using barber_shop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,9 @@ namespace barber_shop.Controllers
         public async Task<IActionResult> Index()
         {
             var services = await _barberShopRepository.GetServices();
-            return View(services);
+            var barbers = await _barberShopRepository.GetAllBarbers();
+            var viewModel = new HomeViewModel { Services = services, Barbers = barbers };
+            return View(viewModel);
         }
     }
 }

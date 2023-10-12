@@ -1,0 +1,96 @@
+﻿@using barber_shop.Models.Enums;
+@model barber_shop.Models.ViewModel.SchedulingFormViewModel
+
+@{
+    ViewData["Title"] = "Reagendar";
+    Model.CpfResponsible = Model.Scheduling.Client.Cpf;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Reagendamento</h1>
+</div>
+
+<hr />
+
+@if (TempData["ErroUpdateScheduling"] is not null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '@TempData["ErroUpdateScheduling"].ToString()'
+        })
+    </script>
+}
+<div class="container-cadastro">
+    <section class="container-registro mt-3">
+        <header>Registro de Serviço</header>
+        <form class="form-register" asp-action="ReSchedule" name="form_reagendar" id="form_reagendar" onchange="AlterouForm()">
+            <div class="input-box">
+                <label asp-for="Scheduling.Date"></label>
+                <input id="dateAgendamento" asp-for="Scheduling.Date">
+                <span asp-validation-for="Scheduling.Date" class="text-danger"></span>
+            </div>
+
+            <div class="input-box">
+                <label asp-for="Scheduling.SchedulingTimes" class="control-label"></label>
+                <!--asp-items constroi uma caixa de seleção com base na lista informada-->
+                <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
+                <select id="horaAgendamento" class="custom-select" asp-for="Scheduling.SchedulingTimesId" asp-items="@(new SelectList(Model.SchedulingTimes, "Id", "Description"))"></select>
+            </div>
+
+            <div class="input-box">
+                <label class="control-label">Barbeiro</label>
+                <select id="barbeiro" class="custom-select1" asp-for="Scheduling.BarberId" asp-items="@(new SelectList(Model.Barbers, "Id", "Name"))"></select>
+            </div>
+
+            <div class="input-box">
+                <label class="control-label">Serviço</label>
+                <select class="custom-select" id="servicoSelecionado" asp-for="Scheduling.ServiceId" required>
+                    <option style="display: inline-block" disabled selected>Selecione um Serviço</option>
+                    @foreach (var item in Model.Services)
+                    {
+                        <option value="@item.Id" onclick="capturaValor(@item.Value.ToString())">@item.Name</option>
+                    }
+                </select>
+            </div>
+
+            <script>
+                $(window).load(function () {
+                    document.getElementById("horaAgendamento").value = @Model.Scheduling.SchedulingTimes.Id.ToString();
+                    document.getElementById("barbeiro").value = @Model.Scheduling.BarberId.ToString();
+                    document.getElementById("servicoSelecionado").value = @Model.Scheduling.ServiceId.ToString();
+                    document.getElementById("valorSelecionado").innerText = @Model.Scheduling.Service.Value.ToString();
+                });
+            </script>
+
+            <div class="input-box">
+                <label class="control-label">Valor do Serviço Selecionado</label>
+                <strong>R$</strong> - <p id="valorSelecionado"></p>
+            </div>
+
+            @if (User.Claims.First().Value == nameof(EnumAccountCategory.ADMINISTRATOR) || User.Claims.First().Value == nameof(EnumAccountCategory.BARBER))
+            {
+                <div class="input-box">
+                    <label>CPF do cliente agendado</label>
+                    <input id="cpfResponsible" asp-for="CpfResponsible" readonly>
+                    <script>
+                        cpfResponsible = document.getElementById("cpfResponsible");
+                        cpfResponsible.value = cpfResponsible.value.replace(/[^0-9]/g, "").replace(/^([\d]{3})([\d]{3})?([\d]{3})?([\d]{2})?/, "$1.$2.$3-$4");
+                    </script>
+                </div>
+            }
+
+            <button id="reagendar" style="opacity: 0.5;" type="submit" disabled="true">Reagendar</button>
+            <input type="hidden" asp-for="Scheduling.Id" />
+        </form>
+    </section>
+</div>
+
+<script src="~/js/register.js"></script>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
