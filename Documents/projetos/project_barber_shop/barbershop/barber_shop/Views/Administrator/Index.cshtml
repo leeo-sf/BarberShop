@@ -1,5 +1,6 @@
 ﻿@using barber_shop.Extensions;
-@model barber_shop.Models.User;
+@model barber_shop.Models.ViewModel.DashboardAdministratorViewModel;
+<link rel="stylesheet" type="text/css" href="~/css/dashboard/pageAdministrator.css" />
 @{
     ViewData["Title"] = "Dashboard Adm";
 }
@@ -18,7 +19,7 @@
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" asp-action="Register" asp-controller="Access">Cadastrar Usuário</a></li>
-                <li><a class="dropdown-item" asp-action="ManageAccount" asp-controller="Administrator">Gerenciar Conta</a></li>
+                <li><a class="dropdown-item" href="#gerenciarConta">Gerenciar Conta</a></li>
             </ul>
         </div>
     </div>
@@ -53,17 +54,41 @@
 <br />
 <hr />
 <div class="text-center">
-    <h4 class="display-4">Pesquisar usuário</h4>
+    <h4 class="display-4">Gerenciar conta</h4>
 </div>
-<form asp-action="ManageAccount">
-    <div class="text-center">
-        <label for="exampleFormControlInput1" class="form-label">CPF do Usuário:</label>
-        <input id="cpf" name="cpf" maxlength="14" placeholder="Insira o CPF" type="text">
-        <button type="submit" class="btn btn-outline-info">Pesquisar</button>
-    </div>
-</form>
+<div style="margin-left: 40%;">
+    <form asp-action="Index" id="gerenciarConta">
+        <div class="searchBox">
+            <input class="searchInput" type="text" id="cpf" name="cpf" placeholder="CPF do usuário" style="color: white;">
+            <button class="searchButton">
+                <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29" fill="none">
+                    <g clip-path="url(#clip0_2_17)">
+                        <g filter="url(#filter0_d_2_17)">
+                            <path d="M23.7953 23.9182L19.0585 19.1814M19.0585 19.1814C19.8188 18.4211 20.4219 17.5185 20.8333 16.5251C21.2448 15.5318 21.4566 14.4671 21.4566 13.3919C21.4566 12.3167 21.2448 11.252 20.8333 10.2587C20.4219 9.2653 19.8188 8.36271 19.0585 7.60242C18.2982 6.84214 17.3956 6.23905 16.4022 5.82759C15.4089 5.41612 14.3442 5.20435 13.269 5.20435C12.1938 5.20435 11.1291 5.41612 10.1358 5.82759C9.1424 6.23905 8.23981 6.84214 7.47953 7.60242C5.94407 9.13789 5.08145 11.2204 5.08145 13.3919C5.08145 15.5634 5.94407 17.6459 7.47953 19.1814C9.01499 20.7168 11.0975 21.5794 13.269 21.5794C15.4405 21.5794 17.523 20.7168 19.0585 19.1814Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" shape-rendering="crispEdges"></path>
+                        </g>
+                    </g>
+                    <defs>
+                        <filter id="filter0_d_2_17" x="-0.418549" y="3.70435" width="29.7139" height="29.7139" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                            <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+                            <feOffset dy="4"></feOffset>
+                            <feGaussianBlur stdDeviation="2"></feGaussianBlur>
+                            <feComposite in2="hardAlpha" operator="out"></feComposite>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_17"></feBlend>
+                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_17" result="shape"></feBlend>
+                        </filter>
+                        <clipPath id="clip0_2_17">
+                            <rect width="28.0702" height="28.0702" fill="white" transform="translate(0.403503 0.526367)"></rect>
+                        </clipPath>
+                    </defs>
+                </svg>
+            </button>
+        </div>
+    </form>
+</div>
 
-@if(Model.Cpf is not null)
+@if (Model.User is not null)
 {
     <table class="table table-striped table-hover">
         <thead>
@@ -78,7 +103,10 @@
                     Telefone
                 </th>
                 <th>
-                    Data de Nascimento
+                    Email
+                </th>
+                <th>
+                    Perfil
                 </th>
                 <th>
                     Ações
@@ -88,16 +116,19 @@
         <tbody>
             <tr>
                 <td>
-                    @Model.Name
+                    @Model.User.Name
                 </td>
                 <td>
-                    @StringExtension.FormatCpf(Model.Cpf)
+                    @StringExtension.FormatCpf(Model.User.Cpf)
                 </td>
                 <td>
-                    @Model.Telephone
+                    @Model.User.Telephone
                 </td>
                 <td>
-                    @Model.BirthDate.ToString("dd/MM/yyyy")
+                    @Model.User.Profile.Email
+                </td>
+                <td>
+                    @Model.User.Profile.Category.Description
                 </td>
                 <td>
                     <div style="display: inline-block;">
@@ -145,9 +176,92 @@
 }
 else
 {
-    <div class="text-center">
-        <h4 id="msg-nenhum-cadastro">Pesquise um usuário</h4>
-    </div>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr class="success">
+                <th>
+                    Nome
+                </th>
+                <th>
+                    CPF
+                </th>
+                <th>
+                    Telefone
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Perfil
+                </th>
+                <th>
+                    Ações
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Users)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @StringExtension.FormatCpf(item.Cpf)
+                    </td>
+                    <td>
+                        @item.Telephone
+                    </td>
+                    <td>
+                        @item.Profile.Email
+                    </td>
+                    <td>
+                        @item.Profile.Category.Description
+                    </td>
+                    <td>
+                        <div style="display: inline-block;">
+                            <abbr title="Agendamentos">
+                                <div class="btn btn-outline-success" style="text-decoration: none; color: inherit;">
+                                    <a asp-action="Index" asp-controller="Scheduling" asp-route-id="@item.Id">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-week-fill" viewBox="0 0 16 16">
+                                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zm9.954 3H2.545c-.3 0-.545.224-.545.5v1c0 .276.244.5.545.5h10.91c.3 0 .545-.224.545-.5v-1c0-.276-.244-.5-.546-.5zM8.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM3 10.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </abbr>
+                        </div>
+
+                        <div style="display: inline-block;">
+                            <abbr title="Alterar Dados">
+                                <div class="btn btn-outline-primary" style="text-decoration: none; color: inherit;">
+                                    <a asp-action="EditAccountDetails" asp-controller="Dashboard" asp-route-id="@item.Id">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </abbr>
+                        </div>
+
+                        <div style="display: inline-block;">
+                            <abbr title="Deletar usuário">
+                                <form href="#" onsubmit="return Confirmar()">
+                                    <button class="btn btn-outline-danger" type="submit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-x" viewBox="0 0 16 16">
+                                            <path d="M6.146 8.146a.5.5 0 0 1 .708 0L8 9.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 10l1.147 1.146a.5.5 0 0 1-.708.708L8 10.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 10 6.146 8.854a.5.5 0 0 1 0-.708z" />
+                                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z" />
+                                            <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </abbr>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 <script src="~/js/alert.js"></script>
