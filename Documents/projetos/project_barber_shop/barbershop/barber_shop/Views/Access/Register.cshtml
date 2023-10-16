@@ -30,7 +30,7 @@
 
             <div class="input-box">
                 <label asp-for="User.Cpf"></label>
-                <input id="cpf" asp-for="User.Cpf" placeholder="Insira seu CPF" type="text">
+                <input id="cpf" asp-for="User.Cpf" maxlength="14" placeholder="Insira seu CPF" type="text" onblur="formatCpf()" onkeyup="removeCaracteres()">
                 <span asp-validation-for="User.Cpf" class="text-danger"></span>
             </div>
 
