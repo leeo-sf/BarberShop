@@ -5,6 +5,18 @@
     ViewData["Title"] = "Dashboard Adm";
 }
 
+@if (TempData["Success"] is not null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '@TempData["Success"].ToString()',
+            showConfirmButton: false,
+            timer: 2000
+        })
+    </script>
+}
+
 <div class="text-center">
     <h1 class="display-4">Bem vindo ADM</h1>
 </div>
@@ -46,6 +58,12 @@
                 <li><a class="dropdown-item" asp-action="ToSchedule" asp-controller="Scheduling">Agendar</a></li>
             </ul>
         </div>
+    </div>
+
+    <div style="display: inline-block;">
+        <a class="btn btn-outline-info" asp-action="DefinePromotionalMessage" asp-controller="Administrator">
+            Mensagem Promocional
+        </a>
     </div>
 </div>
 

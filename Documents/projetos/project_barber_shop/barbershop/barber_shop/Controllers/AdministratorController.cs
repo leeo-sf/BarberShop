@@ -15,12 +15,15 @@ namespace barber_shop.Controllers
     public class AdministratorController : Controller
     {
         private readonly IBarberShopRepository _barberShopRepository;
+        private readonly ISendMessagePromotional _sendMessagePromotional;
 
         public AdministratorController(
-            IBarberShopRepository barberShopRepository
+            IBarberShopRepository barberShopRepository,
+            ISendMessagePromotional sendMessagePromotional
             )
         {
             _barberShopRepository = barberShopRepository;
+            _sendMessagePromotional = sendMessagePromotional;
         }
 
         public async Task<IActionResult> Index(string? cpf)
@@ -37,6 +40,28 @@ namespace barber_shop.Controllers
                 viewModel.Users = users;
             }
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> DefinePromotionalMessage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DefinePromotionalMessage(PromotionalMessage obj, IFormFile Image)
+        {
+            try
+            {
+                await _sendMessagePromotional.Execute(obj, Image);
+                TempData["Success"] = "Email enviado para todos os clientes cadastrados";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return View();
+            }
         }
     }
 }
