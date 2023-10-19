@@ -27,7 +27,7 @@
         <form class="form-register" asp-action="ToSchedule">
             <div class="input-box">
                 <label asp-for="Scheduling.Date"></label>
-                <input asp-for="Scheduling.Date">
+                <input id="dateScheduling" asp-for="Scheduling.Date" onblur="DesabilitaHorarioDomingo()">
                 <span asp-validation-for="Scheduling.Date" class="text-danger"></span>
             </div>
 
@@ -37,7 +37,7 @@
                     <option style="display: inline-block" disabled selected>Selecione um Horário</option>
                     @foreach (var item in Model.SchedulingTimes)
                     {
-                        <option value="@item.Id">@item.Description</option>
+                        <option id="@item.Id" value="@item.Id">@item.Description</option>
                     }
                 </select>
             </div>
