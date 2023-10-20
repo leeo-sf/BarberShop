@@ -38,10 +38,10 @@
         width: 490px;
         height: 750px;
         padding: 1rem;
-        background-color: darkslategray;
+        background-color: lightgray;
         border-radius: 10px;
         transition: all ease .3s;
-        color:aliceblue;
+        color:black;
     }
 
     .containerqmsomos .boxqmsomos {
