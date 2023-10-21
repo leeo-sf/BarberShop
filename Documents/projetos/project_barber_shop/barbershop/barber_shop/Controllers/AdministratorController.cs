@@ -32,6 +32,12 @@ namespace barber_shop.Controllers
             if (cpf is not null)
             {
                 var user = await _barberShopRepository.GetUserByCpf(cpf);
+                if (!(user is not null))
+                {
+                    TempData["Error"] = "CPF nao encontrado";
+                    viewModel.Users = await _barberShopRepository.GetAllUsers();
+                    return View(viewModel);
+                }
                 viewModel.User = user;
             }
             else
