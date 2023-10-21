@@ -35,10 +35,14 @@
             </div>
 
             <div class="input-box">
-                <label asp-for="User.Gender" class="control-label"></label>
-                <!--asp-items constroi uma caixa de seleção com base na lista informada-->
-                <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
-                <select class="generos" asp-for="User.GenderId" asp-items="@(new SelectList(Model.Genders, "Id", "Description"))"></select>
+                <label class="control-label">Barbeiro</label>
+                <select class="custom-select1" asp-for="User.GenderId" required>
+                    <option style="display: inline-block" disabled selected>Selecione um Gênero</option>
+                    @foreach (var item in Model.Genders)
+                    {
+                        <option value="@item.Id">@item.Description</option>
+                    }
+                </select>
             </div>
 
             <div class="column-register">
@@ -119,10 +123,14 @@
                 if (User.Claims.First().Value == EnumAccountCategory.ADMINISTRATOR.ToString())
                 {
                     <div class="input-box">
-                        <label asp-for="User.Profile" class="control-label"></label>
-                        <!--asp-items constroi uma caixa de seleção com base na lista informada-->
-                        <!--1arg- fonte de dados da coleção 2arg- qual atributo será a chave 3arg- qual informação aparecerá para o usuário-->
-                        <select asp-for="User.Profile.CategoryId" asp-items="@(new SelectList(Model.AccountCategories, "Id", "Description"))"></select>
+                        <label class="control-label">Perfil</label>
+                        <select class="custom-select1" asp-for="User.Profile.CategoryId" required>
+                            <option style="display: inline-block" disabled selected>Selecione um Perfil</option>
+                            @foreach (var item in Model.AccountCategories)
+                            {
+                                <option value="@item.Id">@item.Description</option>
+                            }
+                        </select>
                     </div>
                 }
             }
