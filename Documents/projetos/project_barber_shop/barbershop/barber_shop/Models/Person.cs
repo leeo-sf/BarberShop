@@ -16,7 +16,6 @@ namespace barber_shop.Models
         [Display(Name = "Nome")]
         public string Name { get; set; }
         [Required]
-        [StringLength(14, MinimumLength = 14, ErrorMessage = "O {0} deve conter 11 digitos")]
         [Display(Name = "CPF")]
         public string Cpf { get; set; }
         [Column("gender_id")]

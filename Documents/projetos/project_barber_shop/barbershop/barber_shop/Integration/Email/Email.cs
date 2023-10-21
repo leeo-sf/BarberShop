@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using barber_shop.Models;
+using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
@@ -7,7 +8,8 @@ namespace barber_shop.Integration.Email
 {
     public interface IEmail
     {
-        Task SendEmail(string emailTo, string subject, string body, string attachments);
+        Task SendReportByEmail(string emailTo, string subject, string body, string attachments);
+        Task SendMessagePromotional(PromotionalMessage obj, User[] clients);
     }
 
     public class Email : IEmail
@@ -25,13 +27,45 @@ namespace barber_shop.Integration.Email
             _provaider = _configuration.GetSection("EmailBarberShop").GetSection("Provaider").Value;
         }
 
-        public async Task SendEmail(string emailTo, string subject, string body, string attachments)
+        public async Task SendReportByEmail(string emailTo, string subject, string body, string attachments)
         {
-            var message = PrepareMessageForSending(emailTo, subject, body, attachments);
+            var message = PrepareMessageForSendingWithReport(emailTo, subject, body, attachments);
             SendEmailBySmtp(message);
         }
 
-        private MailMessage PrepareMessageForSending(string emailTo, string subject, string body, string attachments)
+        public async Task SendMessagePromotional(PromotionalMessage obj, User[] clients)
+        {
+            var message = PreparePromotionalMessageForSending(obj, clients);
+            SendEmailBySmtp(message);
+        }
+
+        private MailMessage PreparePromotionalMessageForSending(PromotionalMessage obj, User[] clients)
+        {
+            var pathTemplateMessagePromotional = @"C:\PromotionalEmailTemplate.cshtml";
+            string htmlBody = System.IO.File.ReadAllText(pathTemplateMessagePromotional);
+            if (obj.Image is not null)
+            {
+                htmlBody = htmlBody.Replace("##Image##", ConvertImageToBase64(obj.Image));
+            }
+            htmlBody = htmlBody.Replace("##TitleEmail##", obj.TitleEmail);
+            htmlBody = htmlBody.Replace("##EmailBody##", obj.EmailBody);
+            var mail = new MailMessage();
+            mail.From = new MailAddress(_username);
+            foreach (var client in clients)
+            {
+                if (ValidateEmail(client.Profile.Email))
+                {
+                    mail.To.Add(client.Profile.Email);
+                }
+            }
+            mail.Subject = obj.Subject;
+            mail.Body = htmlBody;
+            mail.IsBodyHtml = true;
+
+            return mail;
+        }
+
+        private MailMessage PrepareMessageForSendingWithReport(string emailTo, string subject, string body, string attachments)
         {
             var mail = new MailMessage();
             mail.From = new MailAddress(_username);
@@ -80,6 +114,13 @@ namespace barber_shop.Integration.Email
             smtpClient.Credentials = new NetworkCredential(_username, _password);
             smtpClient.Send(message);
             smtpClient.Dispose();
+        }
+
+        private string ConvertImageToBase64(byte[] Image)
+        {
+            var base64 = Convert.ToBase64String(Image);
+            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            return imgSrc;
         }
     }
 }

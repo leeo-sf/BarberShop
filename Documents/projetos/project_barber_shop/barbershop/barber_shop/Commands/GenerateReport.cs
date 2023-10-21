@@ -66,7 +66,7 @@ namespace barber_shop.Commands
             
             try
             {
-                await _email.SendEmail(
+                await _email.SendReportByEmail(
                     emailTo: getUserLoggedIn.Profile.Email,
                     subject: $"Relatório BarberShop",
                     body: $"Segue em anexo relatório entre as datas {createdFrom.ToString("dd/MM/yyyy")} até {createdUntil.ToString("dd/MM/yyyy")}",
