@@ -24,7 +24,7 @@ namespace barber_shop.Commands
                 var scheduling = await _barberShopRepository.GetSchedulingById(id);
                 if (scheduling.Date <= DateTimeOffset.Now)
                 {
-                    throw new Exception("Voce nao pode deletar esse agendamento posi passou o prazo de cancelamento.");
+                    throw new Exception("Voce nao pode deletar esse agendamento, o prazo de cancelamento foi ultrapassado.");
                 }
                 await _barberShopRepository.Delete(scheduling);
             }

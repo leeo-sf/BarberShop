@@ -26,7 +26,7 @@ namespace barber_shop.Commands
             var barberHasAnAppointment = await this.ValidatesOtherSchedulingInformation(obj, cpfLoggedIn);
             if (barberHasAnAppointment is not null)
             {
-                throw new Exception("O barbeiro selecionado já possuí agendamento nesse dia e horário");
+                throw new Exception("O barbeiro selecionado ja possui agendamento nesse dia e horario");
             }
         }
 
@@ -39,7 +39,7 @@ namespace barber_shop.Commands
                 //significa que o responsável pelo agendamento não é o mesmo cliete que está tentando reagendar
                 if (!(obj.Scheduling.Id == barberHasAnAppointment.Id))
                 {
-                    throw new Exception("O barbeiro selecionado já possuí agendamento nesse dia e horário");
+                    throw new Exception("O barbeiro selecionado ja possui agendamento nesse dia e horario");
                 }
             }
         }
