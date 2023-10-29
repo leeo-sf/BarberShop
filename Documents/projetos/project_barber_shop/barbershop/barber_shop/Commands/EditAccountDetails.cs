@@ -57,6 +57,16 @@ namespace barber_shop.Commands
                 //atribuindo a senha do usuário que está no banco pois, o serviço de alterar senha é outro
                 //nesse formulário só é possível alterar os dados cadastrais
                 obj.User.Profile.Password = user.Profile.Password;
+                //se o usuário não inserir uma imagem
+                if (obj.User.Profile.Image is null)
+                {
+                    //e no cadastro dele tiver uma imagem de perfil
+                    if (user.Profile.Image is not null)
+                    {
+                        //permanece a mesma imagem
+                        obj.User.Profile.Image = user.Profile.Image;
+                    }
+                }
                 await _barberShopRepository.Update(obj.User);
             }
             catch (DbUpdateException ex)
