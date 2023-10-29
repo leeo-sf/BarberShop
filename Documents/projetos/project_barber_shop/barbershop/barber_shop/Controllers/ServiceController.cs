@@ -95,7 +95,7 @@ namespace barber_shop.Controllers
             try
             {
                 await _deleteService.Execute(id);
-                TempData["SuccessDelete"] = "Serviço Deletado";
+                TempData["SuccessDelete"] = "Servico Deletado";
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)

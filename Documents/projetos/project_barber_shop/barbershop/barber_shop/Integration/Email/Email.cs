@@ -75,7 +75,7 @@ namespace barber_shop.Integration.Email
             }
             else
             {
-                throw new Exception("Email inválido");
+                throw new Exception("Email invalido");
             }
             mail.Subject = subject;
             mail.Body = body;

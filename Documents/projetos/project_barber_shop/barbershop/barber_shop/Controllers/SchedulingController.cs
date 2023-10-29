@@ -128,7 +128,7 @@ namespace barber_shop.Controllers
             try
             {
                 await _generateReport.Execute(mindate, maxdate, User.Identity.Name);
-                TempData["GeneratedReport"] = "Relatório gerado e enviado";
+                TempData["GeneratedReport"] = "Relatorio gerado e enviado";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex )
