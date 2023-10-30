@@ -16,11 +16,11 @@
     ViewData["Title"] = "Perfil do barbeiro";
 }
 
-<div class="mt-3" style="margin-left: 28%;">
+<div class="mt-3barb" style="margin-left: 28%;">
     <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
             <div class="col-md-4">
-                <div class="card-img">
+                <div class="card-imgbarber">
                     @{
                         string imgSrc;
                         if (Model.Barber.Profile.Image is not null)
@@ -36,12 +36,16 @@
                     <img src="@imgSrc" alt="img-barber" style="max-width:200px; max-height:200px;">
                 </div>
             </div>
+
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">@Model.Barber.Name</h5>
-                    <p class="card-text">Email - <strong>@Model.Barber.Profile.Email</strong> <br /> Telefone - <strong>@Model.Barber.Telephone</strong></p>
+                    <div class="text-section">
+                        <h5 class="card-title">@Model.Barber.Name</h5>
+                        <p class="card-textbarb">Email - <strong>@Model.Barber.Profile.Email</strong> <br /> Telefone - <strong>@Model.Barber.Telephone</strong></p>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
