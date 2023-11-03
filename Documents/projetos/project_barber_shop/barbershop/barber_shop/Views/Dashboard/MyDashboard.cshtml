@@ -28,7 +28,7 @@
                 var base64 = Convert.ToBase64String(Model.User.Profile.Image);
                 string imgSrc = String.Format("data:image/gif;base64,{0}", base64);
             }
-            <img src="@imgSrc" alt="img-barber" style="max-width:200px; max-height:200px;">
+            <img src="@imgSrc" alt="img-profile" style="max-width:200px; max-height:200px;">
         </div>
     }
     else
