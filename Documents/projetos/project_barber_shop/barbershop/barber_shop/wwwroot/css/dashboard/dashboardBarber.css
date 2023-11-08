@@ -36,3 +36,12 @@
     .btnfeedback:hover {
         background-color: #2980b9;
     }
+
+.card-imgbarber img {
+    margin-right: 20px; 
+}
+
+.text-section {
+    margin-left: 20px; 
+}
+
