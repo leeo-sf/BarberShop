@@ -10,12 +10,12 @@ namespace barber_shop.Models
         [JsonIgnore]
         public int Id { get; set; }
         //campo obrigtório
-        [Required]
+        [Required(ErrorMessage = "{0} obrigatório")]
         //msg de erro personalizada
         [StringLength(100, MinimumLength = 3, ErrorMessage = "O tamanho do {0} deve ser entre {2} e {1}")]
         [Display(Name = "Nome")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} obrigatório")]
         [Display(Name = "CPF")]
         public string Cpf { get; set; }
         [Column("gender_id")]
@@ -25,11 +25,11 @@ namespace barber_shop.Models
         [Column("address_id")]
         public int AddressId { get; set; }
         public Address Address { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} obrigatório")]
         [StringLength(11, ErrorMessage = "O {0} deve conter {1} caracteres")]
         [Display(Name = "Telefone")]
         public string Telephone { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} obrigatório")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Display(Name = "Data Nascimento")]

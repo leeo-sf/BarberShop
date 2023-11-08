@@ -15,7 +15,7 @@ namespace barber_shop.Models
         [Column("barber_id")]
         public int BarberId { get; set; }
         public User Barber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} obrigatório")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Display(Name = "Data do agendamento")]

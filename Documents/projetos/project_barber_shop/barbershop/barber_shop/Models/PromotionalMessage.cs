@@ -4,13 +4,13 @@ namespace barber_shop.Models
 {
     public class PromotionalMessage
     {
-        [Required]
+        [Required(ErrorMessage = "{0} obrigatório")]
         [Display(Name = "Assunto do Email")]
         public string Subject { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} obrigatório")]
         [Display(Name = "Título do Email")]
         public string TitleEmail { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} obrigatório")]
         [Display(Name = "Corpo do Email")]
         public string EmailBody { get; set; }
         public byte[]? Image { get; set; }

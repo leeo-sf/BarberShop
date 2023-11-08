@@ -101,7 +101,7 @@
                 </div>
                 <div class="input-box">
                     <label asp-for="User.BirthDate"></label>
-                    <input id="datadeaniversario" asp-for="User.BirthDate">
+                    <input id="datadeaniversario" asp-for="User.BirthDate" max="@(DateTimeOffset.Now.Year - 5)">
                     <span asp-validation-for="User.BirthDate" class="text-danger"></span>
                 </div>
             </div>

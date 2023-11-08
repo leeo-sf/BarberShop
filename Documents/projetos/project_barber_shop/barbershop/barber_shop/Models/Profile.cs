@@ -10,11 +10,12 @@ namespace barber_shop.Models
         [JsonIgnore]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "{0} obrigatório")]
         [EmailAddress(ErrorMessage = "Entre com um email válido")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "{0} obrigatório")]
         [DataType(DataType.Password)]
         [StringLength(15, MinimumLength = 5, ErrorMessage = "O tamanho do {0} deve ser entre {2} e {1}")]
         [Display(Name = "Senha")]
